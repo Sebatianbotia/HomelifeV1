@@ -1,0 +1,232 @@
+.nosotros-page {
+  padding: 120px 0 60px;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.section-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 40px;
+  background: linear-gradient(135deg, #fff 0%, var(--cyan-400) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Hero */
+.nosotros-hero {
+  padding: 60px 20px 80px;
+  text-align: center;
+  background: linear-gradient(180deg, rgba(5,10,20,0.9) 0%, transparent 100%);
+}
+
+.nosotros-hero h1 {
+  font-size: 3.5rem;
+  font-weight: 800;
+  margin-bottom: 20px;
+  background: linear-gradient(135deg, #fff 0%, var(--cyan-400) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.nosotros-hero p {
+  font-size: 1.2rem;
+  color: var(--text-secondary);
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* Historia */
+.nosotros-historia {
+  padding: 80px 20px;
+}
+
+.historia-texto {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Cards (Misión, Visión, Valores) */
+.nosotros-cards {
+  padding: 80px 20px;
+  background: linear-gradient(180deg, rgba(15,31,53,0.3) 0%, rgba(5,10,20,0.5) 100%);
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  margin-top: 40px;
+}
+
+.card-item {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl);
+  padding: 40px 30px;
+  text-align: center;
+  transition: all var(--transition-smooth);
+}
+
+.card-item:hover {
+  transform: translateY(-8px);
+  border-color: var(--glass-border-strong);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.3), 0 0 30px rgba(0,217,217,0.1);
+}
+
+.card-icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 24px;
+  background: linear-gradient(135deg, var(--cyan-500), var(--cyan-600));
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--deep-space);
+}
+
+.card-icon svg {
+  width: 40px;
+  height: 40px;
+}
+
+.card-item h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: var(--text-primary);
+}
+
+.card-item p {
+  color: var(--text-secondary);
+  line-height: 1.7;
+  font-size: 1rem;
+}
+
+/* Certificaciones */
+.nosotros-certificaciones {
+  padding: 80px 20px;
+}
+
+.certificaciones-intro {
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+  margin-bottom: 50px;
+}
+
+.certificaciones-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.certificacion-item {
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  padding: 30px 20px;
+  text-align: center;
+  transition: all var(--transition-fast);
+}
+
+.certificacion-item:hover {
+  border-color: var(--cyan-400);
+  transform: translateY(-4px);
+}
+
+.cert-icon {
+  font-size: 3rem;
+  display: block;
+  margin-bottom: 16px;
+}
+
+.certificacion-item h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* Equipo */
+.nosotros-equipo {
+  padding: 80px 20px;
+  background: linear-gradient(180deg, rgba(5,10,20,0.8) 0%, transparent 100%);
+}
+
+.equipo-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  margin-top: 40px;
+}
+
+.equipo-item {
+  text-align: center;
+}
+
+.equipo-item img {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--glass-border-strong);
+  margin-bottom: 20px;
+  transition: all var(--transition-fast);
+}
+
+.equipo-item:hover img {
+  border-color: var(--cyan-400);
+  transform: scale(1.05);
+}
+
+.equipo-item h4 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: var(--text-primary);
+}
+
+.equipo-item p {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .cards-grid,
+  .certificaciones-grid,
+  .equipo-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .nosotros-hero h1 {
+    font-size: 2.5rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .cards-grid,
+  .certificaciones-grid,
+  .equipo-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .section-title {
+    font-size: 2rem;
+  }
+}

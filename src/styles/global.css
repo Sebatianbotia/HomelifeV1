@@ -1,0 +1,98 @@
+:root {
+  --deep-space: #050a14;
+  --navy-900: #0a1628;
+  --navy-800: #0f1f35;
+  --navy-700: #152a45;
+  --cyan-400: #00d9d9;
+  --cyan-500: #01c5c4;
+  --cyan-600: #00a8a8;
+  --cyan-glow: rgba(1, 197, 196, 0.4);
+  --glass-bg: rgba(15, 31, 53, 0.65);
+  --glass-border: rgba(0, 217, 217, 0.08);
+  --glass-border-strong: rgba(0, 217, 217, 0.2);
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.7);
+  --text-muted: rgba(255, 255, 255, 0.45);
+  --success: #00d084;
+  --warning: #ffa726;
+  --error: #ff5252;
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-smooth: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  background: var(--deep-space);
+  color: var(--text-primary);
+  line-height: 1.6;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* Scrollbar personalizada */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--deep-space);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--navy-700);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--cyan-600);
+}
+/* src/styles/global.css (añade al final) */
+
+/* Contenedor principal que envuelve todas las páginas */
+.main-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 0 20px;
+}
+
+/* Ajuste para el header fijo: el contenido no debe quedar oculto */
+body {
+  padding-top: 120px; /* Altura aproximada del header (ajusta si es necesario) */
+}
+
+@media (max-width: 768px) {
+  body {
+    padding-top: 100px;
+  }
+}
+/* src/styles/global.css */
+body {
+  padding-top: 120px; /* Altura aproximada del header */
+}
+
+@media (max-width: 768px) {
+  body {
+    padding-top: 100px;
+  }
+}
+
+.main-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 0 20px;
+}

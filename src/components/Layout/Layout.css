@@ -1,0 +1,4 @@
+/* src/components/Layout/Layout.css */
+.main-content {
+  min-height: calc(100vh - 200px); /* Ajuste para que el footer siempre quede abajo */
+}

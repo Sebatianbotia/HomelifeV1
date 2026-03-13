@@ -1,0 +1,116 @@
+.partners-section {
+  padding: 60px 20px;
+  background: linear-gradient(180deg, rgba(5, 10, 20, 0.5) 0%, rgba(15, 31, 53, 0.3) 100%);
+  width: 100%;
+  overflow: hidden;
+  border-top: 1px solid var(--glass-border);
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.partners-container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.partners-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 40px;
+  background: linear-gradient(135deg, #fff 0%, var(--cyan-400) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.partners-marquee {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.partners-marquee::before,
+.partners-marquee::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 150px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.partners-marquee::before {
+  left: 0;
+  background: linear-gradient(90deg, var(--deep-space) 0%, transparent 100%);
+}
+
+.partners-marquee::after {
+  right: 0;
+  background: linear-gradient(-90deg, var(--deep-space) 0%, transparent 100%);
+}
+
+.partners-track {
+  display: flex;
+  gap: 60px;
+  animation: scrollPartners 30s linear infinite;
+  width: fit-content;
+}
+
+@keyframes scrollPartners {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.partner-item {
+  flex-shrink: 0;
+  width: 140px;
+  height: 80px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 15px;
+  transition: all var(--transition-fast);
+  opacity: 0.8;
+}
+
+.partner-item:hover {
+  filter: grayscale(0%) brightness(1);
+  opacity: 1;
+  border-color: var(--cyan-500);
+  box-shadow: 0 0 20px rgba(0, 217, 217, 0.2);
+}
+
+.partner-item img {
+  max-width: 120%;
+  max-height: 120%;
+  object-fit: contain;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .partner-item {
+    width: 120px;
+    height: 70px;
+    padding: 10px;
+  }
+
+  .partners-track {
+    gap: 40px;
+  }
+}
+
+@media (max-width: 480px) {
+  .partner-item {
+    width: 100px;
+    height: 60px;
+  }
+}
