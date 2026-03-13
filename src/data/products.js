@@ -16,7 +16,7 @@ export const products = [
     "isNew": false,
     "isFeatured": false,
     "images": [
-      "/src/assets/images/BrazaleteParaTensiometro/BRAZALETE-30-A-42-CM.png"
+      "/images/BrazaleteParaTensiometro/BRAZALETE-30-A-42-CM.png"
     ],
     "shortDescription": "Brazalete de repuesto para tensiómetro automático.",
     "fullDescription": "Mejora el control de tu salud con el brazalete para tensiómetro automático (tamaño 30 a 42 cm). Ideal para medir tu presión con total seguridad y comodidad.",
@@ -50,10 +50,10 @@ export const products = [
     "isNew": false,
     "isFeatured": false,
     "images": [
-      "/src/assets/images/TensiometroAutoBasic11/tensiometro_basic_1000x1000_homelife_bsp11.png",
-      "/src/assets/images/TensiometroAutoBasic11/tensiometro_basic_1000x1000_homelife_bsp11_contenido.png",
-      "/src/assets/images/TensiometroAutoBasic11/tensiometro_basic_1000x1000_homelife_bsp11_empaque.png",
-      "/src/assets/images/TensiometroAutoBasic11/tensiometro_basic_1000x1000_homelife_bsp11_frontal.png"
+      "/images/TensiometroAutoBasic11/tensiometro_basic_1000x1000_homelife_bsp11.png",
+      "/images/TensiometroAutoBasic11/tensiometro_basic_1000x1000_homelife_bsp11_contenido.png",
+      "/images/TensiometroAutoBasic11/tensiometro_basic_1000x1000_homelife_bsp11_empaque.png",
+      "/images/TensiometroAutoBasic11/tensiometro_basic_1000x1000_homelife_bsp11_frontal.png"
     ],
     "shortDescription": "Tensiómetro digital automático de brazo simple y asequible.",
     "fullDescription": "Tensiómetro digital de presión arterial automático de brazo para usuarios que busquen un medidor simple. Diseñado para aquellas personas que no quieren muchas complicaciones, funciona simplemente apretando un botón.",
@@ -87,9 +87,9 @@ export const products = [
     "isNew": true,
     "isFeatured": true,
     "images": [
-      "/src/assets/images/TensiometroMedicLife/TENSIOMETRO-MEDIC-LIFE-1.png",
-      "/src/assets/images/TensiometroMedicLife/TENSIOMETRO-MEDIC-LIFE-2.png",
-      "/src/assets/images/TensiometroMedicLife/TENSIOMETRO-MEDIC-LIFE.png"
+      "/images/TensiometroMedicLife/TENSIOMETRO-MEDIC-LIFE-1.png",
+      "/images/TensiometroMedicLife/TENSIOMETRO-MEDIC-LIFE-2.png",
+      "/images/TensiometroMedicLife/TENSIOMETRO-MEDIC-LIFE.png"
     ],
     "shortDescription": "Monitor de presión arterial digital ideal para casa o entornos médicos.",
     "fullDescription": "Monitor de presión arterial digital Mediclife. Mide presión sistólica, diastólica y frecuencia de pulso con alta precisión mediante el método oscilométrico.",
@@ -122,10 +122,10 @@ export const products = [
     "isNew": false,
     "isFeatured": true,
     "images": [
-      "/src/assets/images/TensiometroAutomaticoDeBrazo/tensiometro_plushm_1000x1000_homelife_bp1326.png",
-      "/src/assets/images/TensiometroAutomaticoDeBrazo/tensiometro_plushm_1000x1000_homelife_bp1326_contenido.png",
-      "/src/assets/images/TensiometroAutomaticoDeBrazo/tensiometro_plushm_1000x1000_homelife_bp1326_empaque.png",
-      "/src/assets/images/TensiometroAutomaticoDeBrazo/tensiometro_plushm_1000x1000_homelife_bp1326_frontal.png"
+      "/images/TensiometroAutomaticoDeBrazo/tensiometro_plushm_1000x1000_homelife_bp1326.png",
+      "/images/TensiometroAutomaticoDeBrazo/tensiometro_plushm_1000x1000_homelife_bp1326_contenido.png",
+      "/images/TensiometroAutomaticoDeBrazo/tensiometro_plushm_1000x1000_homelife_bp1326_empaque.png",
+      "/images/TensiometroAutomaticoDeBrazo/tensiometro_plushm_1000x1000_homelife_bp1326_frontal.png"
     ],
     "shortDescription": "Monitor de presión sanguínea avanzado de brazo.",
     "fullDescription": "Monitor de presión sanguínea automático para uso de personas mayores de 12 años, realiza la medición de la presión arterial sistólica, diastólica y la frecuencia de pulso cardíaco.",
@@ -158,10 +158,10 @@ export const products = [
     "isNew": false,
     "isFeatured": true,
     "images": [
-      "/src/assets/images/KitMedic/KIT-MEDIC-AZUL-OSCURO.png",
-      "/src/assets/images/KitMedic/KIT-MEDIC-NEGRO-1.png",
-      "/src/assets/images/KitMedic/KIT-MEDIC-PURPURA.png",
-      "/src/assets/images/KitMedic/KIT-MEDIC-ROSA-1.png"
+      "/images/KitMedic/KIT-MEDIC-AZUL-OSCURO.png",
+      "/images/KitMedic/KIT-MEDIC-NEGRO-1.png",
+      "/images/KitMedic/KIT-MEDIC-PURPURA.png",
+      "/images/KitMedic/KIT-MEDIC-ROSA-1.png"
     ],
     "shortDescription": "Kit de fonendoscopio y tensiómetro profesional.",
     "fullDescription": "Kit de fonendoscopio y tensiómetro profesional, ideal para médicos, enfermeros y estudiantes de salud. Permite medir la presión arterial con precisión y escuchar sonidos cardiacos y respiratorios de forma clara.",
@@ -194,8 +194,8 @@ export const products = [
     "isNew": true,
     "isFeatured": true,
     "images": [
-      "/src/assets/images/TensiometroSlim/tensiometro-slim.png",
-      "/src/assets/images/TensiometroSlim/tensiometro-slim2.png"
+      "/images/TensiometroSlim/tensiometro-slim.png",
+      "/images/TensiometroSlim/tensiometro-slim2.png"
     ],
     "shortDescription": "Producto de alta tecnología de diseño ultradelgado.",
     "fullDescription": "Nuevo producto de alta tecnología para uso médico o en el hogar. Tensiómetro Slim de brazo, de perfil moderno y lectura sumamente exacta.",
@@ -228,10 +228,10 @@ export const products = [
     "isNew": false,
     "isFeatured": false,
     "images": [
-      "/src/assets/images/Tensiometro/tensiometro_easy_1000x1000_homelife_bp103.png",
-      "/src/assets/images/Tensiometro/tensiometro_easy_1000x1000_homelife_bp103_contenido.png",
-      "/src/assets/images/Tensiometro/tensiometro_easy_1000x1000_homelife_bp103_empaque.png",
-      "/src/assets/images/Tensiometro/tensiometro_easy_1000x1000_homelife_bp103_frontal.png"
+      "/images/Tensiometro/tensiometro_easy_1000x1000_homelife_bp103.png",
+      "/images/Tensiometro/tensiometro_easy_1000x1000_homelife_bp103_contenido.png",
+      "/images/Tensiometro/tensiometro_easy_1000x1000_homelife_bp103_empaque.png",
+      "/images/Tensiometro/tensiometro_easy_1000x1000_homelife_bp103_frontal.png"
     ],
     "shortDescription": "Monitor de presión sanguínea automático de muñeca.",
     "fullDescription": "Monitor de presión sanguínea automático de muñeca para uso de personas desde los 12 años hasta los 65 años. Este monitor ligero facilita el control de la presión sanguínea en cualquier lugar.",
@@ -264,11 +264,11 @@ export const products = [
     "isNew": false,
     "isFeatured": true,
     "images": [
-      "/src/assets/images/PulsoOximetroPremium/oximetro_premium_1000x1000_homelife_fs10d.png",
-      "/src/assets/images/PulsoOximetroPremium/oximetro_premium_1000x1000_homelife_fs10d_empaque.png",
-      "/src/assets/images/PulsoOximetroPremium/oximetro_premium_1000x1000_homelife_fs10d_frontal.png",
-      "/src/assets/images/PulsoOximetroPremium/oximetro_premium_1000x1000_homelife_fs10d_horizontal.png",
-      "/src/assets/images/PulsoOximetroPremium/oximetro_premium_1000x1000_homelife_fs10d_vertical.png"
+      "/images/PulsoOximetroPremium/oximetro_premium_1000x1000_homelife_fs10d.png",
+      "/images/PulsoOximetroPremium/oximetro_premium_1000x1000_homelife_fs10d_empaque.png",
+      "/images/PulsoOximetroPremium/oximetro_premium_1000x1000_homelife_fs10d_frontal.png",
+      "/images/PulsoOximetroPremium/oximetro_premium_1000x1000_homelife_fs10d_horizontal.png",
+      "/images/PulsoOximetroPremium/oximetro_premium_1000x1000_homelife_fs10d_vertical.png"
     ],
     "shortDescription": "Oxímetro de dedo con tecnología avanzada para monitorear oxígeno en sangre.",
     "fullDescription": "Un mundo de tecnología para hacernos más fácil el control de la salud. Instrumento médico medidor de la saturación de oxígeno de hemoglobina arterial (SpO2) y de la frecuencia cardíaca.",
@@ -301,11 +301,11 @@ export const products = [
     "isNew": false,
     "isFeatured": true,
     "images": [
-      "/src/assets/images/PulsoOximetroDedoPro/HomeLife-post-septiembre-2019-4-1024x1024.png",
-      "/src/assets/images/PulsoOximetroDedoPro/OXIMETRO-HOMELIFE-AS303-AMARILLO.png",
-      "/src/assets/images/PulsoOximetroDedoPro/OXIMETRO-HOMELIFE-AS303-MORADO.png",
-      "/src/assets/images/PulsoOximetroDedoPro/oximetro_pro_1000x1000_homelife_303_amarillo_empaque.png",
-      "/src/assets/images/PulsoOximetroDedoPro/oximetro_pro_1000x1000_homelife_303_purpura_empaque.png"
+      "/images/PulsoOximetroDedoPro/HomeLife-post-septiembre-2019-4-1024x1024.png",
+      "/images/PulsoOximetroDedoPro/OXIMETRO-HOMELIFE-AS303-AMARILLO.png",
+      "/images/PulsoOximetroDedoPro/OXIMETRO-HOMELIFE-AS303-MORADO.png",
+      "/images/PulsoOximetroDedoPro/oximetro_pro_1000x1000_homelife_303_amarillo_empaque.png",
+      "/images/PulsoOximetroDedoPro/oximetro_pro_1000x1000_homelife_303_purpura_empaque.png"
     ],
     "shortDescription": "Oxímetro profesional disponible en varios colores.",
     "fullDescription": "Instrumento médico medidor de la saturación de oxígeno y frecuencia cardíaca de adultos y niños. Ideal para uso en el hogar, hospital, clínica y cuidados intensivos.",
@@ -338,9 +338,9 @@ export const products = [
     "isNew": false,
     "isFeatured": true,
     "images": [
-      "/src/assets/images/PulsoOximetroDedoNinos/oximetro-pediatrico-amarillo.png",
-      "/src/assets/images/PulsoOximetroDedoNinos/oximetro-pediatrico-rojo.png",
-      "/src/assets/images/PulsoOximetroDedoNinos/oximetro-pediatrico.png"
+      "/images/PulsoOximetroDedoNinos/oximetro-pediatrico-amarillo.png",
+      "/images/PulsoOximetroDedoNinos/oximetro-pediatrico-rojo.png",
+      "/images/PulsoOximetroDedoNinos/oximetro-pediatrico.png"
     ],
     "shortDescription": "Oxímetro de pulso pediátrico neonatal recargable.",
     "fullDescription": "El oxímetro de pulso pediátrico para niños tiene un volumen pequeño, bajo consumo de energía, funcionamiento práctico y portátil. Pediátrico Neonatal Recargable.",
@@ -373,11 +373,11 @@ export const products = [
     "isNew": false,
     "isFeatured": false,
     "images": [
-      "/src/assets/images/PulsoOximetroSimply/SIMPLY.png",
-      "/src/assets/images/PulsoOximetroSimply/SIMPLY2.png",
-      "/src/assets/images/PulsoOximetroSimply/SIMPLY3 (1).png",
-      "/src/assets/images/PulsoOximetroSimply/SIMPLY3.png",
-      "/src/assets/images/PulsoOximetroSimply/SIMPLY4.png"
+      "/images/PulsoOximetroSimply/SIMPLY.png",
+      "/images/PulsoOximetroSimply/SIMPLY2.png",
+      "/images/PulsoOximetroSimply/SIMPLY3 (1).png",
+      "/images/PulsoOximetroSimply/SIMPLY3.png",
+      "/images/PulsoOximetroSimply/SIMPLY4.png"
     ],
     "shortDescription": "Oxímetro de dedo básico y eficiente Simply II.",
     "fullDescription": "Instrumento médico medidor de la saturación de oxígeno y de la frecuencia cardíaca, de forma NO INVASIVA, simplemente colocando el aparato en la yema del dedo índice.",
@@ -410,13 +410,13 @@ export const products = [
     "isNew": false,
     "isFeatured": false,
     "images": [
-      "/src/assets/images/NebulizadorDeCompresorAirlife/nebulizador_airlife_1000x1000_homelife_AN832_contenido.png",
-      "/src/assets/images/NebulizadorDeCompresorAirlife/nebulizador_airlife_1000x1000_homelife_AN832_empaque.png",
-      "/src/assets/images/NebulizadorDeCompresorAirlife/nebulizador_airlife_1000x1000_homelife_AN832_frontal.png",
-      "/src/assets/images/NebulizadorDeCompresorAirlife/nebulizador_airlife_1000x1000_homelife_AN832_general.png",
-      "/src/assets/images/NebulizadorDeCompresorAirlife/nebulizador_airlife_1000x1000_homelife_AN832_todo.png",
-      "/src/assets/images/NebulizadorDeCompresorAirlife/nebulizador_airlife_1000x1000_homelife_AN832_vapor_boquilla.png",
-      "/src/assets/images/NebulizadorDeCompresorAirlife/nebulizador_airlife_1000x1000_homelife_AN832_vapor_mascarilla.png"
+      "/images/NebulizadorDeCompresorAirlife/nebulizador_airlife_1000x1000_homelife_AN832_contenido.png",
+      "/images/NebulizadorDeCompresorAirlife/nebulizador_airlife_1000x1000_homelife_AN832_empaque.png",
+      "/images/NebulizadorDeCompresorAirlife/nebulizador_airlife_1000x1000_homelife_AN832_frontal.png",
+      "/images/NebulizadorDeCompresorAirlife/nebulizador_airlife_1000x1000_homelife_AN832_general.png",
+      "/images/NebulizadorDeCompresorAirlife/nebulizador_airlife_1000x1000_homelife_AN832_todo.png",
+      "/images/NebulizadorDeCompresorAirlife/nebulizador_airlife_1000x1000_homelife_AN832_vapor_boquilla.png",
+      "/images/NebulizadorDeCompresorAirlife/nebulizador_airlife_1000x1000_homelife_AN832_vapor_mascarilla.png"
     ],
     "shortDescription": "Dispositivo eléctrico para transformar medicamentos líquidos en partículas respirables.",
     "fullDescription": "Dispositivo eléctrico que transforma un medicamento líquido recetado en pequeñas partículas respirables. Diseño compacto sin compartimiento para accesorios.",
@@ -449,12 +449,12 @@ export const products = [
     "isNew": true,
     "isFeatured": true,
     "images": [
-      "/src/assets/images/NebulizadorDeCompresor/nebulizador_nebulife_1000x1000_homelife_AN821_abierto.png",
-      "/src/assets/images/NebulizadorDeCompresor/nebulizador_nebulife_1000x1000_homelife_AN821_contenido.png",
-      "/src/assets/images/NebulizadorDeCompresor/nebulizador_nebulife_1000x1000_homelife_AN821_empaque.png",
-      "/src/assets/images/NebulizadorDeCompresor/nebulizador_nebulife_1000x1000_homelife_AN821_general.png",
-      "/src/assets/images/NebulizadorDeCompresor/nebulizador_nebulife_1000x1000_homelife_AN821_mascarilla.png",
-      "/src/assets/images/NebulizadorDeCompresor/nebulizador_nebulife_1000x1000_homelife_AN821_todo.png"
+      "/images/NebulizadorDeCompresor/nebulizador_nebulife_1000x1000_homelife_AN821_abierto.png",
+      "/images/NebulizadorDeCompresor/nebulizador_nebulife_1000x1000_homelife_AN821_contenido.png",
+      "/images/NebulizadorDeCompresor/nebulizador_nebulife_1000x1000_homelife_AN821_empaque.png",
+      "/images/NebulizadorDeCompresor/nebulizador_nebulife_1000x1000_homelife_AN821_general.png",
+      "/images/NebulizadorDeCompresor/nebulizador_nebulife_1000x1000_homelife_AN821_mascarilla.png",
+      "/images/NebulizadorDeCompresor/nebulizador_nebulife_1000x1000_homelife_AN821_todo.png"
     ],
     "shortDescription": "Nebulizador de compresor avanzado con compartimiento de accesorios.",
     "fullDescription": "Nebulizador de compresor es un dispositivo eléctrico que convierte un medicamento líquido recetado en pequeñas partículas respirables. Incluye espacio para almacenar los accesorios médicos.",
@@ -487,8 +487,8 @@ export const products = [
     "isNew": false,
     "isFeatured": false,
     "images": [
-      "/src/assets/images/TermometroDigitalParaAdultos/termometro_adulto_1000x1000_homelife_mt4318_doblado.png",
-      "/src/assets/images/TermometroDigitalParaAdultos/termometro_adulto_1000x1000_homelife_mt4318_empaque.png"
+      "/images/TermometroDigitalParaAdultos/termometro_adulto_1000x1000_homelife_mt4318_doblado.png",
+      "/images/TermometroDigitalParaAdultos/termometro_adulto_1000x1000_homelife_mt4318_empaque.png"
     ],
     "shortDescription": "Termómetro digital de punta flexible para adultos.",
     "fullDescription": "Termómetro digital de punta flexible, instrumento médico utilizado para la medición de la temperatura en el cuerpo humano. De fácil manejo y gran exactitud.",
@@ -521,8 +521,8 @@ export const products = [
     "isNew": false,
     "isFeatured": false,
     "images": [
-      "/src/assets/images/TermometroRigido/TERMOMETRO-RIGIDO-MT101.png",
-      "/src/assets/images/TermometroRigido/TERMOMETRO-RIGIDO.png"
+      "/images/TermometroRigido/TERMOMETRO-RIGIDO-MT101.png",
+      "/images/TermometroRigido/TERMOMETRO-RIGIDO.png"
     ],
     "shortDescription": "Termómetro digital de contacto con punta rígida.",
     "fullDescription": "Este termómetro digital brinda lecturas rápidas y precisas. Cuenta con punta rígida y pantalla LCD para visualización de resultados de manera fácil y práctica.",
@@ -555,9 +555,9 @@ export const products = [
     "isNew": false,
     "isFeatured": true,
     "images": [
-      "/src/assets/images/Termometro_infraRojo/termometro-infrarrojo-.png",
-      "/src/assets/images/Termometro_infraRojo/termometro-infrarrojo-homelife-sin-contacto.png",
-      "/src/assets/images/Termometro_infraRojo/termometro-infrarrojo-homelife.png"
+      "/images/Termometro_infraRojo/termometro-infrarrojo-.png",
+      "/images/Termometro_infraRojo/termometro-infrarrojo-homelife-sin-contacto.png",
+      "/images/Termometro_infraRojo/termometro-infrarrojo-homelife.png"
     ],
     "shortDescription": "Termómetro infrarrojo sin contacto con pantalla de alertas de color.",
     "fullDescription": "Termómetro infrarrojo portátil con pantalla que cambia de color según el nivel de temperatura. Ideal para mediciones rápidas, precisas y seguras en casa o consultorios.",
@@ -590,9 +590,9 @@ export const products = [
     "isNew": false,
     "isFeatured": false,
     "images": [
-      "/src/assets/images/TermometroDigitalParaNinos/termometro-infantil-pollo.png",
-      "/src/assets/images/TermometroDigitalParaNinos/termometro-infantil-rana.png",
-      "/src/assets/images/TermometroDigitalParaNinos/termometro-infantil-vaca.png"
+      "/images/TermometroDigitalParaNinos/termometro-infantil-pollo.png",
+      "/images/TermometroDigitalParaNinos/termometro-infantil-rana.png",
+      "/images/TermometroDigitalParaNinos/termometro-infantil-vaca.png"
     ],
     "shortDescription": "Termómetro digital infantil con forma de animalitos.",
     "fullDescription": "Este dispositivo mide la temperatura corporal mediante una punta sensorial flexible, con intervalo de medición entre 32°C y 43°C. Su divertido diseño de rana facilita la medición en niños.",
@@ -625,12 +625,12 @@ export const products = [
     "isNew": true,
     "isFeatured": true,
     "images": [
-      "/src/assets/images/BasculaEcoenergy/bascula-ecoenergy-1000-x-1000-contenido-homelife.png",
-      "/src/assets/images/BasculaEcoenergy/bascula-ecoenergy-1000-x-1000-frente-homelife.png",
-      "/src/assets/images/BasculaEcoenergy/bascula-ecoenergy-1000-x-1000-paso1-homelife.png",
-      "/src/assets/images/BasculaEcoenergy/bascula-ecoenergy-1000-x-1000-paso2-homelife.png",
-      "/src/assets/images/BasculaEcoenergy/bascula-ecoenergy-1000-x-1000-paso3-homelife.png",
-      "/src/assets/images/BasculaEcoenergy/bascula-ecoenergy-1000-x-1000-perspectiva-homelife.png"
+      "/images/BasculaEcoenergy/bascula-ecoenergy-1000-x-1000-contenido-homelife.png",
+      "/images/BasculaEcoenergy/bascula-ecoenergy-1000-x-1000-frente-homelife.png",
+      "/images/BasculaEcoenergy/bascula-ecoenergy-1000-x-1000-paso1-homelife.png",
+      "/images/BasculaEcoenergy/bascula-ecoenergy-1000-x-1000-paso2-homelife.png",
+      "/images/BasculaEcoenergy/bascula-ecoenergy-1000-x-1000-paso3-homelife.png",
+      "/images/BasculaEcoenergy/bascula-ecoenergy-1000-x-1000-perspectiva-homelife.png"
     ],
     "shortDescription": "Báscula sin baterías que funciona con energía cinética.",
     "fullDescription": "La báscula Ecoenergy JK-200 es un instrumento electrónico para medir el peso corporal favorable al medio ambiente. Cuenta con tecnología de generación de energía por empuje (cinética), libre de baterías.",
@@ -663,11 +663,11 @@ export const products = [
     "isNew": false,
     "isFeatured": false,
     "images": [
-      "/src/assets/images/BasculaSimplySlim/bascula-simply-slim-1000-x-1000-contenido-homelife.png",
-      "/src/assets/images/BasculaSimplySlim/bascula-simply-slim-1000-x-1000-frente-homelife.png",
-      "/src/assets/images/BasculaSimplySlim/bascula-simply-slim-1000-x-1000-perspectiva-homelife.png",
-      "/src/assets/images/BasculaSimplySlim/bascula-simply-slim-1000-x-1000-perspectiva2-homelife.png",
-      "/src/assets/images/BasculaSimplySlim/bascula-simply-slim-1000-x-1000-pies-homelife.png"
+      "/images/BasculaSimplySlim/bascula-simply-slim-1000-x-1000-contenido-homelife.png",
+      "/images/BasculaSimplySlim/bascula-simply-slim-1000-x-1000-frente-homelife.png",
+      "/images/BasculaSimplySlim/bascula-simply-slim-1000-x-1000-perspectiva-homelife.png",
+      "/images/BasculaSimplySlim/bascula-simply-slim-1000-x-1000-perspectiva2-homelife.png",
+      "/images/BasculaSimplySlim/bascula-simply-slim-1000-x-1000-pies-homelife.png"
     ],
     "shortDescription": "Báscula digital de diseño moderno y minimalista.",
     "fullDescription": "La báscula Simply Slim JK-300 es un instrumento de hogar electrónico para medir el peso corporal que destaca por su diseño ultradelgado, moderno y minimalista.",
@@ -700,15 +700,15 @@ export const products = [
     "isNew": false,
     "isFeatured": true,
     "images": [
-      "/src/assets/images/basculaSmart/bascula_Smart_OneMedic_1000x1000_homelife_JK100_contenido.png",
-      "/src/assets/images/basculaSmart/bascula_Smart_OneMedic_1000x1000_homelife_JK100_contenido_negra.png",
-      "/src/assets/images/basculaSmart/bascula_Smart_OneMedic_1000x1000_homelife_JK100_frente.png",
-      "/src/assets/images/basculaSmart/bascula_Smart_OneMedic_1000x1000_homelife_JK100_frente_negra.png",
-      "/src/assets/images/basculaSmart/bascula_Smart_OneMedic_1000x1000_homelife_JK100_movil.png",
-      "/src/assets/images/basculaSmart/bascula_Smart_OneMedic_1000x1000_homelife_JK100_perspectiva.png",
-      "/src/assets/images/basculaSmart/bascula_Smart_OneMedic_1000x1000_homelife_JK100_perspectiva_negra.png",
-      "/src/assets/images/basculaSmart/bascula_Smart_OneMedic_1000x1000_homelife_JK100_pies.png",
-      "/src/assets/images/basculaSmart/bascula_Smart_OneMedic_1000x1000_homelife_JK100_pies_negra.png"
+      "/images/basculaSmart/bascula_Smart_OneMedic_1000x1000_homelife_JK100_contenido.png",
+      "/images/basculaSmart/bascula_Smart_OneMedic_1000x1000_homelife_JK100_contenido_negra.png",
+      "/images/basculaSmart/bascula_Smart_OneMedic_1000x1000_homelife_JK100_frente.png",
+      "/images/basculaSmart/bascula_Smart_OneMedic_1000x1000_homelife_JK100_frente_negra.png",
+      "/images/basculaSmart/bascula_Smart_OneMedic_1000x1000_homelife_JK100_movil.png",
+      "/images/basculaSmart/bascula_Smart_OneMedic_1000x1000_homelife_JK100_perspectiva.png",
+      "/images/basculaSmart/bascula_Smart_OneMedic_1000x1000_homelife_JK100_perspectiva_negra.png",
+      "/images/basculaSmart/bascula_Smart_OneMedic_1000x1000_homelife_JK100_pies.png",
+      "/images/basculaSmart/bascula_Smart_OneMedic_1000x1000_homelife_JK100_pies_negra.png"
     ],
     "shortDescription": "Báscula inteligente que se conecta por Bluetooth a tu smartphone.",
     "fullDescription": "¡Mucho más que una báscula! Sincronízala por Bluetooth con tu tablet o smartphone y podrás disfrutar de distintas funciones como cálculo de IMC, alerta de pérdida de peso y seguimiento histórico. Superficie de cristal templado altamente resistente.",
@@ -741,8 +741,8 @@ export const products = [
     "isNew": false,
     "isFeatured": true,
     "images": [
-      "/src/assets/images/TerapiaTensLife/Terapia-TENSLIFE-1.png",
-      "/src/assets/images/TerapiaTensLife/Terapia-TENSLIFE.png"
+      "/images/TerapiaTensLife/Terapia-TENSLIFE-1.png",
+      "/images/TerapiaTensLife/Terapia-TENSLIFE.png"
     ],
     "shortDescription": "Solución avanzada TENS para el alivio del dolor muscular.",
     "fullDescription": "El Dispositivo de Terapia TENS LIFE de HomeLife es una solución avanzada para el alivio del dolor muscular. Diseñado para tratar áreas como hombros, cintura, espalda, brazos y piernas.",
@@ -775,9 +775,9 @@ export const products = [
     "isNew": false,
     "isFeatured": false,
     "images": [
-      "/src/assets/images/Electrodos_para_tens/electrodos-para-tens-homelife-2.png",
-      "/src/assets/images/Electrodos_para_tens/electrodos-para-tens-homelife-caracteristicas.png",
-      "/src/assets/images/Electrodos_para_tens/electrodos-para-tens-homelife.png"
+      "/images/Electrodos_para_tens/electrodos-para-tens-homelife-2.png",
+      "/images/Electrodos_para_tens/electrodos-para-tens-homelife-caracteristicas.png",
+      "/images/Electrodos_para_tens/electrodos-para-tens-homelife.png"
     ],
     "shortDescription": "Paquete de 4 electrodos redondos pre-gelificados para terapia TENS.",
     "fullDescription": "Electrodos Drive Multitask redondos pre-gelificados, diseñados para ofrecer la máxima comodidad y un tratamiento eficaz. Fabricados con gel de alta calidad que garantiza una adhesión óptima a la piel. Paquete de 4 unidades.",
@@ -810,8 +810,8 @@ export const products = [
     "isNew": true,
     "isFeatured": true,
     "images": [
-      "/src/assets/images/Electroestimulador/Electroestimulador-Homelife-Tens-Ems-1.png",
-      "/src/assets/images/Electroestimulador/Electroestimulador-Homelife-Tens-Ems.png"
+      "/images/Electroestimulador/Electroestimulador-Homelife-Tens-Ems-1.png",
+      "/images/Electroestimulador/Electroestimulador-Homelife-Tens-Ems.png"
     ],
     "shortDescription": "Sistema avanzado dual TENS/EMS para fisioterapia.",
     "fullDescription": "Descubre nuestro electroestimulador TENS/EMS dual para el alivio del dolor y el fortalecimiento muscular. Herramienta ideal y completa para procesos de fisioterapia y recuperación.",
@@ -844,8 +844,8 @@ export const products = [
     "isNew": false,
     "isFeatured": true,
     "images": [
-      "/src/assets/images/comboGlucometro/COMBO-GLUCOMETRO.png",
-      "/src/assets/images/comboGlucometro/Glucometro-Homelife.png"
+      "/images/comboGlucometro/COMBO-GLUCOMETRO.png",
+      "/images/comboGlucometro/Glucometro-Homelife.png"
     ],
     "shortDescription": "Kit completo de glucómetro con 60 tirillas y 60 lancetas de regalo.",
     "fullDescription": "Monitorea tu glucosa en casa con un glucómetro digital preciso y fácil de usar. Resultados rápidos, memoria de registros y diseño portátil. Incluye de obsequio 60 tirillas y 60 lancetas.",
@@ -878,8 +878,8 @@ export const products = [
     "isNew": false,
     "isFeatured": false,
     "images": [
-      "/src/assets/images/glucometroDigital/Glucometro-Homelife-caja.png",
-      "/src/assets/images/glucometroDigital/Glucometro-Homelife.png"
+      "/images/glucometroDigital/Glucometro-Homelife-caja.png",
+      "/images/glucometroDigital/Glucometro-Homelife.png"
     ],
     "shortDescription": "Medidor de glucosa digital individual.",
     "fullDescription": "Monitorea tu glucosa en casa con un glucómetro digital preciso y fácil de usar. Brinda resultados rápidos, posee memoria interna para el registro de tomas y tiene un diseño compacto y portátil.",
@@ -912,9 +912,9 @@ export const products = [
     "isNew": false,
     "isFeatured": false,
     "images": [
-      "/src/assets/images/lancetas/Lancetas-homelife-1.png",
-      "/src/assets/images/lancetas/Lancetas-homelife-2.png",
-      "/src/assets/images/lancetas/Lancetas-homelife.png"
+      "/images/lancetas/Lancetas-homelife-1.png",
+      "/images/lancetas/Lancetas-homelife-2.png",
+      "/images/lancetas/Lancetas-homelife.png"
     ],
     "shortDescription": "Caja de 50 lancetas universales de punta fina.",
     "fullDescription": "Lancetas de punta fina diseñadas para minimizar el dolor y garantizar la seguridad en la obtención de muestras de sangre. Compatibles con la mayoría de lanceteros, esterilizadas y en caja de 50 unidades.",
@@ -947,8 +947,8 @@ export const products = [
     "isNew": false,
     "isFeatured": true,
     "images": [
-      "/src/assets/images/TirillasYLancetas/TIRILLAS-y-LANCETAS-HOMELIFE (1).png",
-      "/src/assets/images/TirillasYLancetas/TIRILLAS-y-LANCETAS-HOMELIFE.png"
+      "/images/TirillasYLancetas/TIRILLAS-y-LANCETAS-HOMELIFE (1).png",
+      "/images/TirillasYLancetas/TIRILLAS-y-LANCETAS-HOMELIFE.png"
     ],
     "shortDescription": "Pack ahorro de 50 tirillas y 50 lancetas.",
     "fullDescription": "Lancetas y Tirillas para Glucómetro Digital Homelife – Precisión y confianza en cada medición. El paquete contiene 50 tirillas reactivas y 50 lancetas listas para el control de rutina de la diabetes.",
@@ -981,8 +981,8 @@ export const products = [
     "isNew": false,
     "isFeatured": false,
     "images": [
-      "/src/assets/images/tirillas_para_glucometro/Tirillas-para-glucometro-Homelife (1).png",
-      "/src/assets/images/tirillas_para_glucometro/Tirillas-para-glucometro-Homelife.png"
+      "/images/tirillas_para_glucometro/Tirillas-para-glucometro-Homelife (1).png",
+      "/images/tirillas_para_glucometro/Tirillas-para-glucometro-Homelife.png"
     ],
     "shortDescription": "Caja de tirillas reactivas de alta precisión para glucómetro HomeLife.",
     "fullDescription": "Nuestras Tiras Reactivas para Medir Glucosa en Sangre son un instrumento fundamental para las personas que necesitan controlar los niveles de glucemia. Producto de alta calidad, sensibilidad y muy fácil de usar.",
@@ -1015,10 +1015,10 @@ export const products = [
     "isNew": false,
     "isFeatured": false,
     "images": [
-      "/src/assets/images/EstucheParaInsulina/c2-pagina.jpg",
-      "/src/assets/images/EstucheParaInsulina/c3-pagina.jpg",
-      "/src/assets/images/EstucheParaInsulina/c4-pagina.jpg",
-      "/src/assets/images/EstucheParaInsulina/Estuche-Para-Portar-Insulina-En-Frio.png"
+      "/images/EstucheParaInsulina/c2-pagina.jpg",
+      "/images/EstucheParaInsulina/c3-pagina.jpg",
+      "/images/EstucheParaInsulina/c4-pagina.jpg",
+      "/images/EstucheParaInsulina/Estuche-Para-Portar-Insulina-En-Frio.png"
     ],
     "shortDescription": "Estuche térmico para conservar la insulina u otros medicamentos.",
     "fullDescription": "Mantener la insulina o cualquier otro medicamento que requiera baja temperatura es muy importante para que al momento de estar en exteriores se conserve de manera adecuada. Este estuche térmico es ideal para viajar.",
@@ -1051,9 +1051,9 @@ export const products = [
     "isNew": false,
     "isFeatured": true,
     "images": [
-      "/src/assets/images/doplerFetal/Doppler-Fetal-Homelife-Azul.png",
-      "/src/assets/images/doplerFetal/Doppler-Fetal-Homelife-Rosado.png",
-      "/src/assets/images/doplerFetal/DOPPLER-FETAL-HOMELIFE1.png"
+      "/images/doplerFetal/Doppler-Fetal-Homelife-Azul.png",
+      "/images/doplerFetal/Doppler-Fetal-Homelife-Rosado.png",
+      "/images/doplerFetal/DOPPLER-FETAL-HOMELIFE1.png"
     ],
     "shortDescription": "Monitor de frecuencia cardíaca prenatal.",
     "fullDescription": "El Doppler Fetal permite escuchar y monitorear los latidos de tu bebé desde casa de manera segura, no invasiva y sencilla. Ideal para la tranquilidad de las futuras madres.",
@@ -1086,9 +1086,9 @@ export const products = [
     "isNew": false,
     "isFeatured": false,
     "images": [
-      "/src/assets/images/EstucheFonendoscopio/estuche-medico-Homelife-colores.png",
-      "/src/assets/images/EstucheFonendoscopio/estuche-medico-Homelife-rosa.png",
-      "/src/assets/images/EstucheFonendoscopio/estuche-medico-Homelife-verde.png"
+      "/images/EstucheFonendoscopio/estuche-medico-Homelife-colores.png",
+      "/images/EstucheFonendoscopio/estuche-medico-Homelife-rosa.png",
+      "/images/EstucheFonendoscopio/estuche-medico-Homelife-verde.png"
     ],
     "shortDescription": "Estetoscopio/fonendoscopio de alta acústica para diagnóstico médico.",
     "fullDescription": "Fonendoscopio clínico diseñado con materiales de excelente transmisión acústica. Perfecto para profesionales de la salud, médicos, enfermeras y estudiantes, permitiendo auscultar el corazón, pulmones y sonidos intestinales con gran claridad.",
