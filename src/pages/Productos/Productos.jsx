@@ -8,9 +8,11 @@ const Productos = () => {
   const [selectedCategory, setSelectedCategory] = useState('todas');
   const [priceRange, setPriceRange] = useState({ min: '', max: '' });
   const [sortBy, setSortBy] = useState('featured');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 12;
 
   const filteredProducts = useMemo(() => {
-    let filtered = products;
+    let filtered = [...products];
 
     if (selectedCategory !== 'todas') {
       filtered = filtered.filter(p => p.categorySlug === selectedCategory);
@@ -42,8 +44,16 @@ const Productos = () => {
       default:
         break;
     }
+
+    setCurrentPage(1); // Reset to first page when filtering or sorting
     return filtered;
   }, [selectedCategory, priceRange, sortBy]);
+
+  // Lógica de paginación
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentProducts = filteredProducts.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
 
   const handleCategoryClick = (categoryId) => {
     setSelectedCategory(categoryId);
@@ -62,6 +72,12 @@ const Productos = () => {
     setSelectedCategory('todas');
     setPriceRange({ min: '', max: '' });
     setSortBy('featured');
+    setCurrentPage(1);
+  };
+
+  const paginate = (pageNumber) => {
+    setCurrentPage(pageNumber);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
@@ -134,7 +150,7 @@ const Productos = () => {
         <main className="products-main">
           <div className="products-toolbar">
             <p className="results-count">
-              Mostrando <strong>{filteredProducts.length}</strong> productos
+              Mostrando <strong>{currentProducts.length}</strong> de <strong>{filteredProducts.length}</strong> productos
             </p>
             <div className="sort-control">
               <label htmlFor="sort">Ordenar por:</label>
@@ -154,14 +170,48 @@ const Productos = () => {
           </div>
 
           <div className="products-grid">
-            {filteredProducts.length > 0 ? (
-              filteredProducts.map(product => (
+            {currentProducts.length > 0 ? (
+              currentProducts.map(product => (
                 <ProductCard key={product.id} product={product} />
               ))
             ) : (
               <p className="no-products">No se encontraron productos</p>
             )}
           </div>
+
+          {totalPages > 1 && (
+            <div className="pagination">
+              <button 
+                className="pagination-btn" 
+                onClick={() => paginate(currentPage - 1)}
+                disabled={currentPage === 1}
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M15 18l-6-6 6-6" />
+                </svg>
+              </button>
+
+              {[...Array(totalPages)].map((_, i) => (
+                <button
+                  key={i + 1}
+                  className={`pagination-number ${currentPage === i + 1 ? 'active' : ''}`}
+                  onClick={() => paginate(i + 1)}
+                >
+                  {i + 1}
+                </button>
+              ))}
+
+              <button 
+                className="pagination-btn" 
+                onClick={() => paginate(currentPage + 1)}
+                disabled={currentPage === totalPages}
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M9 18l6-6-6-6" />
+                </svg>
+              </button>
+            </div>
+          )}
         </main>
       </div>
     </div>

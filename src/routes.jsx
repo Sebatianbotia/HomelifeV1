@@ -7,6 +7,7 @@ import Home from './pages/Home/Home';
 import Productos from './pages/Productos/Productos';
 import ProductoDetalle from './pages/ProductoDetalle/ProductoDetalle';
 import Blog from './pages/Blog/Blog';
+import ArticuloDetalle from './pages/ArticuloDetalle/ArticuloDetalle';
 import Nosotros from './pages/Nosotros/Nosotros';
 import Distribuidores from './pages/Distribuidores/Distribuidores';
 import Cuenta from './pages/Cuenta/Cuenta';
@@ -23,6 +24,7 @@ export const router = createBrowserRouter([
       { path: 'productos', element: <Productos /> },
       { path: 'producto/:id', element: <ProductoDetalle /> },
       { path: 'blog', element: <Blog /> },
+      { path: 'articulo/:id', element: <ArticuloDetalle /> },
       { path: 'nosotros', element: <Nosotros /> },
       { path: 'distribuidores', element: <Distribuidores /> },
       { path: 'cuenta', element: <Cuenta /> },
