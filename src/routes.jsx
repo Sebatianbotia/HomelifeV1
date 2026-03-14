@@ -10,6 +10,7 @@ import Blog from './pages/Blog/Blog';
 import Nosotros from './pages/Nosotros/Nosotros';
 import Distribuidores from './pages/Distribuidores/Distribuidores';
 import Cuenta from './pages/Cuenta/Cuenta';
+import Auth from './pages/Auth/Auth';
 import Carrito from './pages/Carrito/Carrito';
 import RegistroEquipo from './pages/RegistroEquipo/RegistroEquipo'; // Nueva página
 
@@ -25,6 +26,7 @@ export const router = createBrowserRouter([
       { path: 'nosotros', element: <Nosotros /> },
       { path: 'distribuidores', element: <Distribuidores /> },
       { path: 'cuenta', element: <Cuenta /> },
+      { path: 'auth', element: <Auth /> },
       { path: 'carrito', element: <Carrito /> },
       { path: 'contacto', element: <RegistroEquipo /> }, // Ruta para registrar equipo
     ],

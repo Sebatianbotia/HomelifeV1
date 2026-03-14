@@ -4,6 +4,6 @@ export const categories = [
   { id: 'oximetros', name: 'Oxímetros', count: 8 },
   { id: 'nebulizadores', name: 'Nebulizadores', count: 6 },
   { id: 'termometros', name: 'Termómetros', count: 10 },
-  { id: 'glucometros', name: 'Glucómetros', count: 7 },
+  { id: 'glucometria', name: 'Glucómetros', count: 7 },
   { id: 'basculas', name: 'Básculas', count: 5 },
 ];

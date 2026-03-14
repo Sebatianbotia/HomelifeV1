@@ -47,7 +47,7 @@ const Footer = () => {
             <Link to="/productos?cat=oximetros" className="footer-link">Oxímetros</Link>
             <Link to="/productos?cat=nebulizadores" className="footer-link">Nebulizadores</Link>
             <Link to="/productos?cat=termometros" className="footer-link">Termómetros</Link>
-            <Link to="/productos?cat=glucometros" className="footer-link">Glucómetros</Link>
+            <Link to="/productos?cat=glucometria" className="footer-link">Glucómetros</Link>
             <Link to="/productos?cat=basculas" className="footer-link">Básculas</Link>
           </div>
         </div>

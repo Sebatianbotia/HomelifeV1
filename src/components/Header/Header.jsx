@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
+import { useAuth } from '../../context/AuthContext';
 import './Header.css';
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { user, isAuthenticated } = useAuth();
 
   const getInitialLang = () => {
     const match = document.cookie.match(/googtrans=\/es\/([^;]+)/);
@@ -84,11 +86,12 @@ const Header = () => {
               )}
             </div>
 
-            <Link to="/cuenta" className="icon-btn desktop-only-icon">
+            <Link to={isAuthenticated ? "/cuenta" : "/auth"} className="icon-btn desktop-only-icon" title={isAuthenticated ? user.name : "Iniciar Sesión"}>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
                 <circle cx="12" cy="7" r="4" />
               </svg>
+              {isAuthenticated && <span className="user-dot"></span>}
             </Link>
 
             {/* Removed heart icon */}
@@ -236,12 +239,12 @@ const Header = () => {
 
           <div className="mobile-actions-divider"></div>
 
-          <Link to="/cuenta" className="mobile-nav-link" onClick={() => setIsMobileMenuOpen(false)}>
+          <Link to={isAuthenticated ? "/cuenta" : "/auth"} className="mobile-nav-link" onClick={() => setIsMobileMenuOpen(false)}>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
               <circle cx="12" cy="7" r="4" />
             </svg>
-            Mi Cuenta
+            {isAuthenticated ? `Hola, ${user.name.split(' ')[0]}` : 'Iniciar Sesión / Registro'}
           </Link>
           <Link to="/carrito" className="mobile-nav-link mobile-cart-link" onClick={() => setIsMobileMenuOpen(false)}>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">

@@ -80,38 +80,44 @@
   transform: scale(1.08);
 }
 
-.quick-view-overlay {
+.btn-ver-mas {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(10, 25, 47, 0.7);
-  backdrop-filter: blur(4px);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  transition: opacity 0.3s ease;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(10, 25, 47, 0.85);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   color: white;
-  gap: 8px;
-}
-
-.product-card-3d:hover .quick-view-overlay {
-  opacity: 1;
-}
-
-.quick-view-overlay svg {
-  width: 32px;
-  height: 32px;
-  color: var(--cyan-400);
-}
-
-.quick-view-overlay span {
+  padding: 8px 18px;
+  border-radius: 100px;
+  font-size: 0.85rem;
   font-weight: 600;
-  font-size: 1rem;
-  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  z-index: 5;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.btn-ver-mas svg {
+  width: 16px;
+  height: 16px;
+  color: var(--cyan-400);
+  transition: all var(--transition-fast);
+}
+
+.product-card-3d:hover .btn-ver-mas {
+  background: var(--cyan-500);
+  color: var(--deep-space);
+  border-color: var(--cyan-400);
+  box-shadow: 0 4px 15px rgba(0,217,217,0.4);
+}
+
+.product-card-3d:hover .btn-ver-mas svg {
+  color: var(--deep-space);
 }
 
 .product-info {

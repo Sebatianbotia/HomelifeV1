@@ -4,6 +4,32 @@
   padding: 40px 20px;
   max-width: 1400px;
   margin: 0 auto;
+  box-sizing: border-box;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.producto-detalle-page * {
+  box-sizing: border-box;
+}
+
+.producto-detalle-page img,
+.producto-detalle-page svg {
+  max-width: 100%;
+}
+
+.product-detail-layout > * {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.product-detail-info p,
+.product-detail-info h1,
+.product-detail-info h3,
+.product-detail-info li,
+.product-detail-info span,
+.product-detail-info div {
+  word-wrap: break-word;
 }
 
 /* Breadcrumb */
