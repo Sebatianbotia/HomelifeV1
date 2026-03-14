@@ -9,7 +9,7 @@ const ProductoDetalle = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { addItem } = useCart();
-  
+
   const [product, setProduct] = useState(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [quantity, setQuantity] = useState(1);
@@ -88,17 +88,17 @@ const ProductoDetalle = () => {
           {/* Gallery */}
           <div className="product-gallery">
             <div className="main-image-container">
-              <img 
-                src={product.images && product.images.length > 0 ? product.images[currentImageIndex] : ''} 
-                alt={product.name} 
-                className="main-image" 
+              <img
+                src={product.images && product.images.length > 0 ? product.images[currentImageIndex] : ''}
+                alt={product.name}
+                className="main-image"
               />
             </div>
             {product.images && product.images.length > 1 && (
               <div className="thumbnails">
                 {product.images.map((img, index) => (
-                  <div 
-                    key={index} 
+                  <div
+                    key={index}
                     className={`thumbnail ${index === currentImageIndex ? 'active' : ''}`}
                     onClick={() => setCurrentImageIndex(index)}
                   >
@@ -113,7 +113,7 @@ const ProductoDetalle = () => {
           <div className="product-detail-info">
             <div className="product-category-badge">{product.category}</div>
             <h1 className="product-detail-title">{product.name}</h1>
-            
+
             <div className="product-detail-rating">
               <div className="rating-stars">
                 <div className="stars">
@@ -142,11 +142,6 @@ const ProductoDetalle = () => {
               )}
             </div>
 
-            <div className={`stock-status ${product.inStock ? 'in-stock' : 'out-of-stock'}`}>
-              <span className="stock-dot"></span>
-              <span>{product.inStock ? `Disponible en stock (${product.stock} unds)` : 'Agotado'}</span>
-            </div>
-
             <p className="product-description">
               {product.fullDescription}
             </p>
@@ -172,8 +167,8 @@ const ProductoDetalle = () => {
                 <div className="quantity-value">{quantity}</div>
                 <button className="quantity-btn" onClick={increaseQuantity} disabled={quantity >= product.stock}>+</button>
               </div>
-              <button 
-                className="add-to-cart-btn-large" 
+              <button
+                className="add-to-cart-btn-large"
                 onClick={handleAddToCart}
                 disabled={!product.inStock}
               >
@@ -201,20 +196,20 @@ const ProductoDetalle = () => {
 
             <div className="product-tabs">
               <div className="tabs-nav">
-                <button 
-                  className={`tab-btn ${activeTab === 'specs' ? 'active' : ''}`} 
+                <button
+                  className={`tab-btn ${activeTab === 'specs' ? 'active' : ''}`}
                   onClick={() => setActiveTab('specs')}
                 >
                   Especificaciones
                 </button>
-                <button 
-                  className={`tab-btn ${activeTab === 'shipping' ? 'active' : ''}`} 
+                <button
+                  className={`tab-btn ${activeTab === 'shipping' ? 'active' : ''}`}
                   onClick={() => setActiveTab('shipping')}
                 >
                   Envío y Entrega
                 </button>
-                <button 
-                  className={`tab-btn ${activeTab === 'warranty' ? 'active' : ''}`} 
+                <button
+                  className={`tab-btn ${activeTab === 'warranty' ? 'active' : ''}`}
                   onClick={() => setActiveTab('warranty')}
                 >
                   Garantía

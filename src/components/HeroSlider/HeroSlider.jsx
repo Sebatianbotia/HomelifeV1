@@ -4,7 +4,7 @@ import './HeroSlider.css';
 const slides = [
   {
     id: 1,
-    image: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=1600&h=900&fit=crop',
+    image: '/images/SliderImages/slider1.png',
     badge: '✨ Nueva Línea Medic Life 2026',
     title: 'Equipos Médicos de Alta Tecnología',
     description: 'Selección premium de dispositivos médicos con certificación INVIMA. Calidad y tecnología de vanguardia para tu salud.',
@@ -13,7 +13,7 @@ const slides = [
   },
   {
     id: 2,
-    image: 'https://images.unsplash.com/photo-1631549916768-4119b2e5f926?w=1600&h=900&fit=crop',
+    image: '/images/SliderImages/slider2.png',
     badge: '🔥 Ofertas Especiales',
     title: 'Hasta 30% de Descuento',
     description: 'Promociones exclusivas en equipos médicos certificados. Stock limitado. No dejes pasar esta oportunidad.',
@@ -22,7 +22,7 @@ const slides = [
   },
   {
     id: 3,
-    image: 'https://images.unsplash.com/photo-1584820927498-cfe5211fd8bf?w=1600&h=900&fit=crop',
+    image: '/images/SliderImages/slider3.png',
     badge: '✅ Certificación INVIMA',
     title: '100% Certificados y Garantizados',
     description: 'Registro sanitario INVIMA vigente y garantía extendida de 2 años en todos nuestros productos.',

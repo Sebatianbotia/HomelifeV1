@@ -13,7 +13,7 @@ const Productos = () => {
     let filtered = products;
 
     if (selectedCategory !== 'todas') {
-      filtered = filtered.filter(p => p.category.toLowerCase() === selectedCategory.toLowerCase());
+      filtered = filtered.filter(p => p.categorySlug === selectedCategory);
     }
 
     if (priceRange.min !== '') {

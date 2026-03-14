@@ -41,10 +41,10 @@ const Nosotros = () => {
 
   // Datos para certificaciones
   const certifications = [
-    { id: 1, name: 'INVIMA', icon: '🛡️' },
-    { id: 2, name: 'ISO 9001:2015', icon: '📋' },
-    { id: 3, name: 'ISO 13485', icon: '🔬' },
-    { id: 4, name: 'Garantía 2 Años', icon: '✅' },
+    { id: 1, image: '/certificaciones/LOGO INVIMA.gif' },
+    { id: 2, image: '/certificaciones/LOGO ISO.png' },
+    { id: 3, image: '/certificaciones/FUNDACION COLOMBIANA DEL CORAZON.png' },
+    { id: 4, image: '/certificaciones/Logo-California-Collegiate-Athletic-Association.jpg' },
   ];
 
   return (
@@ -98,37 +98,14 @@ const Nosotros = () => {
           <div className="certificaciones-grid">
             {certifications.map((cert) => (
               <div key={cert.id} className="certificacion-item">
-                <span className="cert-icon">{cert.icon}</span>
-                <h4>{cert.name}</h4>
+                <img src={cert.image} alt="Certificación" className="cert-image" />
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Equipo (opcional) */}
-      <section className="nosotros-equipo">
-        <div className="container">
-          <h2 className="section-title">Nuestro Equipo</h2>
-          <div className="equipo-grid">
-            <div className="equipo-item">
-              <img src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=300&h=300&fit=crop" alt="Dr. Carlos Mendoza" />
-              <h4>Dr. Carlos Mendoza</h4>
-              <p>Director Médico</p>
-            </div>
-            <div className="equipo-item">
-              <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=300&h=300&fit=crop" alt="Dra. Ana López" />
-              <h4>Dra. Ana López</h4>
-              <p>Especialista en Salud</p>
-            </div>
-            <div className="equipo-item">
-              <img src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=300&h=300&fit=crop" alt="Dr. Jorge Ramírez" />
-              <h4>Dr. Jorge Ramírez</h4>
-              <p>Coordinador de Calidad</p>
-            </div>
-          </div>
-        </div>
-      </section>
+
     </div>
   );
 };

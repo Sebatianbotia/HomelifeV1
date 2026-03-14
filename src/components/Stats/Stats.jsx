@@ -64,8 +64,8 @@ const Stats = () => {
         {statsData.map((stat, index) => (
           <div key={stat.id} className="stat-item">
             <div className="stat-number">
-              {counts[index]}
-              <span className="stat-suffix">{stat.suffix}</span>
+              <span className="notranslate">{counts[index]}</span>
+              <span className="stat-suffix notranslate">{stat.suffix}</span>
             </div>
             <h3 className="stat-label">{stat.label}</h3>
             <p className="stat-description">{stat.description}</p>

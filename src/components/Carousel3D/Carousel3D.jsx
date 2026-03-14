@@ -70,12 +70,19 @@ const Carousel3D = ({ items }) => {
               }}
             >
               <div className="product-card-3d" onClick={() => navigate(`/producto/${item.id}`)} style={{ cursor: 'pointer' }}>
-                {item.discount && (
+                {item.discount > 0 && (
                   <span className="badge-discount">-{item.discount}%</span>
                 )}
                 {item.isNew && <span className="badge-new">NUEVO</span>}
                 <div className="product-image">
                   <img src={item.images && item.images.length > 0 ? item.images[0] : ''} alt={item.name} />
+                  <div className="quick-view-overlay">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                      <circle cx="12" cy="12" r="3" />
+                    </svg>
+                    <span>Ver Más</span>
+                  </div>
                 </div>
                 <div className="product-info">
                   <h3 className="product-title">{item.name}</h3>

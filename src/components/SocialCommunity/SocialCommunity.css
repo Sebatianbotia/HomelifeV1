@@ -18,8 +18,13 @@
 }
 
 @keyframes rotate {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .social-community-container {
@@ -36,6 +41,7 @@
   margin-bottom: 20px;
   background: linear-gradient(135deg, #fff 0%, var(--cyan-400) 100%);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
@@ -49,11 +55,69 @@
   margin-right: auto;
 }
 
+.social-content-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+  margin-top: 40px;
+}
+
+.tiktok-mockup-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.phone-mockup {
+  width: 320px;
+  height: 650px;
+  background: var(--navy-800);
+  border: 12px solid #222;
+  border-radius: 40px;
+  position: relative;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), inset 0 0 10px rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+}
+
+.phone-notch {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 25px;
+  background: #222;
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+  z-index: 20;
+}
+
+.phone-screen {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  background: #000;
+}
+
+
+
+.social-links-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.social-follow-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 30px;
+  color: var(--text-primary);
+}
+
 .social-cards-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 30px;
-  margin-bottom: 60px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin-bottom: 40px;
 }
 
 .social-card {
@@ -61,12 +125,12 @@
   backdrop-filter: blur(10px);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-xl);
-  padding: 30px 20px;
+  padding: 20px;
   text-decoration: none;
   color: var(--text-primary);
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 15px;
   transition: all var(--transition-smooth);
   position: relative;
   overflow: hidden;
@@ -86,9 +150,9 @@
 }
 
 .social-card:hover {
-  transform: translateY(-8px);
+  transform: translateY(-5px);
   border-color: var(--glass-border-strong);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
 .social-card:hover::before {
@@ -96,22 +160,22 @@
 }
 
 .social-icon {
-  width: 60px;
-  height: 60px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   position: relative;
   z-index: 1;
   flex-shrink: 0;
 }
 
 .social-icon svg {
-  width: 30px;
-  height: 30px;
+  width: 24px;
+  height: 24px;
 }
 
 .social-info {
@@ -121,19 +185,19 @@
 }
 
 .social-info h3 {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-weight: 700;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 }
 
 .social-handle {
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   color: var(--text-muted);
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 }
 
 .social-followers {
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   color: var(--cyan-400);
   font-weight: 600;
 }
@@ -152,10 +216,10 @@
 
 .social-stats {
   display: flex;
-  justify-content: center;
-  gap: 60px;
-  padding-top: 40px;
+  justify-content: space-between;
+  padding-top: 30px;
   border-top: 1px solid var(--glass-border);
+  gap: 20px;
 }
 
 .stat-item {
@@ -164,30 +228,31 @@
 
 .stat-value {
   display: block;
-  font-size: 2rem;
+  font-size: 1.8rem;
   font-weight: 800;
   background: linear-gradient(135deg, var(--cyan-400), var(--cyan-600));
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   line-height: 1;
-  margin-bottom: 8px;
+  margin-bottom: 5px;
 }
 
 .stat-label {
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 1px;
 }
 
 @media (max-width: 992px) {
-  .social-cards-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
+  .social-content-wrapper {
+    grid-template-columns: 1fr;
+    gap: 40px;
   }
-  
-  .social-stats {
-    gap: 30px;
+
+  .social-follow-title {
+    text-align: center;
   }
 }
 
@@ -195,11 +260,11 @@
   .social-community-title {
     font-size: 2.5rem;
   }
-  
+
   .social-cards-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .social-stats {
     flex-direction: column;
     gap: 20px;

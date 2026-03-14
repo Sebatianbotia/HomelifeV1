@@ -1,7 +1,17 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './SocialCommunity.css';
 
 const SocialCommunity = () => {
+  useEffect(() => {
+    // Cargar script de TikTok solo si no existe
+    if (!document.querySelector('script[src="https://www.tiktok.com/embed.js"]')) {
+      const script = document.createElement('script');
+      script.src = 'https://www.tiktok.com/embed.js';
+      script.async = true;
+      document.body.appendChild(script);
+    }
+  }, []);
+
   const socialData = [
     {
       id: 'instagram',
@@ -67,45 +77,70 @@ const SocialCommunity = () => {
           Conecta con nosotros y sé parte de nuestra comunidad. Contenido exclusivo, tips de salud y mucho más.
         </p>
 
-        <div className="social-cards-grid">
-          {socialData.map((social) => (
-            <a
-              key={social.id}
-              href={social.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="social-card"
-              style={{ '--hover-color': social.color }}
-            >
-              <div className="social-icon" style={{ background: social.color }}>
-                {social.icon}
+        <div className="social-content-wrapper">
+          <div className="tiktok-mockup-wrapper">
+            <div className="phone-mockup">
+              <div className="phone-notch"></div>
+              <div className="phone-screen">
+                <div className="tiktok-embed-container" style={{ width: '100%', height: '100%', overflow: 'hidden' }}>
+                  <blockquote 
+                    className="tiktok-embed" 
+                    cite="https://www.tiktok.com/@homelifecol/video/7608226538269543700" 
+                    data-video-id="7608226538269543700" 
+                    style={{ maxWidth: '605px', minWidth: '325px', margin: '0', padding: '0' }}
+                  >
+                    <section>
+                      <a target="_blank" title="@homelifecol" href="https://www.tiktok.com/@homelifecol?refer=embed">@homelifecol</a> Nuestros <a title="tipsmedicos" target="_blank" href="https://www.tiktok.com/tag/tipsmedicos?refer=embed">#tipsmedicos</a> <a title="oximetro" target="_blank" href="https://www.tiktok.com/tag/oximetro?refer=embed">#oximetro</a> <a title="saludybienestar" target="_blank" href="https://www.tiktok.com/tag/saludybienestar?refer=embed">#saludybienestar</a> <a title="presionarterial" target="_blank" href="https://www.tiktok.com/tag/presionarterial?refer=embed">#presionarterial</a> <a title="medicos" target="_blank" href="https://www.tiktok.com/tag/medicos?refer=embed">#medicos</a> <a target="_blank" title="♬ sonido original - Homelifecolombia" href="https://www.tiktok.com/music/sonido-original-7608226597091707655?refer=embed">♬ sonido original - Homelifecolombia</a>
+                    </section>
+                  </blockquote>
+                </div>
               </div>
-              <div className="social-info">
-                <h3>{social.name}</h3>
-                <p className="social-handle">{social.handle}</p>
-                <span className="social-followers">{social.followers} seguidores</span>
-              </div>
-              <div className="social-arrow">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M5 12h14M12 5l7 7-7 7" />
-                </svg>
-              </div>
-            </a>
-          ))}
-        </div>
+            </div>
+          </div>
 
-        <div className="social-stats">
-          <div className="stat-item">
-            <span className="stat-value">25K+</span>
-            <span className="stat-label">Seguidores totales</span>
-          </div>
-          <div className="stat-item">
-            <span className="stat-value">500+</span>
-            <span className="stat-label">Publicaciones</span>
-          </div>
-          <div className="stat-item">
-            <span className="stat-value">10M+</span>
-            <span className="stat-label">Alcance mensual</span>
+          <div className="social-links-wrapper">
+            <h3 className="social-follow-title">Síguenos en nuestras redes sociales</h3>
+            <div className="social-cards-grid">
+              {socialData.map((social) => (
+                <a
+                  key={social.id}
+                  href={social.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="social-card"
+                  style={{ '--hover-color': social.color }}
+                >
+                  <div className="social-icon" style={{ background: social.color }}>
+                    {social.icon}
+                  </div>
+                  <div className="social-info">
+                    <h3>{social.name}</h3>
+                    <p className="social-handle">{social.handle}</p>
+                    <span className="social-followers">{social.followers} seguidores</span>
+                  </div>
+                  <div className="social-arrow">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M5 12h14M12 5l7 7-7 7" />
+                    </svg>
+                  </div>
+                </a>
+              ))}
+            </div>
+
+            <div className="social-stats">
+              <div className="stat-item">
+                <span className="stat-value">25K+</span>
+                <span className="stat-label">Seguidores totales</span>
+              </div>
+              <div className="stat-item">
+                <span className="stat-value">500+</span>
+                <span className="stat-label">Publicaciones</span>
+              </div>
+              <div className="stat-item">
+                <span className="stat-value">10M+</span>
+                <span className="stat-label">Alcance mensual</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>

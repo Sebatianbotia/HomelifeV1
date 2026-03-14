@@ -22,6 +22,13 @@ const ProductCard = ({ product }) => {
 
       <div className="card-image-wrapper">
         <img src={product.images && product.images.length > 0 ? product.images[0] : ''} alt={product.name} className="card-image" />
+        <div className="quick-view-overlay">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+            <circle cx="12" cy="12" r="3" />
+          </svg>
+          <span>Ver Más</span>
+        </div>
       </div>
 
       <div className="card-content">

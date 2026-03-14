@@ -23,7 +23,7 @@
 .nosotros-hero {
   padding: 60px 20px 80px;
   text-align: center;
-  background: linear-gradient(180deg, rgba(5,10,20,0.9) 0%, transparent 100%);
+  background: linear-gradient(180deg, rgba(5, 10, 20, 0.9) 0%, transparent 100%);
 }
 
 .nosotros-hero h1 {
@@ -59,7 +59,7 @@
 /* Cards (Misión, Visión, Valores) */
 .nosotros-cards {
   padding: 80px 20px;
-  background: linear-gradient(180deg, rgba(15,31,53,0.3) 0%, rgba(5,10,20,0.5) 100%);
+  background: linear-gradient(180deg, rgba(15, 31, 53, 0.3) 0%, rgba(5, 10, 20, 0.5) 100%);
 }
 
 .cards-grid {
@@ -82,7 +82,7 @@
 .card-item:hover {
   transform: translateY(-8px);
   border-color: var(--glass-border-strong);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.3), 0 0 30px rgba(0,217,217,0.1);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 0 30px rgba(0, 217, 217, 0.1);
 }
 
 .card-icon {
@@ -143,6 +143,10 @@
   padding: 30px 20px;
   text-align: center;
   transition: all var(--transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 180px;
 }
 
 .certificacion-item:hover {
@@ -150,22 +154,16 @@
   transform: translateY(-4px);
 }
 
-.cert-icon {
-  font-size: 3rem;
-  display: block;
-  margin-bottom: 16px;
-}
-
-.certificacion-item h4 {
-  font-size: 1rem;
-  font-weight: 600;
-  color: var(--text-primary);
+.cert-image {
+  max-width: 100%;
+  max-height: 120px;
+  object-fit: contain;
 }
 
 /* Equipo */
 .nosotros-equipo {
   padding: 80px 20px;
-  background: linear-gradient(180deg, rgba(5,10,20,0.8) 0%, transparent 100%);
+  background: linear-gradient(180deg, rgba(5, 10, 20, 0.8) 0%, transparent 100%);
 }
 
 .equipo-grid {
@@ -208,6 +206,7 @@
 
 /* Responsive */
 @media (max-width: 992px) {
+
   .cards-grid,
   .certificaciones-grid,
   .equipo-grid {
@@ -220,6 +219,7 @@
 }
 
 @media (max-width: 576px) {
+
   .cards-grid,
   .certificaciones-grid,
   .equipo-grid {
