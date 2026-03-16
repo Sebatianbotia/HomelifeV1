@@ -13,7 +13,10 @@ import Distribuidores from './pages/Distribuidores/Distribuidores';
 import Cuenta from './pages/Cuenta/Cuenta';
 import Auth from './pages/Auth/Auth';
 import Carrito from './pages/Carrito/Carrito';
-import RegistroEquipo from './pages/RegistroEquipo/RegistroEquipo'; // Nueva página
+import RegistroEquipo from './pages/RegistroEquipo/RegistroEquipo';
+import FAQ from './pages/FAQ/FAQ';
+import PoliticaPrivacidad from './pages/Legal/PoliticaPrivacidad';
+import PoliticaGarantia from './pages/Legal/PoliticaGarantia';
 
 export const router = createBrowserRouter([
   {
@@ -30,7 +33,10 @@ export const router = createBrowserRouter([
       { path: 'cuenta', element: <Cuenta /> },
       { path: 'auth', element: <Auth /> },
       { path: 'carrito', element: <Carrito /> },
-      { path: 'contacto', element: <RegistroEquipo /> }, // Ruta para registrar equipo
+      { path: 'contacto', element: <RegistroEquipo /> },
+      { path: 'faq', element: <FAQ /> },
+      { path: 'privacidad', element: <PoliticaPrivacidad /> },
+      { path: 'garantia', element: <PoliticaGarantia /> },
     ],
   },
 ]);

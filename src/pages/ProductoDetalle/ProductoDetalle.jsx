@@ -16,6 +16,7 @@ const ProductoDetalle = () => {
   const [activeTab, setActiveTab] = useState('specs');
 
   useEffect(() => {
+    window.scrollTo(0, 0); // Ensure page starts at top
     // Find product by id or slug
     const foundProduct = products.find(p => p.id === id || p.slug === id);
     if (!foundProduct) {
@@ -73,6 +74,17 @@ const ProductoDetalle = () => {
 
   return (
     <div className="producto-detalle-page">
+      <button 
+        className="mobile-back-btn" 
+        onClick={() => navigate('/productos')}
+        aria-label="Volver a todos los productos"
+      >
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+          <path d="M19 12H5M12 19l-7-7 7-7" />
+        </svg>
+        <span>Volver</span>
+      </button>
+
       <div className="breadcrumb">
         <div className="container">
           <Link to="/">Inicio</Link>
@@ -235,8 +247,8 @@ const ProductoDetalle = () => {
                 <div className="tab-content active">
                   <h3 style={{ marginBottom: '20px' }}>Información de Envío</h3>
                   <ul className="features-list">
-                    <li>Envío GRATIS en compras superiores a $150.000</li>
                     <li>Envío estándar: $15.000</li>
+
                     <li>Tiempo de entrega: 24-48 horas en Bogotá</li>
                     <li>Envíos a todo Colombia: 3-5 días hábiles</li>
                     <li>Rastreo en tiempo real incluido</li>

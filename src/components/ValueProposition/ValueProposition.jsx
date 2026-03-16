@@ -17,14 +17,12 @@ const propositions = [
     id: 2,
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-        <rect x="1" y="3" width="15" height="13" />
-        <polygon points="16 8 20 8 23 11 23 16 16 16 16 8" />
-        <circle cx="5.5" cy="18.5" r="2.5" />
-        <circle cx="18.5" cy="18.5" r="2.5" />
+        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+        <polyline points="22 4 12 14.01 9 11.01" />
       </svg>
     ),
-    title: 'Envío Gratis',
-    description: 'En compras superiores a $150.000, el envío es gratis a cualquier ciudad de Colombia.',
+    title: 'Alta Calidad',
+    description: 'Equipos fabricados con los más altos estándares de precisión y durabilidad.',
   },
   {
     id: 3,

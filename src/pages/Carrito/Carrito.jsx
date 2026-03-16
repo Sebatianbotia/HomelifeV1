@@ -56,10 +56,7 @@ const Carrito = () => {
           <span>Subtotal:</span>
           <span>{formatPrice(subtotal)}</span>
         </div>
-        <div className="summary-row">
-          <span>Envío:</span>
-          <span>Gratis</span>
-        </div>
+
         <div className="summary-row total">
           <span>Total:</span>
           <span>{formatPrice(subtotal)}</span>

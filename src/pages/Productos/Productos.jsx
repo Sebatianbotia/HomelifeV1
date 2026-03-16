@@ -9,6 +9,7 @@ const Productos = () => {
   const [priceRange, setPriceRange] = useState({ min: '', max: '' });
   const [sortBy, setSortBy] = useState('featured');
   const [currentPage, setCurrentPage] = useState(1);
+  const [showMobileFilters, setShowMobileFilters] = useState(false);
   const itemsPerPage = 12;
 
   const filteredProducts = useMemo(() => {
@@ -57,6 +58,7 @@ const Productos = () => {
 
   const handleCategoryClick = (categoryId) => {
     setSelectedCategory(categoryId);
+    setShowMobileFilters(false);
   };
 
   const handlePriceChange = (e) => {
@@ -66,6 +68,7 @@ const Productos = () => {
 
   const applyPriceFilter = () => {
     setPriceRange({ ...priceRange });
+    setShowMobileFilters(false);
   };
 
   const clearFilters = () => {
@@ -73,6 +76,7 @@ const Productos = () => {
     setPriceRange({ min: '', max: '' });
     setSortBy('featured');
     setCurrentPage(1);
+    setShowMobileFilters(false);
   };
 
   const paginate = (pageNumber) => {
@@ -83,7 +87,23 @@ const Productos = () => {
   return (
     <div className="productos-page">
       <div className="productos-container">
-        <aside className="filters-sidebar">
+        <button 
+          className="mobile-filters-toggle"
+          onClick={() => setShowMobileFilters(!showMobileFilters)}
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M4 6h16M4 12h16m-7 6h7" />
+          </svg>
+          {showMobileFilters ? 'Cerrar Filtros' : 'Filtrar Productos'}
+        </button>
+
+        <aside className={`filters-sidebar ${showMobileFilters ? 'show' : ''}`}>
+          <button className="mobile-close-filters" onClick={() => setShowMobileFilters(false)}>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
           <div className="filters-header">
             <h3>Filtros</h3>
             <button className="clear-filters" onClick={clearFilters}>

@@ -14,7 +14,7 @@
 .product-card:hover {
   transform: translateY(-8px);
   border-color: var(--glass-border-strong);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
 }
 
 .card-badges {
@@ -50,7 +50,7 @@
   display: block;
   padding: 0;
   text-align: center;
-  background: linear-gradient(180deg, rgba(255,255,255,0.02) 0%, transparent 100%);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.02) 0%, transparent 100%);
   height: 220px;
   position: relative;
   overflow: hidden;
@@ -100,7 +100,7 @@
   background: var(--cyan-500);
   color: var(--deep-space);
   border-color: var(--cyan-400);
-  box-shadow: 0 4px 15px rgba(0,217,217,0.4);
+  box-shadow: 0 4px 15px rgba(0, 217, 217, 0.4);
 }
 
 .product-card:hover .btn-ver-mas svg {
@@ -158,7 +158,7 @@
 }
 
 .star.empty {
-  color: rgba(255,255,255,0.1);
+  color: rgba(255, 255, 255, 0.1);
 }
 
 .rating-count {
@@ -169,7 +169,7 @@
 .card-price {
   margin-top: auto;
   padding-top: 16px;
-  border-top: 1px solid rgba(255,255,255,0.06);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .price-row {
@@ -217,5 +217,5 @@
 
 .add-to-cart:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(0,217,217,0.4);
+  box-shadow: 0 8px 25px rgba(0, 217, 217, 0.4);
 }

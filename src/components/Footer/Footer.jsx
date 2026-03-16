@@ -12,7 +12,7 @@ const Footer = () => {
             <img src="/HomeLife_logo.png" alt="HomeLife Logo" className="footer-logo-img" style={{ height: '50px', width: 'auto' }} />
           </div>
           <p className="footer-desc">
-            Equipos médicos certificados INVIMA con tecnología de precisión. 
+            Equipos médicos certificados INVIMA con tecnología de precisión.
             Más de 15 años cuidando la salud de las familias colombianas.
           </p>
           <div className="footer-certs">
@@ -31,10 +31,10 @@ const Footer = () => {
             </div>
             <div className="cert-badge">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <rect x="1" y="4" width="22" height="16" rx="2" />
-                <line x1="1" y1="10" x2="23" y2="10" />
+                <path d="M9 12l2 2 4-4" />
+                <path d="M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9 9 4.03 9 9z" />
               </svg>
-              PayU Secure
+              Garantía Oficial
             </div>
           </div>
         </div>
@@ -118,9 +118,9 @@ const Footer = () => {
       <div className="footer-bottom">
         <p>&copy; {new Date().getFullYear()} HomeLife Colombia. Todos los derechos reservados.</p>
         <div className="footer-legal">
-          <a href="/politica_proteccion_datos_homelife.pdf" target="_blank" rel="noopener noreferrer">Políticas de Privacidad</a>
-          <a href="/POLITICA_DE_GARANTIAS.pdf" target="_blank" rel="noopener noreferrer">Términos y Condiciones</a>
-          <a href="/preguntas_faq.pdf" target="_blank" rel="noopener noreferrer">Preguntas Frecuentes</a>
+          <Link to="/privacidad">Políticas de Privacidad</Link>
+          <Link to="/garantia">Política de Garantía</Link>
+          <Link to="/faq">Preguntas Frecuentes</Link>
         </div>
       </div>
     </footer>

@@ -13,7 +13,7 @@ const payments = [
   { id: 7, name: 'Baloto', image: 'https://www.baloto.com/images/logo-baloto.png' },
   { id: 8, name: 'Nequi', image: 'https://nequi.com.co/images/logo-nequi.svg' },
   { id: 9, name: 'Daviplata', image: 'https://www.daviplata.com/images/logo-daviplata.png' },
-  { id: 10, name: 'PayU', image: 'https://developers.payulatam.com/latam/_images/payu_logo.svg' },
+
 ];
 
 const PaymentMarquee = () => {

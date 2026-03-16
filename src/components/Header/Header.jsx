@@ -183,10 +183,11 @@ const Header = () => {
             </div>
             <div className="trust-badge">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <polyline points="22 11.08 12 14.01 9 11.01" />
+                <path d="M22 4L12 14.01 9 11.01" />
                 <circle cx="12" cy="12" r="10" />
-                <polyline points="12 6 12 12 16 14" />
               </svg>
-              Envío Gratis
+              Calidad Pro
             </div>
             {/* Removed cotizar button */}
           </div>
@@ -265,10 +266,11 @@ const Header = () => {
             </div>
             <div className="trust-badge">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <polyline points="22 11.08 12 14.01 9 11.01" />
+                <path d="M22 4L12 14.01 9 11.01" />
                 <circle cx="12" cy="12" r="10" />
-                <polyline points="12 6 12 12 16 14" />
               </svg>
-              Envío Gratis
+              Calidad Pro
             </div>
           </div>
         </div>
