@@ -3,7 +3,7 @@ import HeroSlider from '../../components/HeroSlider/HeroSlider';
 import Carousel3D from '../../components/Carousel3D/Carousel3D';
 import Stats from '../../components/Stats/Stats';
 import ValueProposition from '../../components/ValueProposition/ValueProposition';
-import PartnersCarousel from '../../components/PartnersCarousel/PartnersCarousel'; // <-- Importar
+import PartnersCarousel from '../../components/PartnersCarousel/PartnersCarousel';
 import Testimonials from '../../components/Testimonials/Testimonials';
 import SocialCommunity from '../../components/SocialCommunity/SocialCommunity';
 import DistributorCTA from '../../components/DistributorCTA/DistributorCTA';
@@ -24,7 +24,7 @@ const Home = () => {
       </div>
       <Stats />
       <ValueProposition />
-      <PartnersCarousel /> {/* <-- Aquí va el carrusel de logos */}
+      <PartnersCarousel />
       <Testimonials />
       <SocialCommunity />
       <DistributorCTA />
