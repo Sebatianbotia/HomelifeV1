@@ -281,6 +281,43 @@
   font-size: 1.05rem;
 }
 
+/* Estilos para elementos HTML dentro de product-description */
+.product-description p {
+  margin-bottom: 15px;
+  line-height: 1.7;
+}
+
+.product-description p:last-child {
+  margin-bottom: 0;
+}
+
+.product-description strong,
+.product-description b {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.product-description em,
+.product-description i {
+  font-style: italic;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.product-description ul {
+  margin-left: 20px;
+  margin-bottom: 15px;
+  padding-left: 0;
+}
+
+.product-description li {
+  margin-bottom: 8px;
+  list-style-type: disc;
+}
+
+.product-description li:last-child {
+  margin-bottom: 0;
+}
+
 .product-techsheet {
   margin-bottom: 30px;
   padding: 20px;

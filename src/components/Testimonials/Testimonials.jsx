@@ -1,42 +1,80 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './Testimonials.css';
 
-const testimonials = [
-  {
-    id: 1,
-    name: 'María González',
-    avatar: 'https://randomuser.me/api/portraits/women/44.jpg',
-    rating: 5,
-    text: 'Excelente servicio. El tutorial de YouTube me ayudó muchísimo con mi glucómetro. 100% recomendado.',
-    source: 'Facebook',
-  },
-  {
-    id: 2,
-    name: 'Carlos Ramírez',
-    avatar: 'https://randomuser.me/api/portraits/men/32.jpg',
-    rating: 5,
-    text: 'Los sigo en TikTok y aprendo algo nuevo cada día. Compré mi tensiómetro aquí y estoy encantado.',
-    source: 'Instagram',
-  },
-  {
-    id: 3,
-    name: 'Ana Martínez',
-    avatar: 'https://randomuser.me/api/portraits/women/68.jpg',
-    rating: 5,
-    text: 'Rápida respuesta. Me ayudaron a escoger el tensiómetro perfecto para mi abuela. Llegó en 2 días.',
-    source: 'TikTok',
-  },
-  {
-    id: 4,
-    name: 'Jorge Sánchez',
-    avatar: 'https://randomuser.me/api/portraits/men/75.jpg',
-    rating: 5,
-    text: 'La mejor inversión para la salud familiar. Productos certificados y atención personalizada.',
-    source: 'YouTube',
-  },
-];
+/**
+ * Limpia HTML eliminando etiquetas y devolviendo solo texto
+ */
+const limpiarHTML = (htmlString) => {
+  if (!htmlString) return "";
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(htmlString, 'text/html');
+  return doc.body.textContent || "";
+};
 
 const Testimonials = () => {
+  const [testimonials, setTestimonials] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchTestimonials = async () => {
+      try {
+        const baseUrl = import.meta.env.VITE_WP_URL?.replace(/\/$/, '') || 'https://www.homelife.com.co';
+        const response = await fetch(
+          `${baseUrl}/wp-json/wp/v2/testimonio_home?_fields=id,title,content,acf,yoast_head_json`
+        );
+
+        if (!response.ok) {
+          throw new Error('Error al cargar testimonios');
+        }
+
+        const data = await response.json();
+        
+        // Mapear datos de WordPress al formato esperado
+        const mappedTestimonials = data.map(item => ({
+          id: item.id,
+          name: item.title?.rendered || 'Cliente anónimo',
+          text: limpiarHTML(item.content?.rendered) || item.yoast_head_json?.description || 'Excelente servicio',
+          rating: item.acf?.cantidad_estrellas || 5,
+          avatar: item.yoast_head_json?.og_image?.[0]?.url || 'https://randomuser.me/api/portraits/lego/1.jpg',
+          source: item.acf?.red_social || 'HomeLife',
+        }));
+
+        setTestimonials(mappedTestimonials);
+        setError(null);
+      } catch (err) {
+        console.error('Error fetching testimonials:', err);
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTestimonials();
+  }, []);
+
+  // Estado de carga
+  if (loading) {
+    return (
+      <section className="testimonials-section">
+        <div style={{ padding: '100px 20px', textAlign: 'center', color: '#00d9d9' }}>
+          Cargando...
+        </div>
+      </section>
+    );
+  }
+
+  // Estado de error
+  if (error || testimonials.length === 0) {
+    return (
+      <section className="testimonials-section">
+        <div style={{ padding: '100px 20px', textAlign: 'center', color: '#ff6b6b' }}>
+          {error || 'No hay testimonios disponibles'}
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className="testimonials-section">
       <div className="testimonials-container">

@@ -1,27 +1,47 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { authService } from '../../services/authService';
 import './Auth.css';
 
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({
-    name: '',
+    username: '',
     email: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
+    first_name: '',
+    last_name: '',
+    billing: {
+      address_1: '',
+      city: '',
+      country: ''
+    }
   });
+  const [showBilling, setShowBilling] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
-  const { login: setAuthUser } = useAuth();
+  const { login, register: registerUser, error: authError } = useAuth();
   const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    
+    // Handle nested billing fields
+    if (name.startsWith('billing_')) {
+      const billingField = name.replace('billing_', '');
+      setFormData(prev => ({
+        ...prev,
+        billing: {
+          ...prev.billing,
+          [billingField]: value
+        }
+      }));
+    } else {
+      setFormData(prev => ({ ...prev, [name]: value }));
+    }
     setError(''); // Clear error on change
   };
 
@@ -33,21 +53,21 @@ const Auth = () => {
     try {
       if (isLogin) {
         // Validation
-        if (!formData.email || !formData.password) {
+        if (!formData.username || !formData.password) {
           throw new Error('Por favor completa todos los campos.');
         }
         
-        const user = await authService.login({
-          email: formData.email,
-          password: formData.password
-        });
+        const success = await login(formData.username, formData.password);
         
-        setAuthUser(user);
-        navigate('/cuenta');
+        if (success) {
+          navigate('/cuenta');
+        } else {
+          throw new Error(authError || 'Error al iniciar sesión');
+        }
       } else {
         // Register Validation
-        if (!formData.name || !formData.email || !formData.password) {
-          throw new Error('Por favor completa todos los campos.');
+        if (!formData.first_name || !formData.last_name || !formData.username || !formData.email || !formData.password) {
+          throw new Error('Por favor completa todos los campos obligatorios.');
         }
         if (formData.password !== formData.confirmPassword) {
           throw new Error('Las contraseñas no coinciden.');
@@ -56,14 +76,41 @@ const Auth = () => {
           throw new Error('La contraseña debe tener al menos 6 caracteres.');
         }
 
-        const user = await authService.register({
-          name: formData.name,
+        // Prepare registration data
+        const registrationData = {
+          username: formData.username,
           email: formData.email,
-          password: formData.password
-        });
+          password: formData.password,
+          first_name: formData.first_name,
+          last_name: formData.last_name,
+        };
 
-        setSuccess('¡Registro exitoso! Ya puedes iniciar sesión.');
-        setIsLogin(true); // Switch to login
+        // Add billing if user filled it
+        if (showBilling && (formData.billing.address_1 || formData.billing.city || formData.billing.country)) {
+          registrationData.billing = formData.billing;
+        }
+
+        const success = await registerUser(registrationData);
+
+        if (success) {
+          setSuccess('¡Registro exitoso! Ya puedes iniciar sesión.');
+          setIsLogin(true); // Switch to login
+          setFormData({
+            username: '',
+            email: '',
+            password: '',
+            confirmPassword: '',
+            first_name: '',
+            last_name: '',
+            billing: {
+              address_1: '',
+              city: '',
+              country: ''
+            }
+          });
+        } else {
+          throw new Error(authError || 'Error al registrar usuario');
+        }
       }
     } catch (err) {
       setError(err.message);
@@ -108,32 +155,75 @@ const Auth = () => {
 
             <form onSubmit={handleSubmit} className="auth-form">
               {!isLogin && (
+                <>
+                  <div className="form-group">
+                    <label htmlFor="first_name">Nombre</label>
+                    <input
+                      type="text"
+                      id="first_name"
+                      name="first_name"
+                      placeholder="Ej. Juan"
+                      value={formData.first_name}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="last_name">Apellido</label>
+                    <input
+                      type="text"
+                      id="last_name"
+                      name="last_name"
+                      placeholder="Ej. Pérez"
+                      value={formData.last_name}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="username">Usuario</label>
+                    <input
+                      type="text"
+                      id="username"
+                      name="username"
+                      placeholder="Nombre de usuario"
+                      value={formData.username}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="email">Correo Electrónico</label>
+                    <input
+                      type="email"
+                      id="email"
+                      name="email"
+                      placeholder="usuario@ejemplo.com"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
+                </>
+              )}
+
+              {isLogin && (
                 <div className="form-group">
-                  <label htmlFor="name">Nombre Completo</label>
+                  <label htmlFor="username">Usuario</label>
                   <input
                     type="text"
-                    id="name"
-                    name="name"
-                    placeholder="Ej. Juan Pérez"
-                    value={formData.name}
+                    id="username"
+                    name="username"
+                    placeholder="Nombre de usuario o email"
+                    value={formData.username}
                     onChange={handleInputChange}
                     required
                   />
                 </div>
               )}
-
-              <div className="form-group">
-                <label htmlFor="email">Correo Electrónico</label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  placeholder="usuario@ejemplo.com"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  required
-                />
-              </div>
 
               <div className="form-group">
                 <label htmlFor="password">Contraseña</label>
@@ -161,6 +251,62 @@ const Auth = () => {
                     required
                   />
                 </div>
+              )}
+
+              {!isLogin && (
+                <>
+                  <div className="form-divider">
+                    <button
+                      type="button"
+                      className="billing-toggle"
+                      onClick={() => setShowBilling(!showBilling)}
+                    >
+                      {showBilling ? '▼' : '▶'} Datos de Facturación (Opcional)
+                    </button>
+                  </div>
+
+                  {showBilling && (
+                    <div className="billing-section">
+                      <div className="form-group">
+                        <label htmlFor="address_1">Dirección</label>
+                        <input
+                          type="text"
+                          id="address_1"
+                          name="billing_address_1"
+                          placeholder="Ej. Calle Falsa 123"
+                          value={formData.billing.address_1}
+                          onChange={handleInputChange}
+                        />
+                      </div>
+
+                      <div className="form-row">
+                        <div className="form-group">
+                          <label htmlFor="city">Ciudad</label>
+                          <input
+                            type="text"
+                            id="city"
+                            name="billing_city"
+                            placeholder="Ej. Madrid"
+                            value={formData.billing.city}
+                            onChange={handleInputChange}
+                          />
+                        </div>
+
+                        <div className="form-group">
+                          <label htmlFor="country">País</label>
+                          <input
+                            type="text"
+                            id="country"
+                            name="billing_country"
+                            placeholder="Ej. ES"
+                            value={formData.billing.country}
+                            onChange={handleInputChange}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </>
               )}
 
               {isLogin && (

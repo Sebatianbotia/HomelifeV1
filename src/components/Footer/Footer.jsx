@@ -118,8 +118,7 @@ const Footer = () => {
       <div className="footer-bottom">
         <p>&copy; {new Date().getFullYear()} HomeLife Colombia. Todos los derechos reservados.</p>
         <div className="footer-legal">
-          <Link to="/privacidad">Políticas de Privacidad</Link>
-          <Link to="/garantia">Política de Garantía</Link>
+          <Link to="/politicas">Políticas</Link>
           <Link to="/faq">Preguntas Frecuentes</Link>
         </div>
       </div>

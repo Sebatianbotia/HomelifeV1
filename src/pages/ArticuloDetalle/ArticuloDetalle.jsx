@@ -1,21 +1,82 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { allPosts } from '../../data/blogPosts';
+import { useProducts } from '../../context/ProductsContext';
+import { adaptarPostParaReact } from '../../utils/wpBlogAdapter';
 import './ArticuloDetalle.css';
 
 const ArticuloDetalle = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const post = allPosts.find(p => p.id === parseInt(id));
+  const { obtenerProductosPorIds } = useProducts();
+  const [post, setPost] = useState(null);
+  const [relatedProducts, setRelatedProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-    if (!post) {
-      navigate('/blog');
-    }
-  }, [post, navigate]);
+    const fetchPost = async () => {
+      try {
+        const baseUrl = import.meta.env.VITE_WP_URL?.replace(/\/$/, '') || 'https://www.homelife.com.co';
+        
+        const response = await fetch(
+          `${baseUrl}/wp-json/wp/v2/blog_react/${id}?_fields=id,date,title,content,categoria_react,yoast_head_json,acf`
+        );
 
-  if (!post) return null;
+        if (!response.ok) {
+          throw new Error('Artículo no encontrado');
+        }
+
+        const data = await response.json();
+        const adaptedPost = adaptarPostParaReact(data, []);
+        setPost(adaptedPost);
+        setError(null);
+
+        // Fetch de productos relacionados si existen
+        if (data.acf?.productos_relacionados && data.acf.productos_relacionados.length > 0) {
+          try {
+            const productos = await obtenerProductosPorIds(
+              data.acf.productos_relacionados.slice(0, 4)
+            );
+            setRelatedProducts(productos);
+          } catch (prodErr) {
+            console.warn('Error cargando productos relacionados:', prodErr);
+          }
+        }
+      } catch (err) {
+        console.error('Error fetching article:', err);
+        setError(err.message);
+        // Redirigir al blog después de 2 segundos si hay error
+        setTimeout(() => navigate('/blog'), 2000);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPost();
+  }, [id, navigate, obtenerProductosPorIds]);
+
+  // Estado de carga
+  if (loading) {
+    return (
+      <div className="article-detail-page">
+        <div className="container" style={{ padding: '40px 20px', textAlign: 'center' }}>
+          <p>Cargando artículo...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Estado de error
+  if (error || !post) {
+    return (
+      <div className="article-detail-page">
+        <div className="container" style={{ padding: '40px 20px', textAlign: 'center', color: '#ff6b6b' }}>
+          <p>{error || 'No se pudo cargar el artículo'}</p>
+          <p>Redirigiendo al blog...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="article-detail-page">
@@ -37,14 +98,41 @@ const ArticuloDetalle = () => {
             </div>
           </header>
 
-          <div className="article-hero-image">
-            <img src={post.image} alt={post.title} />
-          </div>
 
           <div 
             className="article-body"
             dangerouslySetInnerHTML={{ __html: post.content }}
           />
+
+          {/* Productos Relacionados */}
+          {relatedProducts.length > 0 && (
+            <section className="related-products-section">
+              <h2 className="related-products-title">Productos Relacionados</h2>
+              <div className="related-products-grid">
+                {relatedProducts.map(product => (
+                  <Link 
+                    key={product.id} 
+                    to={`/producto-detalle/${product.id}`}
+                    className="related-product-card"
+                  >
+                    <div className="related-product-image">
+                      {product.images && product.images.length > 0 ? (
+                        <img src={product.images[0]} alt={product.name} />
+                      ) : (
+                        <img src="/placeholder-product.png" alt={product.name} />
+                      )}
+                    </div>
+                    <div className="related-product-content">
+                      <h3 className="related-product-name">{product.name}</h3>
+                      <p className="related-product-price">
+                        ${product.price?.toLocaleString('es-CO') || 'N/A'}
+                      </p>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </section>
+          )}
 
           <footer className="article-footer">
             <div className="share-article">

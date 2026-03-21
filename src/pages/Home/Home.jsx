@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import HeroSlider from '../../components/HeroSlider/HeroSlider';
 import Carousel3D from '../../components/Carousel3D/Carousel3D';
 import Stats from '../../components/Stats/Stats';
@@ -7,11 +7,16 @@ import PartnersCarousel from '../../components/PartnersCarousel/PartnersCarousel
 import Testimonials from '../../components/Testimonials/Testimonials';
 import SocialCommunity from '../../components/SocialCommunity/SocialCommunity';
 import DistributorCTA from '../../components/DistributorCTA/DistributorCTA';
-import { products } from '../../data/products';
+import { useProducts } from '../../context/ProductsContext';
 import './Home.css';
 
 const Home = () => {
-  const featuredProducts = products.slice(0, 6);
+  const { productos, loading } = useProducts();
+
+  // Filtrar productos destacados (primeros 6)
+  const featuredProducts = useMemo(() => {
+    return productos.slice(0, 6);
+  }, [productos]);
 
   return (
     <>
@@ -19,7 +24,11 @@ const Home = () => {
       <div className="home-page">
         <section className="featured-products">
           <h2 className="section-title">Productos Destacados</h2>
-          <Carousel3D items={featuredProducts} />
+          {loading ? (
+            <p style={{ textAlign: 'center', padding: '40px' }}>Cargando productos...</p>
+          ) : (
+            <Carousel3D items={featuredProducts} />
+          )}
         </section>
       </div>
       <Stats />

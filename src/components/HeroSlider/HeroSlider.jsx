@@ -1,55 +1,102 @@
 import React, { useState, useEffect } from 'react';
 import './HeroSlider.css';
 
-const slides = [
-  {
-    id: 1,
-    image: '/images/SliderImages/slider1.png',
-    badge: '✨ Nueva Línea Medic Life 2026',
-    title: 'Equipos Médicos de Alta Tecnología',
-    description: 'Selección premium de dispositivos médicos con certificación INVIMA. Calidad y tecnología de vanguardia para tu salud.',
-    buttonText: 'Explorar Productos',
-    buttonLink: '/productos',
-  },
-  {
-    id: 2,
-    image: '/images/SliderImages/slider2.png',
-    badge: '🔥 Ofertas Especiales',
-    title: 'Hasta 30% de Descuento',
-    description: 'Promociones exclusivas en equipos médicos certificados. Stock limitado. No dejes pasar esta oportunidad.',
-    buttonText: 'Ver Ofertas',
-    buttonLink: '/productos?ofertas=true',
-  },
-  {
-    id: 3,
-    image: '/images/SliderImages/slider3.png',
-    badge: '✅ Certificación INVIMA',
-    title: '100% Certificados y Garantizados',
-    description: 'Registro sanitario INVIMA vigente y garantía extendida de 2 años en todos nuestros productos.',
-    buttonText: 'Ver Certificados',
-    buttonLink: '/nosotros#certificaciones',
-  },
-];
-
 const HeroSlider = () => {
+  const [slides, setSlides] = useState([]);
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Fetch de slides desde WordPress
+  useEffect(() => {
+    const fetchSlides = async () => {
+      try {
+        const baseUrl = import.meta.env.VITE_WP_URL?.replace(/\/$/, '') || 'https://www.homelife.com.co';
+        const response = await fetch(
+          `${baseUrl}/wp-json/wp/v2/slider_home?_fields=id,title,yoast_head_json,acf`
+        );
+
+        if (!response.ok) {
+          throw new Error('Error al cargar los slides');
+        }
+
+        const data = await response.json();
+        
+        // Mapear datos de WordPress al formato esperado
+        const mappedSlides = data.map(slide => ({
+          id: slide.id,
+          image: slide.yoast_head_json?.og_image?.[0]?.url || '/images/SliderImages/slider1.png',
+          title: slide.title?.rendered || 'Equipo Médico',
+          description: slide.yoast_head_json?.description || 'Calidad y tecnología al servicio de tu salud.',
+          badge: slide.acf?.badge || '✨ Destacado',
+          buttonText: slide.acf?.texto_boton || 'Explorar Productos',
+          // REGLA ESTRICTA: Si enlace_boton está vacío, asignar '/productos'
+          buttonLink: (slide.acf?.enlace_boton && slide.acf.enlace_boton.trim() !== '') 
+            ? slide.acf.enlace_boton 
+            : '/productos',
+        }));
+
+        setSlides(mappedSlides);
+        setError(null);
+      } catch (err) {
+        console.error('Error fetching slides:', err);
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSlides();
+  }, []);
+
+  // AutoPlay: Solo ejecutar si slides.length > 0
+  useEffect(() => {
+    if (slides.length === 0) return;
+
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
+    }, 6000);
+
+    return () => clearInterval(timer);
+  }, [slides.length]);
 
   const goToNext = () => {
-    setCurrentSlide((prev) => (prev + 1) % slides.length);
+    if (slides.length > 0) {
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
+    }
   };
 
   const goToPrev = () => {
-    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+    if (slides.length > 0) {
+      setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+    }
   };
 
   const goToSlide = (index) => {
     setCurrentSlide(index);
   };
 
-  useEffect(() => {
-    const timer = setInterval(goToNext, 6000);
-    return () => clearInterval(timer);
-  }, []);
+  // Estado de carga
+  if (loading) {
+    return (
+      <section className="hero-slider">
+        <div style={{ padding: '100px 20px', textAlign: 'center', color: '#00d9d9' }}>
+          Cargando...
+        </div>
+      </section>
+    );
+  }
+
+  // Estado de error
+  if (error || slides.length === 0) {
+    return (
+      <section className="hero-slider">
+        <div style={{ padding: '100px 20px', textAlign: 'center', color: '#ff6b6b' }}>
+          {error || 'No hay slides disponibles'}
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="hero-slider">

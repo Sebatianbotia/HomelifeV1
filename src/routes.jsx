@@ -15,8 +15,7 @@ import Auth from './pages/Auth/Auth';
 import Carrito from './pages/Carrito/Carrito';
 import RegistroEquipo from './pages/RegistroEquipo/RegistroEquipo';
 import FAQ from './pages/FAQ/FAQ';
-import PoliticaPrivacidad from './pages/Legal/PoliticaPrivacidad';
-import PoliticaGarantia from './pages/Legal/PoliticaGarantia';
+import Politicas from './pages/Legal/Politicas';
 
 export const router = createBrowserRouter([
   {
@@ -35,8 +34,9 @@ export const router = createBrowserRouter([
       { path: 'carrito', element: <Carrito /> },
       { path: 'contacto', element: <RegistroEquipo /> },
       { path: 'faq', element: <FAQ /> },
-      { path: 'privacidad', element: <PoliticaPrivacidad /> },
-      { path: 'garantia', element: <PoliticaGarantia /> },
+      { path: 'politicas', element: <Politicas /> },
+      { path: 'privacidad', element: <Politicas /> },
+      { path: 'garantia', element: <Politicas /> },
     ],
   },
 ]);

@@ -16,15 +16,19 @@ const Cuenta = () => {
   if (loading) return <div className="loading-screen">Cargando perfil...</div>;
   if (!user) return null;
 
+  const userName = user.name || user.display_name || `${user.first_name || ''} ${user.last_name || ''}`.trim() || 'Usuario';
+  const userInitial = userName.charAt(0).toUpperCase();
+  const userFirstName = userName.split(' ')[0];
+
   return (
     <div className="cuenta-page">
       <div className="profile-container">
         <div className="profile-card">
           <div className="profile-header">
             <div className="profile-avatar">
-              {user.name.charAt(0).toUpperCase()}
+              {userInitial}
             </div>
-            <h1 className="profile-name">{user.name}</h1>
+            <h1 className="profile-name">{userName}</h1>
             <p className="profile-email">{user.email}</p>
           </div>
 
@@ -61,7 +65,7 @@ const Cuenta = () => {
 
         <div className="dashboard-content">
           <div className="welcome-banner">
-            <h2>¡Hola, {user.name.split(' ')[0]}!</h2>
+            <h2>¡Hola, {userFirstName}!</h2>
             <p>Desde aquí puedes gestionar tus compras y registros técnicos.</p>
           </div>
           
@@ -83,4 +87,4 @@ const Cuenta = () => {
   );
 };
 
-export default Cuenta;
+export default Cuenta;

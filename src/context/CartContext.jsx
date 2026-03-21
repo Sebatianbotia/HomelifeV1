@@ -88,8 +88,23 @@ export const CartProvider = ({ children }) => {
 
 export const useCart = () => {
   const context = useContext(CartContext);
+  
+  // Si no hay contexto, retornar valores por defecto
   if (!context) {
-    throw new Error('useCart must be used within a CartProvider');
+    if (process.env.NODE_ENV === 'development') {
+      console.warn('useCart debe ser usado dentro de un CartProvider');
+    }
+    
+    return {
+      cart: [],
+      addItem: () => {},
+      removeItem: () => {},
+      updateQuantity: () => {},
+      clearCart: () => {},
+      getSubtotal: () => 0,
+      getTotalItems: () => 0,
+    };
   }
+  
   return context;
 };

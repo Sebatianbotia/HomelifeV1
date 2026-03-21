@@ -1,19 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
-import { products } from '../../data/products';
+import { useProducts } from '../../context/ProductsContext';
 import './RegistroEquipo.css';
 
 const RegistroEquipo = () => {
   const { register, handleSubmit, formState: { errors }, reset } = useForm();
+  const { productos } = useProducts();
   const [enviado, setEnviado] = useState(false);
   const [archivo, setArchivo] = useState(null);
 
   // Obtener lista única de productos para el selector
-  const productList = products.map(p => ({
-    id: p.id,
-    name: p.name,
-    category: p.category
-  }));
+  const productList = useMemo(() => {
+    return productos.map(p => ({
+      id: p.id,
+      name: p.name,
+      category: p.category
+    }));
+  }, [productos]);
 
   const onSubmit = (data) => {
     // Aquí iría la llamada a la API

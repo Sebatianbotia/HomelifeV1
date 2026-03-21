@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { products } from '../../data/products';
+import { useProducts } from '../../context/ProductsContext';
 import { useCart } from '../../context/CartContext';
 import ProductCard from '../../components/ProductCard/ProductCard';
 import './ProductoDetalle.css';
@@ -9,37 +9,70 @@ const ProductoDetalle = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { addItem } = useCart();
+  const { obtenerProductoPorId, obtenerProductosPorIds, productos } = useProducts();
 
   const [product, setProduct] = useState(null);
+  const [relatedProducts, setRelatedProducts] = useState([]);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState('specs');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    window.scrollTo(0, 0); // Ensure page starts at top
-    // Find product by id or slug
-    const foundProduct = products.find(p => p.id === id || p.slug === id);
-    if (!foundProduct) {
-      navigate('/productos');
-    } else {
-      setProduct(foundProduct);
-      setCurrentImageIndex(0);
-      setQuantity(1);
-      setActiveTab('specs');
-    }
-  }, [id, navigate]);
+    const cargarProducto = async () => {
+      try {
+        setLoading(true);
+        setError(null);
 
-  const relatedProducts = useMemo(() => {
-    if (!product) return [];
-    return products
-      .filter(p => p.categorySlug === product.categorySlug && p.id !== product.id)
-      .slice(0, 4);
-  }, [product]);
+        let productoDetalle = await obtenerProductoPorId(parseInt(id));
+        
+        if (!productoDetalle && productos.length > 0) {
+          const productoLocal = productos.find(p => p.slug === id || p.id === id);
+          if (productoLocal) {
+            productoDetalle = await obtenerProductoPorId(parseInt(productoLocal.id));
+          }
+        }
 
-  if (!product) {
+        if (!productoDetalle) {
+          setError('Producto no encontrado');
+          setTimeout(() => navigate('/productos'), 2000);
+          return;
+        }
+
+        setProduct(productoDetalle);
+        setCurrentImageIndex(0);
+        setQuantity(1);
+        setActiveTab('specs');
+
+        if (productoDetalle.relatedIds && productoDetalle.relatedIds.length > 0) {
+          const relacionados = await obtenerProductosPorIds(productoDetalle.relatedIds.slice(0, 4));
+          setRelatedProducts(relacionados);
+        }
+      } catch (err) {
+        console.error('Error cargando producto:', err);
+        setError(`Error: ${err.message}`);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    cargarProducto();
+  }, [id, navigate, obtenerProductoPorId, obtenerProductosPorIds, productos]);
+
+  if (loading) {
     return (
       <div className="product-detail-loading">
         <h2>Cargando producto...</h2>
+      </div>
+    );
+  }
+
+  if (error || !product) {
+    return (
+      <div className="product-detail-loading">
+        <h2>{error || 'Producto no encontrado'}</h2>
+        <p>Redirigiendo...</p>
       </div>
     );
   }
@@ -126,16 +159,18 @@ const ProductoDetalle = () => {
             <div className="product-category-badge">{product.category}</div>
             <h1 className="product-detail-title">{product.name}</h1>
 
-            <div className="product-detail-rating">
-              <div className="rating-stars">
-                <div className="stars">
-                  {'★'.repeat(Math.round(product.rating))}
-                  {'☆'.repeat(5 - Math.round(product.rating))}
+            {product.reviewCount > 0 && (
+              <div className="product-detail-rating">
+                <div className="rating-stars">
+                  <div className="stars">
+                    {'★'.repeat(Math.round(product.rating))}
+                    {'☆'.repeat(5 - Math.round(product.rating))}
+                  </div>
+                  <span className="rating-value">{Number(product.rating).toFixed(1)}</span>
                 </div>
-                <span className="rating-value">{Number(product.rating).toFixed(1)}</span>
+                <span className="rating-count">({product.reviewCount} reseñas)</span>
               </div>
-              <span className="rating-count">({product.reviewCount} reseñas)</span>
-            </div>
+            )}
 
             <div className="product-detail-pricing">
               <div className="price-row">
@@ -154,9 +189,10 @@ const ProductoDetalle = () => {
               )}
             </div>
 
-            <p className="product-description">
-              {product.fullDescription}
-            </p>
+            <div 
+              className="product-description"
+              dangerouslySetInnerHTML={{ __html: product.fullDescription }}
+            />
 
             {product.techSheetPdf && (
               <div className="product-techsheet">

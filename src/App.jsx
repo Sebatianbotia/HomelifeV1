@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { RouterProvider } from 'react-router-dom';
 import { router } from './routes';
-import { AuthProvider } from './context/AuthContext';
+import { ProductsProvider } from './context/ProductsContext';
 import SplashScreen from './components/SplashScreen/SplashScreen';
 function App() {
   const [loading, setLoading] = useState(true);
@@ -11,9 +11,9 @@ function App() {
   }
 
   return (
-    <AuthProvider>
+    <ProductsProvider>
       <RouterProvider router={router} />
-    </AuthProvider>
+    </ProductsProvider>
   );
 }
 

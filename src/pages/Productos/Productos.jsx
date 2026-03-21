@@ -1,10 +1,10 @@
 import React, { useState, useMemo } from 'react';
-import { products } from '../../data/products';
-import { categories } from '../../data/categories';
+import { useProducts } from '../../context/ProductsContext';
 import ProductCard from '../../components/ProductCard/ProductCard';
 import './Productos.css';
 
 const Productos = () => {
+  const { productos, categorias, loading, error } = useProducts();
   const [selectedCategory, setSelectedCategory] = useState('todas');
   const [priceRange, setPriceRange] = useState({ min: '', max: '' });
   const [sortBy, setSortBy] = useState('featured');
@@ -13,10 +13,10 @@ const Productos = () => {
   const itemsPerPage = 12;
 
   const filteredProducts = useMemo(() => {
-    let filtered = [...products];
+    let filtered = [...productos];
 
     if (selectedCategory !== 'todas') {
-      filtered = filtered.filter(p => p.categorySlug === selectedCategory);
+      filtered = filtered.filter(p => p.categoryId === Number(selectedCategory));
     }
 
     if (priceRange.min !== '') {
@@ -46,11 +46,10 @@ const Productos = () => {
         break;
     }
 
-    setCurrentPage(1); // Reset to first page when filtering or sorting
+    setCurrentPage(1); 
     return filtered;
   }, [selectedCategory, priceRange, sortBy]);
 
-  // Lógica de paginación
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentProducts = filteredProducts.slice(indexOfFirstItem, indexOfLastItem);
@@ -119,18 +118,21 @@ const Productos = () => {
                 onClick={() => handleCategoryClick('todas')}
               >
                 Todas las categorías
-                <span className="count">{products.length}</span>
+                <span className="count">{productos.length}</span>
               </li>
-              {categories.map(cat => (
-                <li
-                  key={cat.id}
-                  className={selectedCategory === cat.id ? 'active' : ''}
-                  onClick={() => handleCategoryClick(cat.id)}
-                >
-                  {cat.name}
-                  <span className="count">{cat.count}</span>
-                </li>
-              ))}
+              {categorias.map(cat => {
+                const countInCategory = productos.filter(p => p.categoryId === cat.id).length;
+                return (
+                  <li
+                    key={cat.id}
+                    className={selectedCategory === String(cat.id) ? 'active' : ''}
+                    onClick={() => handleCategoryClick(String(cat.id))}
+                  >
+                    {cat.name}
+                    <span className="count">{countInCategory}</span>
+                  </li>
+                );
+              })}
             </ul>
           </div>
 
@@ -189,48 +191,61 @@ const Productos = () => {
             </div>
           </div>
 
-          <div className="products-grid">
-            {currentProducts.length > 0 ? (
-              currentProducts.map(product => (
-                <ProductCard key={product.id} product={product} />
-              ))
-            ) : (
-              <p className="no-products">No se encontraron productos</p>
-            )}
-          </div>
-
-          {totalPages > 1 && (
-            <div className="pagination">
-              <button 
-                className="pagination-btn" 
-                onClick={() => paginate(currentPage - 1)}
-                disabled={currentPage === 1}
-              >
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M15 18l-6-6 6-6" />
-                </svg>
-              </button>
-
-              {[...Array(totalPages)].map((_, i) => (
-                <button
-                  key={i + 1}
-                  className={`pagination-number ${currentPage === i + 1 ? 'active' : ''}`}
-                  onClick={() => paginate(i + 1)}
-                >
-                  {i + 1}
-                </button>
-              ))}
-
-              <button 
-                className="pagination-btn" 
-                onClick={() => paginate(currentPage + 1)}
-                disabled={currentPage === totalPages}
-              >
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M9 18l6-6-6-6" />
-                </svg>
-              </button>
+          {loading ? (
+            <div className="products-loading">
+              <p>Cargando productos...</p>
             </div>
+          ) : error ? (
+            <div className="products-error">
+              <p>Error: {error}</p>
+              <p>Por favor, recarga la página</p>
+            </div>
+          ) : (
+            <>
+              <div className="products-grid">
+                {currentProducts.length > 0 ? (
+                  currentProducts.map(product => (
+                    <ProductCard key={product.id} product={product} />
+                  ))
+                ) : (
+                  <p className="no-products">No se encontraron productos</p>
+                )}
+              </div>
+
+              {totalPages > 1 && (
+                <div className="pagination">
+                  <button 
+                    className="pagination-btn" 
+                    onClick={() => paginate(currentPage - 1)}
+                    disabled={currentPage === 1}
+                  >
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M15 18l-6-6 6-6" />
+                    </svg>
+                  </button>
+
+                  {[...Array(totalPages)].map((_, i) => (
+                    <button
+                      key={i + 1}
+                      className={`pagination-number ${currentPage === i + 1 ? 'active' : ''}`}
+                      onClick={() => paginate(i + 1)}
+                    >
+                      {i + 1}
+                    </button>
+                  ))}
+
+                  <button 
+                    className="pagination-btn" 
+                    onClick={() => paginate(currentPage + 1)}
+                    disabled={currentPage === totalPages}
+                  >
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M9 18l6-6-6-6" />
+                    </svg>
+                  </button>
+                </div>
+              )}
+            </>
           )}
         </main>
       </div>

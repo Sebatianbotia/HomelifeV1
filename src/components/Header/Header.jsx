@@ -86,7 +86,7 @@ const Header = () => {
               )}
             </div>
 
-            <Link to={isAuthenticated ? "/cuenta" : "/auth"} className="icon-btn desktop-only-icon" title={isAuthenticated ? user.name : "Iniciar Sesión"}>
+            <Link to={isAuthenticated ? "/cuenta" : "/auth"} className="icon-btn desktop-only-icon" title={isAuthenticated ? user?.first_name || "Usuario" : "Iniciar Sesión"}>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
                 <circle cx="12" cy="7" r="4" />
@@ -245,7 +245,7 @@ const Header = () => {
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
               <circle cx="12" cy="7" r="4" />
             </svg>
-            {isAuthenticated ? `Hola, ${user.name.split(' ')[0]}` : 'Iniciar Sesión / Registro'}
+            {isAuthenticated ? `Hola, ${user?.first_name || 'Usuario'}` : 'Iniciar Sesión / Registro'}
           </Link>
           <Link to="/carrito" className="mobile-nav-link mobile-cart-link" onClick={() => setIsMobileMenuOpen(false)}>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">

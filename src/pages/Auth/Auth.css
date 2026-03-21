@@ -235,6 +235,100 @@
   border-color: rgba(255, 255, 255, 0.15);
 }
 
+/* Formulario de Registro - Campos Adicionales */
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.billing-toggle {
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: var(--cyan-400);
+  font-weight: 700;
+  cursor: pointer;
+  padding: 16px 0;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s;
+  text-align: left;
+}
+
+.billing-toggle:hover {
+  opacity: 0.9;
+  transform: translateX(2px);
+}
+
+.form-divider {
+  margin: 20px 0 0 0;
+  padding: 0;
+}
+
+.billing-section {
+  background: rgba(0, 217, 217, 0.08);
+  border: 1px solid rgba(0, 217, 217, 0.25);
+  border-radius: var(--radius-md);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  animation: slideDown 0.3s ease-out;
+  margin-top: 8px;
+}
+
+.billing-section .form-group {
+  margin: 0;
+}
+
+.billing-section .form-row {
+    display: flex;
+    flex-direction: column;
+}
+
+.billing-section label {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.billing-section input {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(0, 217, 217, 0.15);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  transition: all 0.3s;
+}
+
+.billing-section input:focus {
+  outline: none;
+  border-color: var(--cyan-400);
+  background: rgba(0, 217, 217, 0.1);
+  box-shadow: 0 0 12px rgba(0, 217, 217, 0.15);
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+    max-height: 0;
+    overflow: hidden;
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    max-height: 500px;
+    overflow: visible;
+  }
+}
+
 @keyframes fadeInDown {
   from { opacity: 0; transform: translateY(-30px); }
   to { opacity: 1; transform: translateY(0); }
@@ -249,5 +343,20 @@
 @media (max-width: 576px) {
   .auth-body {
     padding: 30px 20px;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .billing-section .form-row {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .billing-section {
+    padding: 18px;
+    gap: 14px;
   }
 }

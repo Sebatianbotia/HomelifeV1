@@ -37,14 +37,16 @@ const ProductCard = ({ product }) => {
           {product.name}
         </h3>
 
-        <div className="card-rating">
-          <div className="stars">
-            {[...Array(5)].map((_, i) => (
-              <span key={i} className={`star ${i < product.rating ? '' : 'empty'}`}>★</span>
-            ))}
+        {product.reviewCount > 0 && (
+          <div className="card-rating">
+            <div className="stars">
+              {[...Array(5)].map((_, i) => (
+                <span key={i} className={`star ${i < product.rating ? '' : 'empty'}`}>★</span>
+              ))}
+            </div>
+            <span className="rating-count">({product.reviewCount})</span>
           </div>
-          <span className="rating-count">({product.reviewCount})</span>
-        </div>
+        )}
 
         <div className="card-price">
           <div className="price-row">
