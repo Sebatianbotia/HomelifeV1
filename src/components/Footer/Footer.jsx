@@ -114,9 +114,8 @@ const Footer = () => {
         </div>
       </div>
 
-      {/* Línea inferior */}
       <div className="footer-bottom">
-        <p>&copy; {new Date().getFullYear()} HomeLife Colombia. Todos los derechos reservados.</p>
+        <p>&copy; {new Date().getFullYear()} desing by <a href="https://carlosandresovallemarin.github.io/zowlwebsite/?utm_source=ig&utm_medium=social&utm_content=link_in_bio" className='link-zowl' target="_blank" rel="noopener noreferrer">Zowl Web Desing</a></p>
         <div className="footer-legal">
           <Link to="/politicas">Políticas</Link>
           <Link to="/faq">Preguntas Frecuentes</Link>

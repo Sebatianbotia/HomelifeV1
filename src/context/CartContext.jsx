@@ -1,110 +1,241 @@
-import React, { createContext, useContext, useReducer, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 
 const CartContext = createContext();
 
-const cartReducer = (state, action) => {
-  switch (action.type) {
-    case 'ADD_ITEM': {
-      const existingItem = state.find(item => item.id === action.payload.id);
-      if (existingItem) {
-        return state.map(item =>
-          item.id === action.payload.id
-            ? { ...item, quantity: item.quantity + (action.payload.quantity || 1) }
-            : item
-        );
-      } else {
-        return [...state, { ...action.payload, quantity: action.payload.quantity || 1 }];
-      }
-    }
-    case 'REMOVE_ITEM':
-      return state.filter(item => item.id !== action.payload);
-    case 'UPDATE_QUANTITY':
-      return state.map(item =>
-        item.id === action.payload.id
-          ? { ...item, quantity: action.payload.quantity }
-          : item
-      );
-    case 'CLEAR_CART':
-      return [];
-    default:
-      return state;
+/**
+ * CartContext - Carrito de compras basado en localStorage
+ * 
+ * El carrito se almacena localmente y los items se envían al backend
+ * únicamente al momento de crear el pedido (checkout).
+ * 
+ * Estructura de un item en el carrito:
+ * {
+ *   id: string,          // Product ID
+ *   name: string,        // Nombre del producto
+ *   price: number,       // Precio actual
+ *   originalPrice: number,
+ *   image: string,       // URL de la primera imagen
+ *   quantity: number,
+ * }
+ */
+
+const CART_STORAGE_KEY = 'homelife_cart';
+
+const loadCartFromStorage = () => {
+  try {
+    const stored = localStorage.getItem(CART_STORAGE_KEY);
+    return stored ? JSON.parse(stored) : [];
+  } catch {
+    return [];
+  }
+};
+
+const saveCartToStorage = (items) => {
+  try {
+    localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(items));
+  } catch (err) {
+    console.error('Error guardando carrito:', err);
   }
 };
 
 export const CartProvider = ({ children }) => {
-  const [cart, dispatch] = useReducer(cartReducer, [], () => {
-    const savedCart = localStorage.getItem('homelife_cart');
-    return savedCart ? JSON.parse(savedCart) : [];
-  });
+  const [cartItems, setCartItems] = useState(loadCartFromStorage);
+  const [isCartLoading, setIsCartLoading] = useState(false);
+  const [cartError, setCartError] = useState(null);
 
+  // Persistir en localStorage cuando cambia
   useEffect(() => {
-    localStorage.setItem('homelife_cart', JSON.stringify(cart));
-  }, [cart]);
+    saveCartToStorage(cartItems);
+  }, [cartItems]);
 
-  const addItem = (product, quantity = 1) => {
-    dispatch({ type: 'ADD_ITEM', payload: { ...product, quantity } });
-  };
+  /**
+   * Agrega un producto al carrito
+   * @param {number|string} productId - ID del producto
+   * @param {number} quantity - Cantidad a agregar (default 1)
+   * @param {Object} productData - Datos del producto (name, price, images, etc)
+   */
+  const addToCart = useCallback(async (productId, quantity = 1, productData = null) => {
+    try {
+      setIsCartLoading(true);
+      setCartError(null);
 
-  const removeItem = (productId) => {
-    dispatch({ type: 'REMOVE_ITEM', payload: productId });
-  };
+      const id = String(productId);
+      console.log(`➕ Agregando producto ${id} x${quantity} al carrito`);
 
-  const updateQuantity = (productId, quantity) => {
-    if (quantity <= 0) {
-      removeItem(productId);
-    } else {
-      dispatch({ type: 'UPDATE_QUANTITY', payload: { id: productId, quantity } });
+      setCartItems(prev => {
+        const existingIndex = prev.findIndex(item => String(item.id) === id);
+        
+        if (existingIndex >= 0) {
+          // Ya existe: sumar cantidad
+          const updated = [...prev];
+          updated[existingIndex] = {
+            ...updated[existingIndex],
+            quantity: updated[existingIndex].quantity + quantity,
+          };
+          return updated;
+        }
+        
+        // Nuevo item
+        const newItem = {
+          id: id,
+          name: productData?.name || `Producto ${id}`,
+          price: productData?.price || 0,
+          originalPrice: productData?.originalPrice || productData?.price || 0,
+          image: productData?.images?.[0] || '',
+          quantity: quantity,
+        };
+        
+        return [...prev, newItem];
+      });
+
+      console.log('✅ Producto agregado al carrito');
+      return true;
+    } catch (err) {
+      console.error('❌ Error al agregar:', err);
+      setCartError(err.message);
+      return false;
+    } finally {
+      setIsCartLoading(false);
     }
+  }, []);
+
+  /**
+   * Actualiza la cantidad de un item en el carrito
+   * @param {string} itemId - ID del producto
+   * @param {number} newQuantity - Nueva cantidad
+   */
+  const updateQuantity = useCallback(async (itemId, newQuantity) => {
+    try {
+      setIsCartLoading(true);
+      setCartError(null);
+
+      if (newQuantity <= 0) {
+        // Eliminar si llega a 0
+        setCartItems(prev => prev.filter(item => String(item.id) !== String(itemId)));
+      } else {
+        setCartItems(prev =>
+          prev.map(item =>
+            String(item.id) === String(itemId)
+              ? { ...item, quantity: newQuantity }
+              : item
+          )
+        );
+      }
+
+      return true;
+    } catch (err) {
+      console.error('❌ Error al actualizar:', err);
+      setCartError(err.message);
+      return false;
+    } finally {
+      setIsCartLoading(false);
+    }
+  }, []);
+
+  /**
+   * Elimina un item del carrito
+   * @param {string} itemId - ID del producto
+   */
+  const removeFromCart = useCallback(async (itemId) => {
+    try {
+      setIsCartLoading(true);
+      setCartError(null);
+
+      console.log(`🗑️ Eliminando item ${itemId}`);
+      setCartItems(prev => prev.filter(item => String(item.id) !== String(itemId)));
+      console.log('✅ Item eliminado');
+      return true;
+    } catch (err) {
+      console.error('❌ Error al eliminar:', err);
+      setCartError(err.message);
+      return false;
+    } finally {
+      setIsCartLoading(false);
+    }
+  }, []);
+
+  /**
+   * Vacía el carrito completamente
+   */
+  const clearCart = useCallback(async () => {
+    try {
+      setIsCartLoading(true);
+      setCartError(null);
+      setCartItems([]);
+      console.log('✅ Carrito vaciado');
+      return true;
+    } catch (err) {
+      console.error('❌ Error al vaciar carrito:', err);
+      setCartError(err.message);
+      return false;
+    } finally {
+      setIsCartLoading(false);
+    }
+  }, []);
+
+  /**
+   * Información calculada del carrito
+   */
+  const cartInfo = {
+    items: cartItems,
+    itemsCount: cartItems.reduce((sum, item) => sum + item.quantity, 0),
+    cartSubtotal: cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0),
+    cartTotal: cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0),
+    cartTax: 0,
+    isEmpty: cartItems.length === 0,
   };
 
-  const clearCart = () => {
-    dispatch({ type: 'CLEAR_CART' });
-  };
-
-  const getSubtotal = () => {
-    return cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  };
-
-  const getTotalItems = () => {
-    return cart.reduce((sum, item) => sum + item.quantity, 0);
+  const value = {
+    cart: cartItems,
+    cartInfo,
+    isCartLoading,
+    cartError,
+    addToCart,
+    updateQuantity,
+    removeFromCart,
+    clearCart,
+    fetchCart: () => {}, // no-op, cart is local
+    goToCheckout: () => { window.location.href = '/checkout'; },
   };
 
   return (
-    <CartContext.Provider
-      value={{
-        cart,
-        addItem,
-        removeItem,
-        updateQuantity,
-        clearCart,
-        getSubtotal,
-        getTotalItems,
-      }}
-    >
+    <CartContext.Provider value={value}>
       {children}
     </CartContext.Provider>
   );
 };
 
+/**
+ * Hook personalizado para usar el contexto del carrito
+ */
 export const useCart = () => {
   const context = useContext(CartContext);
-  
-  // Si no hay contexto, retornar valores por defecto
+
   if (!context) {
     if (process.env.NODE_ENV === 'development') {
       console.warn('useCart debe ser usado dentro de un CartProvider');
     }
-    
+
     return {
       cart: [],
-      addItem: () => {},
-      removeItem: () => {},
-      updateQuantity: () => {},
-      clearCart: () => {},
-      getSubtotal: () => 0,
-      getTotalItems: () => 0,
+      cartInfo: {
+        items: [],
+        itemsCount: 0,
+        cartSubtotal: 0,
+        cartTotal: 0,
+        cartTax: 0,
+        isEmpty: true,
+      },
+      isCartLoading: false,
+      cartError: null,
+      addToCart: async () => false,
+      updateQuantity: async () => false,
+      removeFromCart: async () => false,
+      clearCart: async () => false,
+      fetchCart: () => {},
+      goToCheckout: () => {},
     };
   }
-  
+
   return context;
 };

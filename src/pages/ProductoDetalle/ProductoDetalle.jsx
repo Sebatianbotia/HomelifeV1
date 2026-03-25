@@ -8,7 +8,7 @@ import './ProductoDetalle.css';
 const ProductoDetalle = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { addItem } = useCart();
+  const { addToCart, isCartLoading } = useCart();
   const { obtenerProductoPorId, obtenerProductosPorIds, productos } = useProducts();
 
   const [product, setProduct] = useState(null);
@@ -18,6 +18,7 @@ const ProductoDetalle = () => {
   const [activeTab, setActiveTab] = useState('specs');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [addedToCart, setAddedToCart] = useState(false);
 
   useEffect(() => {
     const cargarProducto = async () => {
@@ -97,9 +98,14 @@ const ProductoDetalle = () => {
     }
   };
 
-  const handleAddToCart = () => {
+
+  const handleAddToCart = async () => {
     if (product.inStock) {
-      addItem(product, quantity);
+      const success = await addToCart(product.id, quantity, product);
+      if (success) {
+        setAddedToCart(true);
+        setTimeout(() => setAddedToCart(false), 2000);
+      }
     }
   };
 
@@ -216,16 +222,16 @@ const ProductoDetalle = () => {
                 <button className="quantity-btn" onClick={increaseQuantity} disabled={quantity >= product.stock}>+</button>
               </div>
               <button
-                className="add-to-cart-btn-large"
+                className={`add-to-cart-btn-large ${addedToCart ? 'added' : ''}`}
                 onClick={handleAddToCart}
-                disabled={!product.inStock}
+                disabled={!product.inStock || isCartLoading}
               >
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <circle cx="9" cy="21" r="1"></circle>
                   <circle cx="20" cy="21" r="1"></circle>
                   <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
                 </svg>
-                {product.inStock ? 'Agregar al Carrito' : 'Agotado'}
+                {isCartLoading ? 'Agregando...' : addedToCart ? '¡Agregado! ✓' : product.inStock ? 'Agregar al Carrito' : 'Agotado'}
               </button>
             </div>
 

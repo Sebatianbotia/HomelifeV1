@@ -13,6 +13,8 @@ import Distribuidores from './pages/Distribuidores/Distribuidores';
 import Cuenta from './pages/Cuenta/Cuenta';
 import Auth from './pages/Auth/Auth';
 import Carrito from './pages/Carrito/Carrito';
+import Checkout from './pages/Checkout/Checkout';
+import Gracias from './pages/Gracias/Gracias';
 import RegistroEquipo from './pages/RegistroEquipo/RegistroEquipo';
 import FAQ from './pages/FAQ/FAQ';
 import Politicas from './pages/Legal/Politicas';
@@ -32,6 +34,8 @@ export const router = createBrowserRouter([
       { path: 'cuenta', element: <Cuenta /> },
       { path: 'auth', element: <Auth /> },
       { path: 'carrito', element: <Carrito /> },
+      { path: 'checkout', element: <Checkout /> },
+      { path: 'gracias', element: <Gracias /> },
       { path: 'contacto', element: <RegistroEquipo /> },
       { path: 'faq', element: <FAQ /> },
       { path: 'politicas', element: <Politicas /> },

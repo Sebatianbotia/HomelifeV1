@@ -3,22 +3,75 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import './Auth.css';
 
+// Departamentos de Colombia (código WooCommerce → nombre)
+const DEPARTAMENTOS = [
+  { code: '', label: 'Selecciona departamento' },
+  { code: 'AMA', label: 'Amazonas' },
+  { code: 'ANT', label: 'Antioquia' },
+  { code: 'ARA', label: 'Arauca' },
+  { code: 'ATL', label: 'Atlántico' },
+  { code: 'BOL', label: 'Bolívar' },
+  { code: 'BOY', label: 'Boyacá' },
+  { code: 'CAL', label: 'Caldas' },
+  { code: 'CAQ', label: 'Caquetá' },
+  { code: 'CAS', label: 'Casanare' },
+  { code: 'CAU', label: 'Cauca' },
+  { code: 'CES', label: 'Cesar' },
+  { code: 'CHO', label: 'Chocó' },
+  { code: 'COR', label: 'Córdoba' },
+  { code: 'CUN', label: 'Cundinamarca' },
+  { code: 'DC', label: 'Bogotá D.C.' },
+  { code: 'GUA', label: 'Guainía' },
+  { code: 'GUV', label: 'Guaviare' },
+  { code: 'HUI', label: 'Huila' },
+  { code: 'LAG', label: 'La Guajira' },
+  { code: 'MAG', label: 'Magdalena' },
+  { code: 'MET', label: 'Meta' },
+  { code: 'NAR', label: 'Nariño' },
+  { code: 'NSA', label: 'Norte de Santander' },
+  { code: 'PUT', label: 'Putumayo' },
+  { code: 'QUI', label: 'Quindío' },
+  { code: 'RIS', label: 'Risaralda' },
+  { code: 'SAP', label: 'San Andrés y Providencia' },
+  { code: 'SAN', label: 'Santander' },
+  { code: 'SUC', label: 'Sucre' },
+  { code: 'TOL', label: 'Tolima' },
+  { code: 'VAC', label: 'Valle del Cauca' },
+  { code: 'VAU', label: 'Vaupés' },
+  { code: 'VID', label: 'Vichada' },
+];
+
+const EMPTY_ADDRESS = {
+  first_name: '',
+  last_name: '',
+  address_1: '',
+  address_2: '',
+  city: '',
+  postcode: '',
+  country: 'CO',
+  state: '',
+  phone: '',
+};
+
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
-  const [formData, setFormData] = useState({
+
+  // Account fields
+  const [account, setAccount] = useState({
     username: '',
     email: '',
     password: '',
     confirmPassword: '',
     first_name: '',
     last_name: '',
-    billing: {
-      address_1: '',
-      city: '',
-      country: ''
-    }
+    cc: '',
   });
-  const [showBilling, setShowBilling] = useState(false);
+
+  // Billing & Shipping
+  const [billing, setBilling] = useState({ ...EMPTY_ADDRESS, email: '' });
+  const [shipping, setShipping] = useState({ ...EMPTY_ADDRESS });
+  const [sameAsBilling, setSameAsBilling] = useState(true);
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -26,23 +79,60 @@ const Auth = () => {
   const { login, register: registerUser, error: authError } = useAuth();
   const navigate = useNavigate();
 
-  const handleInputChange = (e) => {
+  // Generic handler for account fields
+  const handleAccountChange = (e) => {
     const { name, value } = e.target;
-    
-    // Handle nested billing fields
-    if (name.startsWith('billing_')) {
-      const billingField = name.replace('billing_', '');
-      setFormData(prev => ({
-        ...prev,
-        billing: {
-          ...prev.billing,
-          [billingField]: value
-        }
-      }));
-    } else {
-      setFormData(prev => ({ ...prev, [name]: value }));
+    setAccount(prev => ({ ...prev, [name]: value }));
+    setError('');
+  };
+
+  // Generic handler for billing fields
+  const handleBillingChange = (e) => {
+    const { name, value } = e.target;
+    setBilling(prev => ({ ...prev, [name]: value }));
+    setError('');
+  };
+
+  // Generic handler for shipping fields
+  const handleShippingChange = (e) => {
+    const { name, value } = e.target;
+    setShipping(prev => ({ ...prev, [name]: value }));
+    setError('');
+  };
+
+  // Validation
+  const validateRegistration = () => {
+    // Account
+    if (!account.first_name.trim()) return 'El nombre es requerido';
+    if (!account.last_name.trim()) return 'El apellido es requerido';
+    if (!account.username.trim()) return 'El usuario es requerido';
+    if (!account.cc.trim()) return 'La Cédula / NIT es requerida';
+    if (!account.email.trim()) return 'El correo electrónico es requerido';
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(account.email)) return 'El correo electrónico no es válido';
+    if (!account.password) return 'La contraseña es requerida';
+    if (account.password.length < 6) return 'La contraseña debe tener al menos 6 caracteres';
+    if (account.password !== account.confirmPassword) return 'Las contraseñas no coinciden';
+
+    // Billing required fields
+    if (!billing.first_name.trim()) return 'Nombre de facturación es requerido';
+    if (!billing.last_name.trim()) return 'Apellido de facturación es requerido';
+    if (!billing.address_1.trim()) return 'Dirección de facturación es requerida';
+    if (!billing.city.trim()) return 'Ciudad de facturación es requerida';
+    if (!billing.state) return 'Departamento de facturación es requerido';
+    if (!billing.phone.trim()) return 'Teléfono de facturación es requerido';
+
+    // Shipping (only if not same as billing)
+    if (!sameAsBilling) {
+      if (!shipping.first_name.trim()) return 'Nombre de envío es requerido';
+      if (!shipping.last_name.trim()) return 'Apellido de envío es requerido';
+      if (!shipping.address_1.trim()) return 'Dirección de envío es requerida';
+      if (!shipping.city.trim()) return 'Ciudad de envío es requerida';
+      if (!shipping.state) return 'Departamento de envío es requerido';
+      if (!shipping.phone.trim()) return 'Teléfono de envío es requerido';
     }
-    setError(''); // Clear error on change
+
+    return null;
   };
 
   const handleSubmit = async (e) => {
@@ -52,62 +142,78 @@ const Auth = () => {
 
     try {
       if (isLogin) {
-        // Validation
-        if (!formData.username || !formData.password) {
+        if (!account.username || !account.password) {
           throw new Error('Por favor completa todos los campos.');
         }
-        
-        const success = await login(formData.username, formData.password);
-        
-        if (success) {
+
+        const loginSuccess = await login(account.username, account.password);
+
+        if (loginSuccess) {
           navigate('/cuenta');
         } else {
           throw new Error(authError || 'Error al iniciar sesión');
         }
       } else {
-        // Register Validation
-        if (!formData.first_name || !formData.last_name || !formData.username || !formData.email || !formData.password) {
-          throw new Error('Por favor completa todos los campos obligatorios.');
-        }
-        if (formData.password !== formData.confirmPassword) {
-          throw new Error('Las contraseñas no coinciden.');
-        }
-        if (formData.password.length < 6) {
-          throw new Error('La contraseña debe tener al menos 6 caracteres.');
+        // Validate registration
+        const validationError = validateRegistration();
+        if (validationError) {
+          throw new Error(validationError);
         }
 
-        // Prepare registration data
-        const registrationData = {
-          username: formData.username,
-          email: formData.email,
-          password: formData.password,
-          first_name: formData.first_name,
-          last_name: formData.last_name,
+        // Build shipping data
+        let shippingData;
+        if (sameAsBilling) {
+          shippingData = { ...billing };
+          delete shippingData.email; // Shipping no usa email en WooCommerce
+        } else {
+          shippingData = { ...shipping };
+        }
+
+        // Build WooCommerce-native payload
+        const payload = {
+          username: account.username.trim(),
+          email: account.email.trim(),
+          password: account.password,
+          first_name: account.first_name.trim(),
+          last_name: account.last_name.trim(),
+          cc: account.cc.trim(),
+          billing: {
+            first_name: billing.first_name.trim(),
+            last_name: billing.last_name.trim(),
+            address_1: billing.address_1.trim(),
+            address_2: billing.address_2.trim(),
+            city: billing.city.trim(),
+            postcode: billing.postcode.trim(),
+            country: 'CO',
+            state: billing.state,
+            phone: billing.phone.trim(),
+            email: billing.email.trim() || account.email.trim(),
+          },
+          shipping: {
+            first_name: shippingData.first_name.trim(),
+            last_name: shippingData.last_name.trim(),
+            address_1: shippingData.address_1.trim(),
+            address_2: (shippingData.address_2 || '').trim(),
+            city: shippingData.city.trim(),
+            postcode: (shippingData.postcode || '').trim(),
+            country: 'CO',
+            state: shippingData.state,
+            phone: (shippingData.phone || '').trim(),
+          },
         };
 
-        // Add billing if user filled it
-        if (showBilling && (formData.billing.address_1 || formData.billing.city || formData.billing.country)) {
-          registrationData.billing = formData.billing;
-        }
+        console.log('📦 Payload de registro:', payload);
 
-        const success = await registerUser(registrationData);
+        const regSuccess = await registerUser(payload);
 
-        if (success) {
+        if (regSuccess) {
           setSuccess('¡Registro exitoso! Ya puedes iniciar sesión.');
-          setIsLogin(true); // Switch to login
-          setFormData({
-            username: '',
-            email: '',
-            password: '',
-            confirmPassword: '',
-            first_name: '',
-            last_name: '',
-            billing: {
-              address_1: '',
-              city: '',
-              country: ''
-            }
-          });
+          setIsLogin(true);
+          // Reset
+          setAccount({ username: '', email: '', password: '', confirmPassword: '', first_name: '', last_name: '', cc: '' });
+          setBilling({ ...EMPTY_ADDRESS, email: '' });
+          setShipping({ ...EMPTY_ADDRESS });
+          setSameAsBilling(true);
         } else {
           throw new Error(authError || 'Error al registrar usuario');
         }
@@ -119,19 +225,89 @@ const Auth = () => {
     }
   };
 
+  // Pre-fill billing name when account name changes
+  const handleFirstNameBlur = () => {
+    if (!billing.first_name && account.first_name) {
+      setBilling(prev => ({ ...prev, first_name: account.first_name }));
+    }
+  };
+  const handleLastNameBlur = () => {
+    if (!billing.last_name && account.last_name) {
+      setBilling(prev => ({ ...prev, last_name: account.last_name }));
+    }
+  };
+
+  // Render an address section (billing or shipping)
+  const renderAddressSection = (title, icon, data, onChange, prefix) => (
+    <div className="register-section">
+      <h3 className="register-section-title">
+        {icon}
+        {title}
+      </h3>
+      <div className="register-grid">
+        <div className="reg-field">
+          <label>Nombre *</label>
+          <input type="text" name="first_name" value={data.first_name} onChange={onChange} placeholder="Juan" disabled={loading} />
+        </div>
+        <div className="reg-field">
+          <label>Apellido *</label>
+          <input type="text" name="last_name" value={data.last_name} onChange={onChange} placeholder="Pérez" disabled={loading} />
+        </div>
+        <div className="reg-field">
+          <label>Teléfono *</label>
+          <input type="tel" name="phone" value={data.phone} onChange={onChange} placeholder="313 401 2845" disabled={loading} />
+        </div>
+        <div className="reg-field full">
+          <label>Dirección *</label>
+          <input type="text" name="address_1" value={data.address_1} onChange={onChange} placeholder="Carrera 48 #101A-09" disabled={loading} />
+        </div>
+        <div className="reg-field full">
+          <label>Complemento</label>
+          <input type="text" name="address_2" value={data.address_2} onChange={onChange} placeholder="Apto, casa, bodega (opcional)" disabled={loading} />
+        </div>
+        <div className="reg-field">
+          <label>Ciudad *</label>
+          <input type="text" name="city" value={data.city} onChange={onChange} placeholder="Bogotá" disabled={loading} />
+        </div>
+        <div className="reg-field">
+          <label>Departamento *</label>
+          <select name="state" value={data.state} onChange={onChange} disabled={loading}>
+            {DEPARTAMENTOS.map(d => (
+              <option key={d.code} value={d.code}>{d.label}</option>
+            ))}
+          </select>
+        </div>
+        <div className="reg-field">
+          <label>Código Postal</label>
+          <input type="text" name="postcode" value={data.postcode} onChange={onChange} placeholder="110111" disabled={loading} />
+        </div>
+        <div className="reg-field">
+          <label>País</label>
+          <input type="text" value="Colombia" disabled className="field-disabled" />
+        </div>
+        {prefix === 'billing' && (
+          <div className="reg-field full">
+            <label>Correo de facturación</label>
+            <input type="email" name="email" value={data.email} onChange={onChange} placeholder="Mismo correo de la cuenta si se deja vacío" disabled={loading} />
+          </div>
+        )}
+      </div>
+    </div>
+  );
+
   return (
     <div className="auth-page">
-      <div className="auth-container">
+      <div className={`auth-container ${!isLogin ? 'register-mode' : ''}`}>
         <div className="auth-card">
           <div className="auth-header">
             <div className="auth-tabs">
-              <button 
+              <button
                 className={`auth-tab ${isLogin ? 'active' : ''}`}
                 onClick={() => setIsLogin(true)}
               >
                 Iniciar Sesión
               </button>
-              <button 
+              <button
                 className={`auth-tab ${!isLogin ? 'active' : ''}`}
                 onClick={() => setIsLogin(false)}
               >
@@ -145,8 +321,8 @@ const Auth = () => {
               {isLogin ? 'Bienvenido de nuevo' : 'Crea tu cuenta'}
             </h2>
             <p className="auth-subtitle">
-              {isLogin 
-                ? 'Ingresa tus credenciales para acceder a tu panel.' 
+              {isLogin
+                ? 'Ingresa tus credenciales para acceder a tu panel.'
                 : 'Únete a nuestra comunidad y maneja tus equipos médicos.'}
             </p>
 
@@ -154,174 +330,158 @@ const Auth = () => {
             {success && <div className="auth-success">{success}</div>}
 
             <form onSubmit={handleSubmit} className="auth-form">
-              {!isLogin && (
+              {/* ═══ LOGIN ═══ */}
+              {isLogin && (
                 <>
                   <div className="form-group">
-                    <label htmlFor="first_name">Nombre</label>
+                    <label htmlFor="login-username">Usuario</label>
                     <input
                       type="text"
-                      id="first_name"
-                      name="first_name"
-                      placeholder="Ej. Juan"
-                      value={formData.first_name}
-                      onChange={handleInputChange}
-                      required
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <label htmlFor="last_name">Apellido</label>
-                    <input
-                      type="text"
-                      id="last_name"
-                      name="last_name"
-                      placeholder="Ej. Pérez"
-                      value={formData.last_name}
-                      onChange={handleInputChange}
-                      required
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <label htmlFor="username">Usuario</label>
-                    <input
-                      type="text"
-                      id="username"
+                      id="login-username"
                       name="username"
-                      placeholder="Nombre de usuario"
-                      value={formData.username}
-                      onChange={handleInputChange}
+                      placeholder="Nombre de usuario o email"
+                      value={account.username}
+                      onChange={handleAccountChange}
                       required
                     />
                   </div>
-
                   <div className="form-group">
-                    <label htmlFor="email">Correo Electrónico</label>
+                    <label htmlFor="login-password">Contraseña</label>
                     <input
-                      type="email"
-                      id="email"
-                      name="email"
-                      placeholder="usuario@ejemplo.com"
-                      value={formData.email}
-                      onChange={handleInputChange}
+                      type="password"
+                      id="login-password"
+                      name="password"
+                      placeholder="••••••••"
+                      value={account.password}
+                      onChange={handleAccountChange}
                       required
                     />
+                  </div>
+                  <div className="auth-options">
+                    <label className="remember-me">
+                      <input type="checkbox" /> Recordarme
+                    </label>
+                    <button type="button" className="forgot-password">
+                      ¿Olvidaste tu contraseña?
+                    </button>
                   </div>
                 </>
               )}
 
-              {isLogin && (
-                <div className="form-group">
-                  <label htmlFor="username">Usuario</label>
-                  <input
-                    type="text"
-                    id="username"
-                    name="username"
-                    placeholder="Nombre de usuario o email"
-                    value={formData.username}
-                    onChange={handleInputChange}
-                    required
-                  />
-                </div>
-              )}
-
-              <div className="form-group">
-                <label htmlFor="password">Contraseña</label>
-                <input
-                  type="password"
-                  id="password"
-                  name="password"
-                  placeholder="••••••••"
-                  value={formData.password}
-                  onChange={handleInputChange}
-                  required
-                />
-              </div>
-
-              {!isLogin && (
-                <div className="form-group">
-                  <label htmlFor="confirmPassword">Confirmar Contraseña</label>
-                  <input
-                    type="password"
-                    id="confirmPassword"
-                    name="confirmPassword"
-                    placeholder="••••••••"
-                    value={formData.confirmPassword}
-                    onChange={handleInputChange}
-                    required
-                  />
-                </div>
-              )}
-
+              {/* ═══ REGISTER ═══ */}
               {!isLogin && (
                 <>
-                  <div className="form-divider">
-                    <button
-                      type="button"
-                      className="billing-toggle"
-                      onClick={() => setShowBilling(!showBilling)}
-                    >
-                      {showBilling ? '▼' : '▶'} Datos de Facturación (Opcional)
-                    </button>
-                  </div>
-
-                  {showBilling && (
-                    <div className="billing-section">
-                      <div className="form-group">
-                        <label htmlFor="address_1">Dirección</label>
+                  {/* Section 1: Account Data */}
+                  <div className="register-section">
+                    <h3 className="register-section-title">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                        <circle cx="12" cy="7" r="4" />
+                      </svg>
+                      Datos de Cuenta
+                    </h3>
+                    <div className="register-grid">
+                      <div className="reg-field">
+                        <label>Nombre *</label>
                         <input
-                          type="text"
-                          id="address_1"
-                          name="billing_address_1"
-                          placeholder="Ej. Calle Falsa 123"
-                          value={formData.billing.address_1}
-                          onChange={handleInputChange}
+                          type="text" name="first_name" value={account.first_name}
+                          onChange={handleAccountChange} onBlur={handleFirstNameBlur}
+                          placeholder="Juan" disabled={loading}
                         />
                       </div>
-
-                      <div className="form-row">
-                        <div className="form-group">
-                          <label htmlFor="city">Ciudad</label>
-                          <input
-                            type="text"
-                            id="city"
-                            name="billing_city"
-                            placeholder="Ej. Madrid"
-                            value={formData.billing.city}
-                            onChange={handleInputChange}
-                          />
-                        </div>
-
-                        <div className="form-group">
-                          <label htmlFor="country">País</label>
-                          <input
-                            type="text"
-                            id="country"
-                            name="billing_country"
-                            placeholder="Ej. ES"
-                            value={formData.billing.country}
-                            onChange={handleInputChange}
-                          />
-                        </div>
+                      <div className="reg-field">
+                        <label>Apellido *</label>
+                        <input
+                          type="text" name="last_name" value={account.last_name}
+                          onChange={handleAccountChange} onBlur={handleLastNameBlur}
+                          placeholder="Pérez" disabled={loading}
+                        />
+                      </div>
+                      <div className="reg-field">
+                        <label>Cédula / NIT *</label>
+                        <input
+                          type="text" name="cc" value={account.cc}
+                          onChange={handleAccountChange}
+                          placeholder="Identificación" disabled={loading}
+                        />
+                      </div>
+                      <div className="reg-field">
+                        <label>Usuario *</label>
+                        <input
+                          type="text" name="username" value={account.username}
+                          onChange={handleAccountChange}
+                          placeholder="juanperez99" disabled={loading}
+                        />
+                      </div>
+                      <div className="reg-field">
+                        <label>Correo Electrónico *</label>
+                        <input
+                          type="email" name="email" value={account.email}
+                          onChange={handleAccountChange}
+                          placeholder="juan@ejemplo.com" disabled={loading}
+                        />
+                      </div>
+                      <div className="reg-field">
+                        <label>Contraseña *</label>
+                        <input
+                          type="password" name="password" value={account.password}
+                          onChange={handleAccountChange}
+                          placeholder="Mínimo 6 caracteres" disabled={loading}
+                        />
+                      </div>
+                      <div className="reg-field">
+                        <label>Confirmar Contraseña *</label>
+                        <input
+                          type="password" name="confirmPassword" value={account.confirmPassword}
+                          onChange={handleAccountChange}
+                          placeholder="Repite la contraseña" disabled={loading}
+                        />
                       </div>
                     </div>
+                  </div>
+
+                  {/* Section 2: Billing */}
+                  {renderAddressSection(
+                    'Datos de Facturación',
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <rect x="1" y="4" width="22" height="16" rx="2" />
+                      <line x1="1" y1="10" x2="23" y2="10" />
+                    </svg>,
+                    billing,
+                    handleBillingChange,
+                    'billing'
+                  )}
+
+                  {/* Checkbox: same as billing */}
+                  <label className="same-address-check">
+                    <input
+                      type="checkbox"
+                      checked={sameAsBilling}
+                      onChange={(e) => setSameAsBilling(e.target.checked)}
+                      disabled={loading}
+                    />
+                    <span className="check-custom"></span>
+                    <span>Enviar a la misma dirección de facturación</span>
+                  </label>
+
+                  {/* Section 3: Shipping (only if different) */}
+                  {!sameAsBilling && renderAddressSection(
+                    'Datos de Envío',
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <rect x="1" y="3" width="15" height="13" />
+                      <polygon points="16 8 20 8 23 11 23 16 16 16 16 8" />
+                      <circle cx="5.5" cy="18.5" r="2.5" />
+                      <circle cx="18.5" cy="18.5" r="2.5" />
+                    </svg>,
+                    shipping,
+                    handleShippingChange,
+                    'shipping'
                   )}
                 </>
               )}
 
-              {isLogin && (
-                <div className="auth-options">
-                  <label className="remember-me">
-                    <input type="checkbox" /> Recordarme
-                  </label>
-                  <button type="button" className="forgot-password">
-                    ¿Olvidaste tu contraseña?
-                  </button>
-                </div>
-              )}
-
-              <button 
-                type="submit" 
+              <button
+                type="submit"
                 className={`auth-submit-btn ${loading ? 'loading' : ''}`}
                 disabled={loading}
               >
@@ -329,34 +489,30 @@ const Auth = () => {
               </button>
             </form>
 
-            <div className="auth-divider">
-              <span>O continúa con</span>
-            </div>
-
-            <div className="social-auth">
-              <button 
-                className="social-btn google"
-                onClick={() => authService.socialLogin('Google')}
-              >
-                <svg viewBox="0 0 24 24" width="20" height="20">
-                  <path fill="#EA4335" d="M12 5.04c1.94 0 3.51.68 4.79 1.9L20.5 3.25C18.23 1.13 15.34 0 12 0 7.31 0 3.25 2.68 1.25 6.63l4.31 3.34c1-2.98 3.79-4.93 6.44-4.93z"/>
-                  <path fill="#FBBC05" d="M1.25 6.63C.45 8.21 0 9.99 0 12c0 2.01.45 3.79 1.25 5.37l4.31-3.34c-.26-.63-.44-1.33-.44-2.03 0-.7.18-1.4.44-2.03L1.25 6.63z"/>
-                  <path fill="#4285F4" d="M12 24c3.24 0 5.96-1.07 7.95-2.91l-3.83-2.97c-.89.58-2.02.94-3.32.94-2.55 0-4.71-1.73-5.48-4.06l-4.31 3.34C3.25 21.32 7.31 24 12 24z"/>
-                  <path fill="#34A853" d="M12 24l-4.31-3.34C6.92 18.6 6.09 16.41 6 14.07l-4.31 3.34C3.25 21.32 7.31 24 12 24z" opacity=".1"/>
-                  <path fill="#34A853" d="M22.25 10.5H12v4.5h5.92c-.26 1.34-1.02 2.47-2.16 3.23l3.83 2.97C22.06 18.9 24 15.75 24 12c0-.52-.05-1.03-.14-1.5h-1.61z"/>
-                </svg>
-                Google
-              </button>
-              <button 
-                className="social-btn facebook"
-                onClick={() => authService.socialLogin('Facebook')}
-              >
-                <svg viewBox="0 0 24 24" width="20" height="20" fill="#1877F2">
-                  <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-                </svg>
-                Facebook
-              </button>
-            </div>
+            {isLogin && (
+              <>
+                <div className="auth-divider">
+                  <span>O continúa con</span>
+                </div>
+                <div className="social-auth">
+                  <button className="social-btn google">
+                    <svg viewBox="0 0 24 24" width="20" height="20">
+                      <path fill="#EA4335" d="M12 5.04c1.94 0 3.51.68 4.79 1.9L20.5 3.25C18.23 1.13 15.34 0 12 0 7.31 0 3.25 2.68 1.25 6.63l4.31 3.34c1-2.98 3.79-4.93 6.44-4.93z"/>
+                      <path fill="#FBBC05" d="M1.25 6.63C.45 8.21 0 9.99 0 12c0 2.01.45 3.79 1.25 5.37l4.31-3.34c-.26-.63-.44-1.33-.44-2.03 0-.7.18-1.4.44-2.03L1.25 6.63z"/>
+                      <path fill="#4285F4" d="M12 24c3.24 0 5.96-1.07 7.95-2.91l-3.83-2.97c-.89.58-2.02.94-3.32.94-2.55 0-4.71-1.73-5.48-4.06l-4.31 3.34C3.25 21.32 7.31 24 12 24z"/>
+                      <path fill="#34A853" d="M22.25 10.5H12v4.5h5.92c-.26 1.34-1.02 2.47-2.16 3.23l3.83 2.97C22.06 18.9 24 15.75 24 12c0-.52-.05-1.03-.14-1.5h-1.61z"/>
+                    </svg>
+                    Google
+                  </button>
+                  <button className="social-btn facebook">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="#1877F2">
+                      <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                    </svg>
+                    Facebook
+                  </button>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>

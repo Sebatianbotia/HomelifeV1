@@ -206,6 +206,13 @@
   font-size: 0.9rem;
 }
 
+.link-zowl {
+  color: var(--cyan-400);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+
 .footer-legal {
   display: flex;
   gap: 28px;
@@ -234,30 +241,38 @@
     grid-template-columns: 1fr;
     text-align: center;
   }
+
   .footer-brand {
     max-width: 100%;
   }
+
   .footer-title::after {
     left: 50%;
     transform: translateX(-50%);
   }
+
   .footer-links {
     align-items: center;
   }
+
   .footer-link {
     justify-content: center;
   }
+
   .footer-contact-item {
     justify-content: center;
   }
+
   .footer-social {
     justify-content: center;
   }
+
   .footer-bottom {
     flex-direction: column;
     gap: 16px;
     text-align: center;
   }
+
   .footer-legal {
     flex-wrap: wrap;
     justify-content: center;

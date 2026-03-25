@@ -1,0 +1,141 @@
+/* src/pages/Gracias/Gracias.css */
+
+.gracias-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  padding: 40px 20px;
+}
+
+.gracias-card {
+  text-align: center;
+  max-width: 560px;
+  width: 100%;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl);
+  padding: 48px 40px;
+}
+
+.gracias-icon {
+  margin-bottom: 24px;
+}
+
+.gracias-icon svg {
+  color: var(--success);
+  filter: drop-shadow(0 0 20px rgba(0, 208, 132, 0.3));
+}
+
+.gracias-card h1 {
+  font-size: 2rem;
+  margin-bottom: 16px;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+
+.order-number {
+  font-size: 1.15rem;
+  color: var(--text-secondary);
+  margin-bottom: 12px;
+}
+
+.order-number strong {
+  color: var(--cyan-400);
+  font-weight: 700;
+}
+
+.order-message {
+  color: var(--text-secondary);
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 28px;
+}
+
+.order-message strong {
+  color: var(--text-primary);
+}
+
+.gracias-info {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 32px;
+  padding: 20px;
+  background: rgba(255,255,255,0.02);
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
+.info-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  text-align: left;
+  color: var(--text-secondary);
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+.info-item svg {
+  color: var(--cyan-400);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.gracias-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.gracias-btn {
+  padding: 14px 28px;
+  border-radius: 100px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-decoration: none;
+  transition: all 0.2s;
+  display: inline-block;
+}
+
+.gracias-btn.primary {
+  background: linear-gradient(135deg, var(--cyan-500), var(--cyan-600));
+  color: var(--deep-space);
+}
+
+.gracias-btn.primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0,217,217,0.35);
+}
+
+.gracias-btn.secondary {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: var(--text-secondary);
+}
+
+.gracias-btn.secondary:hover {
+  border-color: var(--cyan-500);
+  color: var(--cyan-400);
+  transform: translateY(-2px);
+}
+
+@media (max-width: 600px) {
+  .gracias-card {
+    padding: 32px 20px;
+  }
+
+  .gracias-card h1 {
+    font-size: 1.6rem;
+  }
+
+  .gracias-actions {
+    flex-direction: column;
+  }
+
+  .gracias-btn {
+    text-align: center;
+  }
+}

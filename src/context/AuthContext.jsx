@@ -3,7 +3,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const BASE_URL = import.meta.env.VITE_WP_URL;
+  const BASE_URL = import.meta.env.VITE_WP_URL || 'https://www.homelife.com.co';
 
   // Estados del Contexto de Autenticación
   const [user, setUser] = useState(null);
@@ -58,7 +58,6 @@ export const AuthProvider = ({ children }) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        credentials: 'include', // Incluir cookies si la API las devuelve
         body: JSON.stringify({
           username,
           password,
@@ -90,19 +89,31 @@ export const AuthProvider = ({ children }) => {
       console.log('✅ Respuesta completa del servidor:', data);
 
       // Transformar respuesta del servidor al formato esperado
+      const userObj = data.user || data;
+
       const userData = {
-        id: data.user_id,
-        username: data.username,
-        email: data.email,
-        name: data.display_name || `${data.first_name} ${data.last_name}`.trim(),
-        first_name: data.first_name,
-        last_name: data.last_name,
-        avatar_url: data.avatar_url,
-        billing: data.billing,
-        shipping: data.shipping,
+        id: userObj.id || userObj.user_id,
+        username: userObj.username,
+        email: userObj.email,
+        name: userObj.display_name || `${userObj.first_name || ''} ${userObj.last_name || ''}`.trim(),
+        first_name: userObj.first_name || '',
+        last_name: userObj.last_name || '',
+        cc: userObj.cc || '',
+        avatar_url: userObj.avatar_url,
+        billing: userObj.billing || {},
+        shipping: userObj.shipping || {},
+        token: data.token || data.jwt, // Guardar el token en el estado si se requiere
       };
 
       localStorage.setItem('homelife_user', JSON.stringify(userData));
+      
+      // Guardar específicamente el JWT en localStorage
+      if (data.token) {
+        localStorage.setItem('homelife_jwt', data.token);
+      } else if (data.jwt) {
+        localStorage.setItem('homelife_jwt', data.jwt);
+      }
+
       setUser(userData);
 
       setError(null);
@@ -145,12 +156,13 @@ export const AuthProvider = ({ children }) => {
         last_name,
         username,
         password,
+        cc,
         billing,
       } = userData;
 
       // Validaciones básicas
-      if (!email || !username || !password) {
-        setError('Email, username y password son requeridos');
+      if (!email || !username || !password || !cc) {
+        setError('Email, username, password y cédula son requeridos');
         setLoading(false);
         return false;
       }
@@ -161,6 +173,7 @@ export const AuthProvider = ({ children }) => {
         last_name: last_name || '',
         username,
         password,
+        cc,
       };
 
       if (billing) {
@@ -213,6 +226,7 @@ export const AuthProvider = ({ children }) => {
    */
   const logout = () => {
     localStorage.removeItem('homelife_user');
+    localStorage.removeItem('homelife_jwt');
     setUser(null);
     setError(null);
   };
@@ -240,22 +254,22 @@ export const AuthProvider = ({ children }) => {
  */
 export const useAuth = () => {
   const context = useContext(AuthContext);
-  
+
   if (!context) {
     if (process.env.NODE_ENV === 'development') {
       console.warn('useAuth debe ser usado dentro de un AuthProvider');
     }
-    
+
     return {
       user: null,
       loading: true,
       error: null,
       login: async () => false,
       register: async () => false,
-      logout: () => {},
+      logout: () => { },
       isAuthenticated: false,
     };
   }
-  
+
   return context;
 };

@@ -39,8 +39,8 @@ const Header = () => {
     window.location.reload();
   };
 
-  const { getTotalItems } = useCart();
-  const cartCount = getTotalItems();
+  const { cartInfo } = useCart();
+  const cartCount = cartInfo.itemsCount;
 
   useEffect(() => {
     const handleScroll = () => {

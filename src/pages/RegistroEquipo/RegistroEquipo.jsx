@@ -1,13 +1,19 @@
 import React, { useState, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { useProducts } from '../../context/ProductsContext';
+import { useAuth } from '../../context/AuthContext';
 import './RegistroEquipo.css';
 
 const RegistroEquipo = () => {
   const { register, handleSubmit, formState: { errors }, reset } = useForm();
   const { productos } = useProducts();
+  const { user } = useAuth();
   const [enviado, setEnviado] = useState(false);
   const [archivo, setArchivo] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [serverError, setServerError] = useState(null);
+
+  const BASE_URL = import.meta.env.VITE_WP_URL || 'https://www.homelife.com.co';
 
   // Obtener lista única de productos para el selector
   const productList = useMemo(() => {
@@ -18,17 +24,58 @@ const RegistroEquipo = () => {
     }));
   }, [productos]);
 
-  const onSubmit = (data) => {
-    // Aquí iría la llamada a la API
-    console.log('Datos del registro:', data);
-    console.log('Archivo:', archivo);
-    setEnviado(true);
-    // Resetear formulario después de 3 segundos
-    setTimeout(() => {
-      setEnviado(false);
-      reset();
-      setArchivo(null);
-    }, 3000);
+  const onSubmit = async (data) => {
+    setLoading(true);
+    setServerError(null);
+
+    const token = localStorage.getItem('homelife_jwt') || user?.token;
+
+    const formData = new FormData();
+    formData.append('nombre', data.nombre);
+    formData.append('email', data.email);
+    formData.append('telefono', data.telefono);
+    formData.append('ciudad', data.ciudad);
+    formData.append('direccion', data.direccion || '');
+    formData.append('lugarCompra', data.lugarCompra);
+    formData.append('fechaCompra', data.fechaCompra);
+    formData.append('producto_id', data.producto);
+    formData.append('serial', data.serial);
+    formData.append('mensaje', data.mensaje || '');
+    formData.append('acepta', data.acepta ? '1' : '0');
+
+    if (archivo) {
+      formData.append('factura', archivo);
+    }
+
+    try {
+      const response = await fetch(`${BASE_URL}/wp-json/homelife/v1/registrar-equipo`, {
+        method: 'POST',
+        headers: {
+          ...(token && { 'Authorization': `Bearer ${token}` })
+        },
+        body: formData,
+      });
+
+      const responseData = await response.json();
+
+      if (!response.ok || responseData.success === false) {
+        throw new Error(responseData.message || responseData.error || 'Error al registrar el equipo.');
+      }
+
+      setEnviado(true);
+
+      setTimeout(() => {
+        setEnviado(false);
+        reset();
+        setArchivo(null);
+      }, 5000);
+
+    } catch (err) {
+      console.error('Error registrando equipo:', err);
+      setServerError(err.message || 'Error de conexión. Inténtalo de nuevo.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleFileChange = (e) => {
@@ -55,6 +102,11 @@ const RegistroEquipo = () => {
             </div>
           ) : (
             <form onSubmit={handleSubmit(onSubmit)} className="registro-form">
+              {serverError && (
+                <div className="server-error" style={{ color: '#ff8a80', background: 'rgba(255, 82, 82, 0.1)', border: '1px solid rgba(255, 82, 82, 0.25)', padding: '15px', borderRadius: '8px', marginBottom: '20px' }}>
+                  <strong>Error: </strong> {serverError}
+                </div>
+              )}
               <div className="form-grid">
                 {/* Nombre completo */}
                 <div className="form-field">
@@ -64,6 +116,7 @@ const RegistroEquipo = () => {
                     id="nombre"
                     {...register('nombre', { required: 'El nombre es obligatorio' })}
                     placeholder="Ej: Juan Pérez"
+                    disabled={loading}
                   />
                   {errors.nombre && <span className="error-message">{errors.nombre.message}</span>}
                 </div>
@@ -82,6 +135,7 @@ const RegistroEquipo = () => {
                       }
                     })}
                     placeholder="ejemplo@correo.com"
+                    disabled={loading}
                   />
                   {errors.email && <span className="error-message">{errors.email.message}</span>}
                 </div>
@@ -100,6 +154,7 @@ const RegistroEquipo = () => {
                       }
                     })}
                     placeholder="300 123 4567"
+                    disabled={loading}
                   />
                   {errors.telefono && <span className="error-message">{errors.telefono.message}</span>}
                 </div>
@@ -112,6 +167,7 @@ const RegistroEquipo = () => {
                     id="ciudad"
                     {...register('ciudad', { required: 'La ciudad es obligatoria' })}
                     placeholder="Bogotá"
+                    disabled={loading}
                   />
                   {errors.ciudad && <span className="error-message">{errors.ciudad.message}</span>}
                 </div>
@@ -124,6 +180,7 @@ const RegistroEquipo = () => {
                     id="direccion"
                     {...register('direccion')}
                     placeholder="Calle 123 #45-67"
+                    disabled={loading}
                   />
                 </div>
 
@@ -135,6 +192,7 @@ const RegistroEquipo = () => {
                     id="lugarCompra"
                     {...register('lugarCompra', { required: 'El lugar de compra es obligatorio' })}
                     placeholder="Ej: Tienda online, Distribuidor autorizado"
+                    disabled={loading}
                   />
                   {errors.lugarCompra && <span className="error-message">{errors.lugarCompra.message}</span>}
                 </div>
@@ -146,6 +204,7 @@ const RegistroEquipo = () => {
                     type="date"
                     id="fechaCompra"
                     {...register('fechaCompra', { required: 'La fecha de compra es obligatoria' })}
+                    disabled={loading}
                   />
                   {errors.fechaCompra && <span className="error-message">{errors.fechaCompra.message}</span>}
                 </div>
@@ -156,6 +215,7 @@ const RegistroEquipo = () => {
                   <select
                     id="producto"
                     {...register('producto', { required: 'Debes seleccionar un producto' })}
+                    disabled={loading}
                   >
                     <option value="">Selecciona un producto</option>
                     {productList.map(product => (
@@ -175,6 +235,7 @@ const RegistroEquipo = () => {
                     id="serial"
                     {...register('serial', { required: 'El número de serie es obligatorio' })}
                     placeholder="Ej: HL-AB12C3"
+                    disabled={loading}
                   />
                   <small className="field-hint">Lo encuentras en la parte inferior del equipo.</small>
                   {errors.serial && <span className="error-message">{errors.serial.message}</span>}
@@ -186,10 +247,11 @@ const RegistroEquipo = () => {
                   <input
                     type="file"
                     id="factura"
-                    accept=".pdf,.jpg,.jpeg,.png"
+                    accept=".pdf"
                     onChange={handleFileChange}
+                    disabled={loading}
                   />
-                  <small className="field-hint">Formatos aceptados: PDF, JPG, PNG (máx 5MB)</small>
+                  <small className="field-hint">Formatos aceptados: Solo PDF (máx 5MB)</small>
                 </div>
 
                 {/* Mensaje adicional */}
@@ -200,6 +262,7 @@ const RegistroEquipo = () => {
                     rows="4"
                     {...register('mensaje')}
                     placeholder="Cuéntanos cualquier detalle adicional sobre tu equipo o consulta"
+                    disabled={loading}
                   ></textarea>
                 </div>
 
@@ -209,6 +272,7 @@ const RegistroEquipo = () => {
                     <input
                       type="checkbox"
                       {...register('acepta', { required: 'Debes aceptar las políticas de datos' })}
+                      disabled={loading}
                     />
                     <span>He leído y acepto la <a href="/politica-privacidad" target="_blank">política de tratamiento de datos</a>.</span>
                   </label>
@@ -217,7 +281,9 @@ const RegistroEquipo = () => {
               </div>
 
               <div className="form-actions">
-                <button type="submit" className="btn-submit">Registrar equipo</button>
+                <button type="submit" className="btn-submit" disabled={loading}>
+                  {loading ? 'Registrando...' : 'Registrar equipo'}
+                </button>
                 <p className="form-note">Los campos marcados con <span className="required">*</span> son obligatorios.</p>
               </div>
             </form>

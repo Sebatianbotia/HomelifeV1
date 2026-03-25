@@ -1,7 +1,69 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './Distribuidores.css';
 
+const BASE_URL = import.meta.env.VITE_WP_URL || 'https://www.homelife.com.co';
+
 const Distribuidores = () => {
+  const [formData, setFormData] = useState({
+    empresa: '',
+    contacto: '',
+    celular: '',
+    email: '',
+    asunto: '',
+    mensaje: ''
+  });
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState('');
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+    setSuccess(false);
+
+    try {
+      const response = await fetch(`${BASE_URL}/wp-json/homelife/v1/contacto-distribuidor`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      });
+
+      let data;
+      try {
+        data = await response.json();
+      } catch (parseError) {
+        throw new Error('Respuesta inválida del servidor (Error 500)');
+      }
+
+      if (!response.ok || data.success === false) {
+        throw new Error(data.message || data.error || 'Ocurrió un error al procesar la solicitud.');
+      }
+
+      setSuccess(true);
+      setFormData({
+        empresa: '',
+        contacto: '',
+        celular: '',
+        email: '',
+        asunto: '',
+        mensaje: ''
+      });
+
+    } catch (err) {
+      setError(err.message || 'Ocurrió un error al enviar el formulario. Intenta de nuevo.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="distribuidores-page">
       {/* Hero */}
@@ -14,37 +76,45 @@ const Distribuidores = () => {
         {/* Formulario */}
         <div className="distribuidores-form-card">
           <h2>Formulario de contacto</h2>
-          <form className="distribuidores-form">
+          
+          {error && <div className="alert alert-danger" style={{ color: 'red', marginBottom: '1rem', padding: '0.5rem', border: '1px solid red', borderRadius: '4px', backgroundColor: '#ffe6e6' }}>{error}</div>}
+          {success && <div className="alert alert-success" style={{ color: 'green', marginBottom: '1rem', padding: '0.5rem', border: '1px solid green', borderRadius: '4px', backgroundColor: '#e6ffe6' }}>¡Gracias! Hemos recibido tu solicitud y te contactaremos pronto.</div>}
+          
+          <form className="distribuidores-form" onSubmit={handleSubmit}>
             <div className="form-row">
               <div className="form-group">
                 <label htmlFor="empresa">Empresa <span>*</span></label>
-                <input type="text" id="empresa" name="empresa" required />
+                <input type="text" id="empresa" name="empresa" value={formData.empresa} onChange={handleChange} required disabled={loading} />
               </div>
               <div className="form-group">
                 <label htmlFor="contacto">Nombre del contacto <span>*</span></label>
-                <input type="text" id="contacto" name="contacto" required />
+                <input type="text" id="contacto" name="contacto" value={formData.contacto} onChange={handleChange} required disabled={loading} />
               </div>
             </div>
             <div className="form-row">
               <div className="form-group">
                 <label htmlFor="celular">Celular <span>*</span></label>
-                <input type="tel" id="celular" name="celular" required />
+                <input type="tel" id="celular" name="celular" value={formData.celular} onChange={handleChange} required disabled={loading} />
               </div>
               <div className="form-group">
                 <label htmlFor="email">Correo electrónico <span>*</span></label>
-                <input type="email" id="email" name="email" required />
+                <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} required disabled={loading} />
               </div>
             </div>
             <div className="form-group">
               <label htmlFor="asunto">Asunto</label>
-              <input type="text" id="asunto" name="asunto" />
+              <input type="text" id="asunto" name="asunto" value={formData.asunto} onChange={handleChange} disabled={loading} />
             </div>
             <div className="form-group">
               <label htmlFor="mensaje">Mensaje</label>
-              <textarea id="mensaje" name="mensaje" rows="4"></textarea>
+              <textarea id="mensaje" name="mensaje" rows="4" value={formData.mensaje} onChange={handleChange} disabled={loading}></textarea>
             </div>
             <div className="form-actions">
-              <button type="submit" className="btn-submit">Enviar solicitud</button>
+              {!success && (
+                <button type="submit" className="btn-submit" disabled={loading}>
+                  {loading ? 'Enviando...' : 'Enviar solicitud'}
+                </button>
+              )}
               <span className="form-note">Campos con <span>*</span> son obligatorios</span>
             </div>
           </form>

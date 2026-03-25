@@ -1,0 +1,346 @@
+/* HistorialPedidos.css */
+
+.historial-pedidos-loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  color: var(--text-muted);
+}
+
+.spinner-large {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(0, 217, 217, 0.1);
+  border-top-color: var(--cyan-400);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.historial-error-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+  background: rgba(255, 82, 82, 0.1);
+  border: 1px solid rgba(255, 82, 82, 0.25);
+  border-radius: var(--radius-xl);
+  color: #ff8a80;
+  text-align: center;
+  backdrop-filter: blur(10px);
+}
+
+.historial-error-state svg {
+  margin-bottom: 1rem;
+  color: #ff5252;
+}
+
+.historial-error-state h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.historial-error-state p {
+  margin: 0 0 1.5rem 0;
+  color: #ffbcaf;
+}
+
+.retry-btn {
+  padding: 0.6rem 1.8rem;
+  background: rgba(255, 82, 82, 0.1);
+  border: 1px solid rgba(255, 82, 82, 0.3);
+  color: #ff5252;
+  border-radius: 100px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s;
+}
+
+.retry-btn:hover {
+  background: rgba(255, 82, 82, 0.2);
+}
+
+.historial-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--glass-border);
+  text-align: center;
+}
+
+.empty-icon-wrapper {
+  background: rgba(0, 217, 217, 0.1);
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  border: 1px solid rgba(0, 217, 217, 0.2);
+}
+
+.empty-icon-wrapper svg {
+  color: var(--cyan-400);
+}
+
+.historial-empty-state h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.3rem;
+  color: var(--text-primary);
+  font-weight: 700;
+}
+
+.historial-empty-state p {
+  margin: 0 0 2rem 0;
+  color: var(--text-muted);
+  max-width: 320px;
+  line-height: 1.5;
+}
+
+.go-to-shop-btn {
+  padding: 0.8rem 2.2rem;
+  background: linear-gradient(135deg, var(--cyan-500), var(--cyan-600));
+  color: var(--deep-space);
+  border: none;
+  border-radius: var(--radius-md);
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.25s;
+}
+
+.go-to-shop-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 217, 217, 0.25);
+}
+
+.historial-pedidos-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* CARDS */
+.pedido-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+  transition: transform 0.25s, box-shadow 0.25s;
+}
+
+.pedido-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  border-color: rgba(0, 217, 217, 0.3);
+}
+
+.pedido-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 1.25rem 1.7rem;
+  background: rgba(0, 0, 0, 0.25);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.pedido-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.pedido-id {
+  font-weight: 700;
+  color: var(--cyan-400);
+  font-size: 1.15rem;
+}
+
+.pedido-date {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.pedido-badge {
+  padding: 0.35rem 0.8rem;
+  border-radius: 100px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* BADGE COLORS (Adaptados a Glassmorphism oscuro) */
+.badge-completed { background: rgba(0, 208, 132, 0.15); color: #00e676; border: 1px solid rgba(0, 208, 132, 0.3); }
+.badge-processing { background: rgba(0, 217, 217, 0.15); color: var(--cyan-300); border: 1px solid rgba(0, 217, 217, 0.3); }
+.badge-cancelled { background: rgba(255, 82, 82, 0.15); color: #ff8a80; border: 1px solid rgba(255, 82, 82, 0.3); }
+.badge-onhold { background: rgba(255, 193, 7, 0.15); color: #ffd54f; border: 1px solid rgba(255, 193, 7, 0.3); }
+.badge-pending { background: rgba(255, 152, 0, 0.15); color: #ffb74d; border: 1px solid rgba(255, 152, 0, 0.3); }
+.badge-failed { background: rgba(244, 67, 54, 0.15); color: #e57373; border: 1px solid rgba(244, 67, 54, 0.3); }
+.badge-refunded { background: rgba(158, 158, 158, 0.15); color: #bdbdbd; border: 1px solid rgba(158, 158, 158, 0.3); }
+.badge-default { background: rgba(255, 255, 255, 0.1); color: var(--text-secondary); border: 1px solid rgba(255, 255, 255, 0.2); }
+
+.pedido-card-body {
+  padding: 1.7rem;
+}
+
+.pedido-item-row {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  padding-bottom: 1.2rem;
+  margin-bottom: 1.2rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.pedido-item-row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+
+.item-thumbnail {
+  width: 65px;
+  height: 65px;
+  border-radius: 10px;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.4);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.item-thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.item-thumbnail-placeholder {
+  color: var(--text-muted);
+}
+
+.item-details {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.item-name {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 1rem;
+}
+
+.item-qty {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-top: 0.35rem;
+}
+
+.item-line-total {
+  font-weight: 700;
+  color: var(--text-primary);
+  font-size: 1.05rem;
+}
+
+.pedido-card-footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem 1.7rem;
+  background: rgba(0, 0, 0, 0.25);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  gap: 1.5rem;
+}
+
+.footer-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  flex: 1;
+  min-width: 200px;
+}
+
+.footer-info-block {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.footer-info-block strong {
+  color: var(--text-primary);
+  margin-right: 0.5rem;
+  font-weight: 600;
+}
+
+.footer-total {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  min-width: 150px;
+}
+
+.total-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+
+.total-amount {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--cyan-400);
+}
+
+/* RESPONSIVE */
+@media (max-width: 640px) {
+  .pedido-card-header {
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+  
+  .pedido-card-footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .footer-total {
+    align-items: flex-start;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px dashed rgba(255, 255, 255, 0.1);
+    width: 100%;
+  }
+
+  .pedido-item-row {
+    flex-wrap: wrap;
+  }
+  
+  .item-line-total {
+    width: 100%;
+    text-align: left;
+    margin-top: 0.2rem;
+    padding-left: 77px; /* Alinear con el texto */
+  }
+}
