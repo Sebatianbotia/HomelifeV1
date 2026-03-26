@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { getMisPedidos } from '../../services/homelifeService';
 import './HistorialPedidos.css';
 
 const HistorialPedidos = () => {
-  const BASE_URL = import.meta.env.VITE_WP_URL || 'https://www.homelife.com.co';
   const { isAuthenticated, loading: authLoading } = useAuth();
   const navigate = useNavigate();
 
@@ -16,43 +16,15 @@ const HistorialPedidos = () => {
     setLoading(true);
     setError(null);
     try {
-      const token = localStorage.getItem('homelife_jwt');
-      if (!token) {
-        throw new Error('No se encontró un token válido. Inicia sesión nuevamente.');
-      }
-
-      const response = await fetch(`${BASE_URL}/wp-json/homelife/v1/mis-pedidos`, {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
-      });
-
-      const data = await response.json();
-
-      if (!response.ok || data.code === 'jwt_auth_invalid_token' || data.code === 'jwt_invalid') {
-        throw new Error(data.message || 'Error al obtener tus pedidos. Verifica tu sesión.');
-      }
-
-      // Si data tiene success: true y los pedidos vienen en data.data o data.pedidos
-      let pedidosData = data.pedidos || data.data || data;
-      if (!Array.isArray(pedidosData)) {
-        if (data.success && Array.isArray(data.pedidos)) {
-          pedidosData = data.pedidos;
-        } else {
-          pedidosData = [];
-        }
-      }
-
-      setPedidos(pedidosData);
+      const data = await getMisPedidos();
+      setPedidos(data);
     } catch (err) {
       console.error('Error fetching orders:', err);
       setError(err.message || 'Ocurrió un error inesperado al listar tus pedidos.');
     } finally {
       setLoading(false);
     }
-  }, [BASE_URL]);
+  }, []);
 
   useEffect(() => {
     if (authLoading) return;

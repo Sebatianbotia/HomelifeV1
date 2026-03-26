@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { useProducts } from '../../context/ProductsContext';
 import { useAuth } from '../../context/AuthContext';
+import { registrarEquipo } from '../../services/homelifeService';
 import './RegistroEquipo.css';
 
 const RegistroEquipo = () => {
@@ -12,8 +13,6 @@ const RegistroEquipo = () => {
   const [archivo, setArchivo] = useState(null);
   const [loading, setLoading] = useState(false);
   const [serverError, setServerError] = useState(null);
-
-  const BASE_URL = import.meta.env.VITE_WP_URL || 'https://www.homelife.com.co';
 
   // Obtener lista única de productos para el selector
   const productList = useMemo(() => {
@@ -27,8 +26,6 @@ const RegistroEquipo = () => {
   const onSubmit = async (data) => {
     setLoading(true);
     setServerError(null);
-
-    const token = localStorage.getItem('homelife_jwt') || user?.token;
 
     const formData = new FormData();
     formData.append('nombre', data.nombre);
@@ -48,20 +45,7 @@ const RegistroEquipo = () => {
     }
 
     try {
-      const response = await fetch(`${BASE_URL}/wp-json/homelife/v1/registrar-equipo`, {
-        method: 'POST',
-        headers: {
-          ...(token && { 'Authorization': `Bearer ${token}` })
-        },
-        body: formData,
-      });
-
-      const responseData = await response.json();
-
-      if (!response.ok || responseData.success === false) {
-        throw new Error(responseData.message || responseData.error || 'Error al registrar el equipo.');
-      }
-
+      await registrarEquipo(formData);
       setEnviado(true);
 
       setTimeout(() => {

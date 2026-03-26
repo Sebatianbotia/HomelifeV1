@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import HistorialPedidos from '../../components/HistorialPedidos/HistorialPedidos';
+import { getMisPedidos, actualizarUsuario } from '../../services/homelifeService';
 import './Cuenta.css';
 
 const DEPARTAMENTOS = [
@@ -54,7 +55,6 @@ const EMPTY_ADDRESS = {
 };
 
 const Cuenta = () => {
-  const BASE_URL = import.meta.env.VITE_WP_URL || 'https://www.homelife.com.co';
   const { user, logout, isAuthenticated, loading } = useAuth();
   const navigate = useNavigate();
   const [activeSection, setActiveSection] = useState('dashboard');
@@ -78,26 +78,11 @@ const Cuenta = () => {
 
   useEffect(() => {
     const fetchRecentOrders = async () => {
-      const token = localStorage.getItem('homelife_jwt');
-      if (!isAuthenticated || !token) return;
-      
+      if (!isAuthenticated) return;
       setOrdersLoading(true);
       try {
-        const response = await fetch(`${BASE_URL}/wp-json/homelife/v1/mis-pedidos`, {
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          }
-        });
-        const data = await response.json();
-        if (response.ok && data) {
-          let pedidosData = data.pedidos || data.data || data;
-          if (!Array.isArray(pedidosData) && data.success && Array.isArray(data.pedidos)) {
-            pedidosData = data.pedidos;
-          }
-          setRecentOrders(Array.isArray(pedidosData) ? pedidosData : []);
-        }
+        const pedidos = await getMisPedidos();
+        setRecentOrders(pedidos);
       } catch (err) {
         console.error('Error fetching dashboard orders:', err);
       } finally {
@@ -106,7 +91,7 @@ const Cuenta = () => {
     };
 
     fetchRecentOrders();
-  }, [isAuthenticated, BASE_URL]);
+  }, [isAuthenticated]);
 
   const resetFormFields = () => {
     if (user) {
@@ -206,18 +191,9 @@ const Cuenta = () => {
         }
       };
 
-      const response = await fetch(ENDPOINT, {
-        method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('homelife_jwt')}`
-        },
-        body: JSON.stringify(payload),
-      });
+      const data = await actualizarUsuario(payload);
 
-      const data = await response.json();
-
-      if (data.success || response.ok) {
+      if (data.success || data.id) {
         const updatedUser = {
           ...user,
           first_name: payload.first_name,

@@ -1,15 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { getTestimonials } from '../../services/contentService';
 import './Testimonials.css';
-
-/**
- * Limpia HTML eliminando etiquetas y devolviendo solo texto
- */
-const limpiarHTML = (htmlString) => {
-  if (!htmlString) return "";
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(htmlString, 'text/html');
-  return doc.body.textContent || "";
-};
 
 const Testimonials = () => {
   const [testimonials, setTestimonials] = useState([]);
@@ -19,28 +10,8 @@ const Testimonials = () => {
   useEffect(() => {
     const fetchTestimonials = async () => {
       try {
-        const baseUrl = import.meta.env.VITE_WP_URL?.replace(/\/$/, '') || 'https://www.homelife.com.co';
-        const response = await fetch(
-          `${baseUrl}/wp-json/wp/v2/testimonio_home?_fields=id,title,content,acf,yoast_head_json`
-        );
-
-        if (!response.ok) {
-          throw new Error('Error al cargar testimonios');
-        }
-
-        const data = await response.json();
-        
-        // Mapear datos de WordPress al formato esperado
-        const mappedTestimonials = data.map(item => ({
-          id: item.id,
-          name: item.title?.rendered || 'Cliente anónimo',
-          text: limpiarHTML(item.content?.rendered) || item.yoast_head_json?.description || 'Excelente servicio',
-          rating: item.acf?.cantidad_estrellas || 5,
-          avatar: item.yoast_head_json?.og_image?.[0]?.url || 'https://randomuser.me/api/portraits/lego/1.jpg',
-          source: item.acf?.red_social || 'HomeLife',
-        }));
-
-        setTestimonials(mappedTestimonials);
+        const data = await getTestimonials();
+        setTestimonials(data);
         setError(null);
       } catch (err) {
         console.error('Error fetching testimonials:', err);

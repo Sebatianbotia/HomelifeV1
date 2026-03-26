@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { getHeroSlides } from '../../services/contentService';
 import './HeroSlider.css';
 
 const HeroSlider = () => {
@@ -7,35 +8,10 @@ const HeroSlider = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Fetch de slides desde WordPress
   useEffect(() => {
     const fetchSlides = async () => {
       try {
-        const baseUrl = import.meta.env.VITE_WP_URL?.replace(/\/$/, '') || 'https://www.homelife.com.co';
-        const response = await fetch(
-          `${baseUrl}/wp-json/wp/v2/slider_home?_fields=id,title,yoast_head_json,acf`
-        );
-
-        if (!response.ok) {
-          throw new Error('Error al cargar los slides');
-        }
-
-        const data = await response.json();
-        
-        // Mapear datos de WordPress al formato esperado
-        const mappedSlides = data.map(slide => ({
-          id: slide.id,
-          image: slide.yoast_head_json?.og_image?.[0]?.url || '/images/SliderImages/slider1.png',
-          title: slide.title?.rendered || 'Equipo Médico',
-          description: slide.yoast_head_json?.description || 'Calidad y tecnología al servicio de tu salud.',
-          badge: slide.acf?.badge || '✨ Destacado',
-          buttonText: slide.acf?.texto_boton || 'Explorar Productos',
-          // REGLA ESTRICTA: Si enlace_boton está vacío, asignar '/productos'
-          buttonLink: (slide.acf?.enlace_boton && slide.acf.enlace_boton.trim() !== '') 
-            ? slide.acf.enlace_boton 
-            : '/productos',
-        }));
-
+        const mappedSlides = await getHeroSlides();
         setSlides(mappedSlides);
         setError(null);
       } catch (err) {

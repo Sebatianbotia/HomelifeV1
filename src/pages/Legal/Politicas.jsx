@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { getPoliticas } from '../../services/contentService';
 import '../Legal/LegalPage.css';
 
 const Politicas = () => {
@@ -10,19 +11,8 @@ const Politicas = () => {
     const fetchPoliticas = async () => {
       try {
         setLoading(true);
-        const baseUrl = import.meta.env.VITE_WP_URL || 'https://www.homelife.com.co';
-        const response = await fetch(`${baseUrl}/wp-json/wp/v2/pages?slug=politicas&_fields=title,content`);
-        
-        if (!response.ok) {
-          throw new Error('Error al cargar las políticas');
-        }
-        
-        const data = await response.json();
-        if (data.length > 0) {
-          setPageData(data[0]);
-        } else {
-          setError('No se encontraron políticas');
-        }
+        const data = await getPoliticas();
+        setPageData(data);
       } catch (err) {
         console.error('Error fetching Politicas:', err);
         setError(err.message || 'Error desconocido al cargar las políticas');

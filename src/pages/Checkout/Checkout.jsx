@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
 import { useAuth } from '../../context/AuthContext';
+import { crearPedido } from '../../services/homelifeService';
 import './Checkout.css';
 
 const Checkout = () => {
-  const BASE_URL = import.meta.env.VITE_WP_URL || 'https://www.homelife.com.co';
   const navigate = useNavigate();
   const { cartInfo, clearCart, isCartLoading } = useCart();
   const { user, isAuthenticated } = useAuth();
@@ -128,19 +128,7 @@ const Checkout = () => {
 
       console.log('📦 Enviando pedido:', payload);
 
-      const token = localStorage.getItem('homelife_jwt');
-      const headers = { 'Content-Type': 'application/json' };
-      if (token) {
-        headers['Authorization'] = `Bearer ${token}`;
-      }
-
-      const response = await fetch(`${BASE_URL}/wp-json/homelife/v1/crear-pedido`, {
-        method: 'POST',
-        headers,
-        body: JSON.stringify(payload),
-      });
-
-      const data = await response.json();
+      const data = await crearPedido(payload);
       console.log('📩 Respuesta del servidor:', data);
 
       if (data.success || data.order_id || data.id) {
@@ -148,7 +136,6 @@ const Checkout = () => {
         const isWompi = data.metodo === 'wompi' || data.abrir_wompi === true || metodoPago === 'wompi';
 
         if (isWompi) {
-          // ── Wompi Native Widget (Zero Trust) ──
           if (!window.WidgetCheckout) {
             alert('Error: El sistema de pago no se ha cargado. Recarga la página e inténtalo de nuevo.');
             setLoading(false);
@@ -161,7 +148,6 @@ const Checkout = () => {
             return;
           }
 
-          // Destructurar datos firmados del backend (fuente de verdad)
           const { public_key, currency, amount_in_cents, reference, signature } = data.wompi;
 
           const checkout = new window.WidgetCheckout({
@@ -176,7 +162,6 @@ const Checkout = () => {
             const transaction = result.transaction;
             if (transaction && transaction.status === 'APPROVED') {
               clearCart();
-              // Redirigir directamente al panel de "Mis Pedidos"
               navigate('/cuenta');
             } else {
               const status = transaction ? transaction.status : 'CANCELLED';
@@ -185,7 +170,6 @@ const Checkout = () => {
             }
           });
         } else {
-          // ── Pago Contraentrega ──
           await clearCart();
           navigate('/gracias', {
             state: {

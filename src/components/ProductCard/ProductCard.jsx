@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useCart } from '../../context/CartContext';
 import './ProductCard.css';
 
 const ProductCard = ({ product }) => {
   const navigate = useNavigate();
+  const { addToCart, isCartLoading } = useCart();
+  const [added, setAdded] = useState(false);
 
   const formatPrice = (price) => {
     return new Intl.NumberFormat('es-CO', {
@@ -11,6 +14,17 @@ const ProductCard = ({ product }) => {
       currency: 'COP',
       minimumFractionDigits: 0,
     }).format(price);
+  };
+
+  const handleAddToCart = async (e) => {
+    e.stopPropagation(); // Mantiene el click sin redirigir al detalle del producto
+    if (product.inStock) {
+      const success = await addToCart(product.id, 1, product);
+      if (success) {
+        setAdded(true);
+        setTimeout(() => setAdded(false), 2000);
+      }
+    }
   };
 
   return (
@@ -61,6 +75,14 @@ const ProductCard = ({ product }) => {
             </div>
           )}
         </div>
+
+        <button 
+          className={`card-add-to-cart-btn ${added ? 'added' : ''}`}
+          onClick={handleAddToCart}
+          disabled={!product.inStock || isCartLoading}
+        >
+          {added ? '¡Agregado! ✓' : product.inStock ? 'Agregar al Carrito' : 'Agotado'}
+        </button>
       </div>
     </article>
   );

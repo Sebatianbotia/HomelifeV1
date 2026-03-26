@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { getSocialFeed } from '../../services/contentService';
 import './SocialCommunity.css';
 
 const SocialCommunity = () => {
@@ -6,28 +7,14 @@ const SocialCommunity = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Cargar datos de WordPress y script de TikTok
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const baseUrl = import.meta.env.VITE_WP_URL?.replace(/\/$/, '') || 'https://www.homelife.com.co';
-        const response = await fetch(
-          `${baseUrl}/wp-json/wp/v2/secciones_home?slug=comunidad-social&_fields=acf`
-        );
-
-        if (!response.ok) {
-          throw new Error('Error al cargar datos de comunidad social');
-        }
-
-        const responseData = await response.json();
-        if (responseData.length > 0 && responseData[0].acf) {
-          console.log('Datos de comunidad social obtenidos:', responseData[0].acf);
-          setData(responseData[0].acf);
-        }
+        const acf = await getSocialFeed();
+        setData(acf);
         setError(null);
       } catch (err) {
         console.error('Error fetching social community data:', err);
-
         setError(err.message);
       } finally {
         setLoading(false);
@@ -137,9 +124,13 @@ const SocialCommunity = () => {
                       title="TikTok Video"
                     ></iframe>
                   ) : (
-                    <div style={{ width: '100%', height: '580px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#000', borderRadius: '12px', color: '#fff' }}>
-                      Cargando video...
-                    </div>
+                    <iframe
+                      src={`https://www.tiktok.com/embed/v2/7279373972621446406`}
+                      style={{ width: '100%', height: '580px', border: 'none', borderRadius: '12px' }}
+                      allow="autoplay; encrypted-media; picture-in-picture"
+                      allowFullScreen
+                      title="TikTok Video Default"
+                    ></iframe>
                   )}
                 </div>
               </div>

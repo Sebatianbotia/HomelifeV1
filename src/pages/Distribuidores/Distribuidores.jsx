@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
+import { contactoDistribuidor } from '../../services/homelifeService';
 import './Distribuidores.css';
-
-const BASE_URL = import.meta.env.VITE_WP_URL || 'https://www.homelife.com.co';
 
 const Distribuidores = () => {
   const [formData, setFormData] = useState({
@@ -28,25 +27,7 @@ const Distribuidores = () => {
     setSuccess(false);
 
     try {
-      const response = await fetch(`${BASE_URL}/wp-json/homelife/v1/contacto-distribuidor`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(formData)
-      });
-
-      let data;
-      try {
-        data = await response.json();
-      } catch (parseError) {
-        throw new Error('Respuesta inválida del servidor (Error 500)');
-      }
-
-      if (!response.ok || data.success === false) {
-        throw new Error(data.message || data.error || 'Ocurrió un error al procesar la solicitud.');
-      }
-
+      await contactoDistribuidor(formData);
       setSuccess(true);
       setFormData({
         empresa: '',
@@ -56,7 +37,6 @@ const Distribuidores = () => {
         asunto: '',
         mensaje: ''
       });
-
     } catch (err) {
       setError(err.message || 'Ocurrió un error al enviar el formulario. Intenta de nuevo.');
     } finally {

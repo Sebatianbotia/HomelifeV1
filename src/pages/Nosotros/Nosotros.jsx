@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import Stats from '../../components/Stats/Stats'; // Reutilizamos el componente de estadísticas
+import Stats from '../../components/Stats/Stats';
+import { getNosotros } from '../../services/contentService';
 import './Nosotros.css';
 
 const Nosotros = () => {
@@ -8,24 +9,11 @@ const Nosotros = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Fetchear datos de WordPress
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const baseUrl = import.meta.env.VITE_WP_URL?.replace(/\/$/, '') || 'https://www.homelife.com.co';
-        const response = await fetch(
-          `${baseUrl}/wp-json/wp/v2/secciones_home?slug=nosotros&_fields=acf&acf_format=standard`
-        );
-
-        if (!response.ok) {
-          throw new Error('Error al cargar datos de la sección Nosotros');
-        }
-
-        const responseData = await response.json();
-        if (responseData.length > 0 && responseData[0].acf) {
-          console.log('Datos de Nosotros obtenidos:', responseData[0].acf);
-          setData(responseData[0].acf);
-        }
+        const acf = await getNosotros();
+        setData(acf);
         setError(null);
       } catch (err) {
         console.error('Error fetching Nosotros data:', err);

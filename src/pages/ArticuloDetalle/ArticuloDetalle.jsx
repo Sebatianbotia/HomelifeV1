@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useProducts } from '../../context/ProductsContext';
 import { adaptarPostParaReact } from '../../utils/wpBlogAdapter';
+import { getArticuloDetalle } from '../../services/contentService';
 import './ArticuloDetalle.css';
 
 const ArticuloDetalle = () => {
@@ -16,17 +17,7 @@ const ArticuloDetalle = () => {
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        const baseUrl = import.meta.env.VITE_WP_URL?.replace(/\/$/, '') || 'https://www.homelife.com.co';
-        
-        const response = await fetch(
-          `${baseUrl}/wp-json/wp/v2/blog_react/${id}?_fields=id,date,title,content,categoria_react,yoast_head_json,acf`
-        );
-
-        if (!response.ok) {
-          throw new Error('Artículo no encontrado');
-        }
-
-        const data = await response.json();
+        const data = await getArticuloDetalle(id);
         const adaptedPost = adaptarPostParaReact(data, []);
         setPost(adaptedPost);
         setError(null);

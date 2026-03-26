@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { getFAQ } from '../../services/contentService';
 import './FAQ.css';
 
 const FAQ = () => {
@@ -6,32 +7,12 @@ const FAQ = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Función para limpiar HTML
-  const limpiarHTML = (html) => {
-    if (!html) return '';
-    const temp = document.createElement('div');
-    temp.innerHTML = html;
-    return temp.textContent || temp.innerText || '';
-  };
-
   useEffect(() => {
     const fetchFAQ = async () => {
       try {
         setLoading(true);
-        const baseUrl = import.meta.env.VITE_WP_URL || 'https://www.homelife.com.co';
-        const response = await fetch(`${baseUrl}/wp-json/wp/v2/faq_react?_fields=id,title,content&per_page=50`);
-        
-        if (!response.ok) {
-          throw new Error('Error al cargar las preguntas frecuentes');
-        }
-        
-        const data = await response.json();
-        const formattedData = data.map(item => ({
-          q: item.title?.rendered || '',
-          a: limpiarHTML(item.content?.rendered || '')
-        }));
-        
-        setFaqData(formattedData);
+        const data = await getFAQ();
+        setFaqData(data);
       } catch (err) {
         console.error('Error fetching FAQ:', err);
         setError(err.message || 'Error desconocido al cargar las preguntas');

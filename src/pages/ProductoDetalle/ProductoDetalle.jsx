@@ -195,26 +195,6 @@ const ProductoDetalle = () => {
               )}
             </div>
 
-            <div 
-              className="product-description"
-              dangerouslySetInnerHTML={{ __html: product.fullDescription }}
-            />
-
-            {product.techSheetPdf && (
-              <div className="product-techsheet">
-                <h3 className="features-title" style={{ marginTop: '20px' }}>Ficha técnica</h3>
-                <a className="techsheet-btn" href={`/${product.techSheetPdf}`} target="_blank" rel="noopener noreferrer">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                    <polyline points="7 10 12 15 17 10"></polyline>
-                    <line x1="12" y1="15" x2="12" y2="3"></line>
-                  </svg>
-                  Descargar ficha técnica (PDF)
-                </a>
-                <p className="techsheet-note">Documento informativo del producto.</p>
-              </div>
-            )}
-
             <div className="add-to-cart-section">
               <div className="quantity-selector">
                 <button className="quantity-btn" onClick={decreaseQuantity} disabled={quantity <= 1}>−</button>
@@ -238,6 +218,28 @@ const ProductoDetalle = () => {
             <div className="cod-notice" role="note" aria-label="Aviso de pago contraentrega">
               Pago contraentrega solo aplica en Bogotá
             </div>
+
+            <div 
+              className="product-description"
+              dangerouslySetInnerHTML={{ __html: product.fullDescription }}
+            />
+
+            {product.techSheetPdf && (
+              <div className="product-techsheet">
+                <h3 className="features-title" style={{ marginTop: '20px' }}>Ficha técnica</h3>
+                <a className="techsheet-btn" href={`/${product.techSheetPdf}`} target="_blank" rel="noopener noreferrer">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="7 10 12 15 17 10"></polyline>
+                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                  </svg>
+                  Descargar ficha técnica (PDF)
+                </a>
+                <p className="techsheet-note">Documento informativo del producto.</p>
+              </div>
+            )}
+
+
 
             <div className="product-features">
               <h3 className="features-title">Características Principales</h3>
