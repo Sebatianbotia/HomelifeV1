@@ -30,7 +30,11 @@ const ProductCard = ({ product }) => {
   return (
     <article className="product-card" onClick={() => navigate(`/producto/${product.id}`)} style={{ cursor: 'pointer' }}>
       <div className="card-badges">
-        {product.discount > 0 && <span className="badge-discount">-{product.discount}%</span>}
+        {product.originalPrice > product.price && (
+          <span className="badge-discount">
+            -{Math.round((1 - product.price / product.originalPrice) * 100)}%
+          </span>
+        )}
         {product.isNew && <span className="badge-new">NUEVO</span>}
       </div>
 
@@ -51,7 +55,7 @@ const ProductCard = ({ product }) => {
           {product.name}
         </h3>
 
-        {product.reviewCount > 0 && (
+        {Number(product.reviewCount) > 0 && (
           <div className="card-rating">
             <div className="stars">
               {[...Array(5)].map((_, i) => (
@@ -69,7 +73,7 @@ const ProductCard = ({ product }) => {
             )}
             <span className="price-current">{formatPrice(product.price)}</span>
           </div>
-          {product.discount > 0 && (
+          {product.originalPrice > product.price && (
             <div className="price-savings">
               Ahorras {formatPrice(product.originalPrice - product.price)}
             </div>

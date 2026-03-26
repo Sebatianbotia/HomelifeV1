@@ -48,7 +48,7 @@ const Productos = () => {
 
     setCurrentPage(1); 
     return filtered;
-  }, [selectedCategory, priceRange, sortBy]);
+  }, [selectedCategory, priceRange, sortBy, productos]);
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;

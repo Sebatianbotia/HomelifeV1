@@ -116,3 +116,12 @@ export const getArticuloDetalle = async (id) => {
     `/wp-json/wp/v2/blog_react/${id}?_fields=id,date,title,content,categoria_react,yoast_head_json,acf`
   );
 };
+
+/**
+ * Obtener ajustes globales (datos de contacto y redes)
+ * @returns {Promise<object|null>} Objeto ACF con contacto y redes
+ */
+export const getAjustesGlobales = async () => {
+  const data = await wpFetch('/wp-json/wp/v2/ajustes_globales?_fields=acf');
+  return data && data.length > 0 && data[0].acf ? data[0].acf : null;
+};

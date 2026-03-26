@@ -70,8 +70,10 @@ const Carousel3D = ({ items }) => {
               }}
             >
               <div className="product-card-3d" onClick={() => navigate(`/producto/${item.id}`)} style={{ cursor: 'pointer' }}>
-                {item.discount > 0 && (
-                  <span className="badge-discount">-{item.discount}%</span>
+                {item.originalPrice > item.price && (
+                  <span className="badge-discount">
+                    -{Math.round((1 - item.price / item.originalPrice) * 100)}%
+                  </span>
                 )}
                 {item.isNew && <span className="badge-new">NUEVO</span>}
                 <div className="product-image">
@@ -86,13 +88,15 @@ const Carousel3D = ({ items }) => {
                 </div>
                 <div className="product-info">
                   <h3 className="product-title">{item.name}</h3>
-                  <div className="product-rating">
-                    {'★'.repeat(item.rating)}
-                    {'☆'.repeat(5 - item.rating)}
-                    <span>({item.reviewCount || item.reviews})</span>
-                  </div>
+                  {Number(item.reviewCount || item.reviews) > 0 && (
+                    <div className="product-rating">
+                      {'★'.repeat(item.rating)}
+                      {'☆'.repeat(5 - item.rating)}
+                      <span>({item.reviewCount || item.reviews})</span>
+                    </div>
+                  )}
                   <div className="product-price">
-                    {item.originalPrice && (
+                    {item.originalPrice > item.price && (
                       <span className="old-price">
                         {formatPrice(item.originalPrice)}
                       </span>

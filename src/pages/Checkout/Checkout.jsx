@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
 import { useAuth } from '../../context/AuthContext';
 import { crearPedido } from '../../services/homelifeService';
+import { DEPARTAMENTOS, CITIES_BY_DEPT } from '../../utils/colombiaData';
 import './Checkout.css';
 
 const Checkout = () => {
@@ -17,6 +18,7 @@ const Checkout = () => {
     address_1: user?.billing?.address_1 || '',
     address_2: user?.billing?.address_2 || '',
     city: user?.billing?.city || '',
+    state: user?.billing?.state || '',
     phone: user?.billing?.phone || '',
     email: user?.email || user?.billing?.email || '',
   });
@@ -28,12 +30,22 @@ const Checkout = () => {
     address_1: '',
     address_2: '',
     city: '',
+    state: '',
   });
 
   const [metodoPago, setMetodoPago] = useState('wompi');
   const [customerNote, setCustomerNote] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  const effectiveCity = shipToDifferent ? shipping.city : billing.city;
+  const isBogota = effectiveCity === 'Bogotá' || effectiveCity === 'Bogotá D.C.';
+
+  useEffect(() => {
+    if (metodoPago === 'cod' && !isBogota) {
+      setMetodoPago('wompi');
+    }
+  }, [isBogota, metodoPago]);
 
   const formatPrice = (price) => {
     return new Intl.NumberFormat('es-CO', {
@@ -45,13 +57,13 @@ const Checkout = () => {
 
   const handleBillingChange = (e) => {
     const { name, value } = e.target;
-    setBilling(prev => ({ ...prev, [name]: value }));
+    setBilling(prev => ({ ...prev, [name]: value, ...(name === 'state' ? { city: '' } : {}) }));
     setError(null);
   };
 
   const handleShippingChange = (e) => {
     const { name, value } = e.target;
-    setShipping(prev => ({ ...prev, [name]: value }));
+    setShipping(prev => ({ ...prev, [name]: value, ...(name === 'state' ? { city: '' } : {}) }));
     setError(null);
   };
 
@@ -60,6 +72,7 @@ const Checkout = () => {
     if (!billing.first_name.trim()) return 'El nombre es requerido';
     if (!billing.last_name.trim()) return 'El apellido es requerido';
     if (!billing.address_1.trim()) return 'La dirección es requerida';
+    if (!billing.state) return 'El departamento es requerido';
     if (!billing.city.trim()) return 'La ciudad es requerida';
     if (!billing.phone.trim()) return 'El teléfono es requerido';
     if (!billing.email.trim()) return 'El correo electrónico es requerido';
@@ -70,6 +83,7 @@ const Checkout = () => {
       if (!shipping.first_name.trim()) return 'El nombre de envío es requerido';
       if (!shipping.last_name.trim()) return 'El apellido de envío es requerido';
       if (!shipping.address_1.trim()) return 'La dirección de envío es requerida';
+      if (!shipping.state) return 'El departamento de envío es requerido';
       if (!shipping.city.trim()) return 'La ciudad de envío es requerida';
     }
 
@@ -95,6 +109,7 @@ const Checkout = () => {
           address_1: shipping.address_1.trim(),
           address_2: shipping.address_2.trim(),
           city: shipping.city.trim(),
+          state: shipping.state,
         };
       } else {
         shippingData = {
@@ -103,6 +118,7 @@ const Checkout = () => {
           address_1: billing.address_1.trim(),
           address_2: billing.address_2.trim(),
           city: billing.city.trim(),
+          state: billing.state,
         };
       }
 
@@ -119,6 +135,7 @@ const Checkout = () => {
           address_1: billing.address_1.trim(),
           address_2: billing.address_2.trim(),
           city: billing.city.trim(),
+          state: billing.state,
           phone: billing.phone.trim(),
           email: billing.email.trim(),
         },
@@ -241,8 +258,19 @@ const Checkout = () => {
                 <input type="text" id="billing_address_2" name="address_2" value={billing.address_2} onChange={handleBillingChange} placeholder="Apto, casa, bodega (opcional)" disabled={loading} />
               </div>
               <div className="form-group">
+                <label htmlFor="billing_state">Departamento *</label>
+                <select id="billing_state" name="state" value={billing.state} onChange={handleBillingChange} required disabled={loading}>
+                  {DEPARTAMENTOS.map(d => <option key={d.code} value={d.code}>{d.label}</option>)}
+                </select>
+              </div>
+              <div className="form-group">
                 <label htmlFor="billing_city">Ciudad *</label>
-                <input type="text" id="billing_city" name="city" value={billing.city} onChange={handleBillingChange} placeholder="Bogotá" required disabled={loading} />
+                <select id="billing_city" name="city" value={billing.city} onChange={handleBillingChange} required disabled={loading || !billing.state}>
+                  <option value="">{billing.state ? 'Selecciona ciudad' : 'Selecciona un departamento'}</option>
+                  {billing.state && CITIES_BY_DEPT[billing.state]?.map(c => (
+                    <option key={c} value={c}>{c}</option>
+                  ))}
+                </select>
               </div>
               <div className="form-group">
                 <label htmlFor="billing_phone">Teléfono *</label>
@@ -296,9 +324,22 @@ const Checkout = () => {
                   <label htmlFor="shipping_address_2">Complemento</label>
                   <input type="text" id="shipping_address_2" name="address_2" value={shipping.address_2} onChange={handleShippingChange} placeholder="Apto, bodega (opcional)" disabled={loading} />
                 </div>
-                <div className="form-group full-width">
-                  <label htmlFor="shipping_city">Ciudad *</label>
-                  <input type="text" id="shipping_city" name="city" value={shipping.city} onChange={handleShippingChange} placeholder="Ciudad de envío" disabled={loading} />
+                <div className="form-group full-width" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+                  <div className="form-group" style={{ width: '100%', marginBottom: 0 }}>
+                    <label htmlFor="shipping_state">Departamento *</label>
+                    <select id="shipping_state" name="state" value={shipping.state} onChange={handleShippingChange} required disabled={loading}>
+                      {DEPARTAMENTOS.map(d => <option key={d.code} value={d.code}>{d.label}</option>)}
+                    </select>
+                  </div>
+                  <div className="form-group" style={{ width: '100%', marginBottom: 0 }}>
+                    <label htmlFor="shipping_city">Ciudad *</label>
+                    <select id="shipping_city" name="city" value={shipping.city} onChange={handleShippingChange} required disabled={loading || !shipping.state}>
+                      <option value="">{shipping.state ? 'Selecciona ciudad' : 'Selecciona departamento'}</option>
+                      {shipping.state && CITIES_BY_DEPT[shipping.state]?.map(c => (
+                        <option key={c} value={c}>{c}</option>
+                      ))}
+                    </select>
+                  </div>
                 </div>
               </div>
             </div>
@@ -334,10 +375,12 @@ const Checkout = () => {
               </label>
 
               <label
-                className={`payment-option ${metodoPago === 'cod' ? 'selected' : ''}`}
+                className={`payment-option ${metodoPago === 'cod' ? 'selected' : ''} ${!isBogota ? 'disabled' : ''}`}
                 htmlFor="pay-cod"
+                style={!isBogota ? { opacity: 0.5, cursor: 'not-allowed' } : {}}
+                title={!isBogota ? "Solo disponible en Bogotá" : ""}
               >
-                <input type="radio" id="pay-cod" name="metodo_pago" value="cod" checked={metodoPago === 'cod'} onChange={(e) => setMetodoPago(e.target.value)} disabled={loading} />
+                <input type="radio" id="pay-cod" name="metodo_pago" value="cod" checked={metodoPago === 'cod'} onChange={(e) => setMetodoPago(e.target.value)} disabled={loading || !isBogota} />
                 <div className="payment-option-content">
                   <div className="payment-option-icon cod-icon">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -348,7 +391,9 @@ const Checkout = () => {
                   </div>
                   <div className="payment-option-info">
                     <span className="payment-option-name">Pago Contraentrega</span>
-                    <span className="payment-option-desc">Paga al recibir tu producto en casa</span>
+                    <span className="payment-option-desc">
+                      {!isBogota ? <span style={{color: 'var(--red)'}}>Solo disponible en Bogotá</span> : 'Paga al recibir tu producto en casa'}
+                    </span>
                   </div>
                 </div>
                 <div className="payment-radio-indicator"></div>

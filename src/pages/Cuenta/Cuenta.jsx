@@ -5,43 +5,7 @@ import HistorialPedidos from '../../components/HistorialPedidos/HistorialPedidos
 import { getMisPedidos, actualizarUsuario } from '../../services/homelifeService';
 import './Cuenta.css';
 
-const DEPARTAMENTOS = [
-  { code: '', label: 'Selecciona departamento' },
-  { code: 'AMA', label: 'Amazonas' },
-  { code: 'ANT', label: 'Antioquia' },
-  { code: 'ARA', label: 'Arauca' },
-  { code: 'ATL', label: 'Atlántico' },
-  { code: 'BOL', label: 'Bolívar' },
-  { code: 'BOY', label: 'Boyacá' },
-  { code: 'CAL', label: 'Caldas' },
-  { code: 'CAQ', label: 'Caquetá' },
-  { code: 'CAS', label: 'Casanare' },
-  { code: 'CAU', label: 'Cauca' },
-  { code: 'CES', label: 'Cesar' },
-  { code: 'CHO', label: 'Chocó' },
-  { code: 'COR', label: 'Córdoba' },
-  { code: 'CUN', label: 'Cundinamarca' },
-  { code: 'DC', label: 'Bogotá D.C.' },
-  { code: 'GUA', label: 'Guainía' },
-  { code: 'GUV', label: 'Guaviare' },
-  { code: 'HUI', label: 'Huila' },
-  { code: 'LAG', label: 'La Guajira' },
-  { code: 'MAG', label: 'Magdalena' },
-  { code: 'MET', label: 'Meta' },
-  { code: 'NAR', label: 'Nariño' },
-  { code: 'NSA', label: 'Norte de Santander' },
-  { code: 'PUT', label: 'Putumayo' },
-  { code: 'QUI', label: 'Quindío' },
-  { code: 'RIS', label: 'Risaralda' },
-  { code: 'SAP', label: 'San Andrés y Providencia' },
-  { code: 'SAN', label: 'Santander' },
-  { code: 'SUC', label: 'Sucre' },
-  { code: 'TOL', label: 'Tolima' },
-  { code: 'VAC', label: 'Valle del Cauca' },
-  { code: 'VAU', label: 'Vaupés' },
-  { code: 'VID', label: 'Vichada' },
-];
-
+import { DEPARTAMENTOS, CITIES_BY_DEPT } from '../../utils/colombiaData';
 const EMPTY_ADDRESS = {
   first_name: '',
   last_name: '',
@@ -141,8 +105,14 @@ const Cuenta = () => {
   }, [user]);
 
   const handleAccountChange = (e) => setAccount(prev => ({ ...prev, [e.target.name]: e.target.value }));
-  const handleBillingChange = (e) => setBilling(prev => ({ ...prev, [e.target.name]: e.target.value }));
-  const handleShippingChange = (e) => setShipping(prev => ({ ...prev, [e.target.name]: e.target.value }));
+  const handleBillingChange = (e) => {
+    const { name, value } = e.target;
+    setBilling(prev => ({ ...prev, [name]: value, ...(name === 'state' ? { city: '' } : {}) }));
+  };
+  const handleShippingChange = (e) => {
+    const { name, value } = e.target;
+    setShipping(prev => ({ ...prev, [name]: value, ...(name === 'state' ? { city: '' } : {}) }));
+  };
 
   const handleSaveProfile = async (e) => {
     e.preventDefault();
@@ -271,7 +241,14 @@ const Cuenta = () => {
         </div>
         <div className="dato-group">
           <label>Ciudad *</label>
-          {isEditing ? <input type="text" name="city" value={data.city} onChange={onChange} disabled={saving} required /> : <p className="dato-value">{data.city || '—'}</p>}
+          {isEditing ? (
+            <select name="city" value={data.city} onChange={onChange} disabled={saving || !data.state} required>
+              <option value="">{data.state ? 'Selecciona ciudad' : 'Selecciona un departamento'}</option>
+              {data.state && CITIES_BY_DEPT[data.state]?.map(c => (
+                <option key={c} value={c}>{c}</option>
+              ))}
+            </select>
+          ) : <p className="dato-value">{data.city || '—'}</p>}
         </div>
         <div className="dato-group">
           <label>Departamento *</label>

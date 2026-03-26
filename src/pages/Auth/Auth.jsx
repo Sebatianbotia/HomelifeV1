@@ -1,45 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { DEPARTAMENTOS, CITIES_BY_DEPT } from '../../utils/colombiaData';
 import './Auth.css';
-
-// Departamentos de Colombia (código WooCommerce → nombre)
-const DEPARTAMENTOS = [
-  { code: '', label: 'Selecciona departamento' },
-  { code: 'AMA', label: 'Amazonas' },
-  { code: 'ANT', label: 'Antioquia' },
-  { code: 'ARA', label: 'Arauca' },
-  { code: 'ATL', label: 'Atlántico' },
-  { code: 'BOL', label: 'Bolívar' },
-  { code: 'BOY', label: 'Boyacá' },
-  { code: 'CAL', label: 'Caldas' },
-  { code: 'CAQ', label: 'Caquetá' },
-  { code: 'CAS', label: 'Casanare' },
-  { code: 'CAU', label: 'Cauca' },
-  { code: 'CES', label: 'Cesar' },
-  { code: 'CHO', label: 'Chocó' },
-  { code: 'COR', label: 'Córdoba' },
-  { code: 'CUN', label: 'Cundinamarca' },
-  { code: 'DC', label: 'Bogotá D.C.' },
-  { code: 'GUA', label: 'Guainía' },
-  { code: 'GUV', label: 'Guaviare' },
-  { code: 'HUI', label: 'Huila' },
-  { code: 'LAG', label: 'La Guajira' },
-  { code: 'MAG', label: 'Magdalena' },
-  { code: 'MET', label: 'Meta' },
-  { code: 'NAR', label: 'Nariño' },
-  { code: 'NSA', label: 'Norte de Santander' },
-  { code: 'PUT', label: 'Putumayo' },
-  { code: 'QUI', label: 'Quindío' },
-  { code: 'RIS', label: 'Risaralda' },
-  { code: 'SAP', label: 'San Andrés y Providencia' },
-  { code: 'SAN', label: 'Santander' },
-  { code: 'SUC', label: 'Sucre' },
-  { code: 'TOL', label: 'Tolima' },
-  { code: 'VAC', label: 'Valle del Cauca' },
-  { code: 'VAU', label: 'Vaupés' },
-  { code: 'VID', label: 'Vichada' },
-];
 
 const EMPTY_ADDRESS = {
   first_name: '',
@@ -89,14 +52,14 @@ const Auth = () => {
   // Generic handler for billing fields
   const handleBillingChange = (e) => {
     const { name, value } = e.target;
-    setBilling(prev => ({ ...prev, [name]: value }));
+    setBilling(prev => ({ ...prev, [name]: value, ...(name === 'state' ? { city: '' } : {}) }));
     setError('');
   };
 
   // Generic handler for shipping fields
   const handleShippingChange = (e) => {
     const { name, value } = e.target;
-    setShipping(prev => ({ ...prev, [name]: value }));
+    setShipping(prev => ({ ...prev, [name]: value, ...(name === 'state' ? { city: '' } : {}) }));
     setError('');
   };
 
@@ -267,7 +230,12 @@ const Auth = () => {
         </div>
         <div className="reg-field">
           <label>Ciudad *</label>
-          <input type="text" name="city" value={data.city} onChange={onChange} placeholder="Bogotá" disabled={loading} />
+          <select name="city" value={data.city} onChange={onChange} disabled={loading || !data.state}>
+            <option value="">{data.state ? 'Selecciona ciudad' : 'Selecciona un departamento'}</option>
+            {data.state && CITIES_BY_DEPT[data.state]?.map(c => (
+              <option key={c} value={c}>{c}</option>
+            ))}
+          </select>
         </div>
         <div className="reg-field">
           <label>Departamento *</label>
@@ -497,16 +465,16 @@ const Auth = () => {
                 <div className="social-auth">
                   <button className="social-btn google">
                     <svg viewBox="0 0 24 24" width="20" height="20">
-                      <path fill="#EA4335" d="M12 5.04c1.94 0 3.51.68 4.79 1.9L20.5 3.25C18.23 1.13 15.34 0 12 0 7.31 0 3.25 2.68 1.25 6.63l4.31 3.34c1-2.98 3.79-4.93 6.44-4.93z"/>
-                      <path fill="#FBBC05" d="M1.25 6.63C.45 8.21 0 9.99 0 12c0 2.01.45 3.79 1.25 5.37l4.31-3.34c-.26-.63-.44-1.33-.44-2.03 0-.7.18-1.4.44-2.03L1.25 6.63z"/>
-                      <path fill="#4285F4" d="M12 24c3.24 0 5.96-1.07 7.95-2.91l-3.83-2.97c-.89.58-2.02.94-3.32.94-2.55 0-4.71-1.73-5.48-4.06l-4.31 3.34C3.25 21.32 7.31 24 12 24z"/>
-                      <path fill="#34A853" d="M22.25 10.5H12v4.5h5.92c-.26 1.34-1.02 2.47-2.16 3.23l3.83 2.97C22.06 18.9 24 15.75 24 12c0-.52-.05-1.03-.14-1.5h-1.61z"/>
+                      <path fill="#EA4335" d="M12 5.04c1.94 0 3.51.68 4.79 1.9L20.5 3.25C18.23 1.13 15.34 0 12 0 7.31 0 3.25 2.68 1.25 6.63l4.31 3.34c1-2.98 3.79-4.93 6.44-4.93z" />
+                      <path fill="#FBBC05" d="M1.25 6.63C.45 8.21 0 9.99 0 12c0 2.01.45 3.79 1.25 5.37l4.31-3.34c-.26-.63-.44-1.33-.44-2.03 0-.7.18-1.4.44-2.03L1.25 6.63z" />
+                      <path fill="#4285F4" d="M12 24c3.24 0 5.96-1.07 7.95-2.91l-3.83-2.97c-.89.58-2.02.94-3.32.94-2.55 0-4.71-1.73-5.48-4.06l-4.31 3.34C3.25 21.32 7.31 24 12 24z" />
+                      <path fill="#34A853" d="M22.25 10.5H12v4.5h5.92c-.26 1.34-1.02 2.47-2.16 3.23l3.83 2.97C22.06 18.9 24 15.75 24 12c0-.52-.05-1.03-.14-1.5h-1.61z" />
                     </svg>
                     Google
                   </button>
                   <button className="social-btn facebook">
                     <svg viewBox="0 0 24 24" width="20" height="20" fill="#1877F2">
-                      <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                      <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
                     </svg>
                     Facebook
                   </button>
