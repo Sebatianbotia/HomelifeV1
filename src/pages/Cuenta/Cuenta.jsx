@@ -121,8 +121,6 @@ const Cuenta = () => {
     setSaveMessage(null);
 
     try {
-      const ENDPOINT = `${BASE_URL}/wp-json/homelife/v1/actualizar-usuario`;
-      
       let finalShipping = {};
       if (sameAsBilling) {
         finalShipping = { ...billing };
@@ -188,7 +186,7 @@ const Cuenta = () => {
         setSaveMessage({ type: 'error', text: data.message || 'Error al actualizar datos.' });
       }
     } catch (err) {
-      setSaveMessage({ type: 'error', text: 'Error de conexión. Inténtalo de nuevo.' });
+      setSaveMessage({ type: 'error', text: `Error de actualización: ${err.message}` });
     } finally {
       setSaving(false);
     }

@@ -7,14 +7,9 @@
  */
 
 const WP_URL = import.meta.env.VITE_WP_URL || 'https://www.homelife.com.co';
-const isDevelopment = import.meta.env.DEV;
 
 const buildStoreApiUrl = (endpoint = '') => {
-  // En desarrollo, usa URL relativa para que Vite proxy lo intercepte
-  // En producción, usa URL absoluta
-  if (isDevelopment) {
-    return new URL(`/wp-json/wc/store/v1${endpoint}`, 'http://localhost:5173');
-  }
+  // Siempre utiliza la URL absoluta definida en .env
   return new URL(`${WP_URL}/wp-json/wc/store/v1${endpoint}`);
 };
 
