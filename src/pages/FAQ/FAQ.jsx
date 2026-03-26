@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getFAQ } from '../../services/contentService';
+import useSEO from '../../utils/useSEO';
 import './FAQ.css';
 
 const FAQ = () => {
@@ -14,7 +15,6 @@ const FAQ = () => {
         const data = await getFAQ();
         setFaqData(data);
       } catch (err) {
-        console.error('Error fetching FAQ:', err);
         setError(err.message || 'Error desconocido al cargar las preguntas');
       } finally {
         setLoading(false);
@@ -46,8 +46,15 @@ const FAQ = () => {
     );
   }
 
+  const seo = useSEO({
+    title: 'Preguntas Frecuentes sobre Equipos Médicos',
+    description: 'Resolvemos tus dudas sobre equipos médicos HomeLife: garantías, envíos, uso, mantenimiento y más. Soporte al cliente disponible.',
+    canonical: 'https://www.homelife.com.co/faq',
+  });
+
   return (
     <div className="faq-page">
+      {seo}
       <div className="container">
         <h1>Preguntas Frecuentes</h1>
         <div className="faq-list">

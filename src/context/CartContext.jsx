@@ -34,7 +34,6 @@ const saveCartToStorage = (items) => {
   try {
     localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(items));
   } catch (err) {
-    console.error('Error guardando carrito:', err);
   }
 };
 
@@ -60,7 +59,6 @@ export const CartProvider = ({ children }) => {
       setCartError(null);
 
       const id = String(productId);
-      console.log(`➕ Agregando producto ${id} x${quantity} al carrito`);
 
       setCartItems(prev => {
         const existingIndex = prev.findIndex(item => String(item.id) === id);
@@ -88,10 +86,8 @@ export const CartProvider = ({ children }) => {
         return [...prev, newItem];
       });
 
-      console.log('✅ Producto agregado al carrito');
       return true;
     } catch (err) {
-      console.error('❌ Error al agregar:', err);
       setCartError(err.message);
       return false;
     } finally {
@@ -124,7 +120,6 @@ export const CartProvider = ({ children }) => {
 
       return true;
     } catch (err) {
-      console.error('❌ Error al actualizar:', err);
       setCartError(err.message);
       return false;
     } finally {
@@ -141,12 +136,9 @@ export const CartProvider = ({ children }) => {
       setIsCartLoading(true);
       setCartError(null);
 
-      console.log(`🗑️ Eliminando item ${itemId}`);
       setCartItems(prev => prev.filter(item => String(item.id) !== String(itemId)));
-      console.log('✅ Item eliminado');
       return true;
     } catch (err) {
-      console.error('❌ Error al eliminar:', err);
       setCartError(err.message);
       return false;
     } finally {
@@ -162,10 +154,8 @@ export const CartProvider = ({ children }) => {
       setIsCartLoading(true);
       setCartError(null);
       setCartItems([]);
-      console.log('✅ Carrito vaciado');
       return true;
     } catch (err) {
-      console.error('❌ Error al vaciar carrito:', err);
       setCartError(err.message);
       return false;
     } finally {
@@ -213,7 +203,6 @@ export const useCart = () => {
 
   if (!context) {
     if (process.env.NODE_ENV === 'development') {
-      console.warn('useCart debe ser usado dentro de un CartProvider');
     }
 
     return {

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { RouterProvider } from 'react-router-dom';
+import { HelmetProvider } from 'react-helmet-async';
 import { router } from './routes';
 import { ProductsProvider } from './context/ProductsContext';
 import SplashScreen from './components/SplashScreen/SplashScreen';
@@ -11,9 +12,11 @@ function App() {
   }
 
   return (
-    <ProductsProvider>
-      <RouterProvider router={router} />
-    </ProductsProvider>
+    <HelmetProvider>
+      <ProductsProvider>
+        <RouterProvider router={router} />
+      </ProductsProvider>
+    </HelmetProvider>
   );
 }
 

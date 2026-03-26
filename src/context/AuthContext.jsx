@@ -24,7 +24,6 @@ export const AuthProvider = ({ children }) => {
           setError(null);
         }
       } catch (err) {
-        console.error('Error al inicializar autenticación:', err);
         localStorage.removeItem('homelife_user');
         setUser(null);
       } finally {
@@ -47,11 +46,6 @@ export const AuthProvider = ({ children }) => {
     setError(null);
 
     try {
-      console.log('🔐 Login intento:', {
-        endpoint: `${BASE_URL}/wp-json/homelife/v1/login`,
-        body: { username, password },
-        headers: { 'Content-Type': 'application/json' }
-      });
 
       const response = await fetch(`${BASE_URL}/wp-json/homelife/v1/login`, {
         method: 'POST',
@@ -64,17 +58,11 @@ export const AuthProvider = ({ children }) => {
         }),
       });
 
-      console.log('📩 Respuesta del servidor:', {
-        status: response.status,
-        statusText: response.statusText,
-        ok: response.ok
-      });
 
       if (!response.ok) {
         let errorMessage = 'Error al iniciar sesión';
         try {
           const errorData = await response.json();
-          console.error('❌ Error completo:', errorData);
           errorMessage = errorData.message || errorData.error || JSON.stringify(errorData);
         } catch (e) {
           const textError = await response.text();
@@ -86,7 +74,6 @@ export const AuthProvider = ({ children }) => {
       }
 
       const data = await response.json();
-      console.log('✅ Respuesta completa del servidor:', data);
 
       // Transformar respuesta del servidor al formato esperado
       const userObj = data.user || data;
@@ -122,7 +109,6 @@ export const AuthProvider = ({ children }) => {
     } catch (err) {
       const errorMessage = err.message || 'Error desconocido al iniciar sesión';
       setError(errorMessage);
-      console.error('🔴 Login error:', err);
       setLoading(false);
       return false;
     }
@@ -197,7 +183,6 @@ export const AuthProvider = ({ children }) => {
       }
 
       const data = await response.json();
-      console.log('Registro exitoso:', data);
 
       // Intenta iniciar sesión automáticamente después del registro
       const loginSuccess = await login(username, password);
@@ -214,7 +199,6 @@ export const AuthProvider = ({ children }) => {
     } catch (err) {
       const errorMessage = err.message || 'Error desconocido al registrar';
       setError(errorMessage);
-      console.error('Register error:', err);
       setLoading(false);
       return false;
     }
@@ -257,7 +241,6 @@ export const useAuth = () => {
 
   if (!context) {
     if (process.env.NODE_ENV === 'development') {
-      console.warn('useAuth debe ser usado dentro de un AuthProvider');
     }
 
     return {

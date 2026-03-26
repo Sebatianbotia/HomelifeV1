@@ -3,6 +3,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useProducts } from '../../context/ProductsContext';
 import { adaptarPostParaReact } from '../../utils/wpBlogAdapter';
 import { getArticuloDetalle } from '../../services/contentService';
+import useSEO from '../../utils/useSEO';
 import './ArticuloDetalle.css';
 
 const ArticuloDetalle = () => {
@@ -30,11 +31,9 @@ const ArticuloDetalle = () => {
             );
             setRelatedProducts(productos);
           } catch (prodErr) {
-            console.warn('Error cargando productos relacionados:', prodErr);
           }
         }
       } catch (err) {
-        console.error('Error fetching article:', err);
         setError(err.message);
         // Redirigir al blog después de 2 segundos si hay error
         setTimeout(() => navigate('/blog'), 2000);
@@ -69,8 +68,16 @@ const ArticuloDetalle = () => {
     );
   }
 
+  const articleSeo = useSEO({
+    title: post ? post.title : 'Artículo del Blog',
+    description: post ? (post.excerpt || `Lee el artículo "${post.title}" en el blog de HomeLife sobre salud y equipos médicos.`) : '',
+    canonical: `https://www.homelife.com.co/articulo/${id}`,
+    image: post?.image,
+  });
+
   return (
     <div className="article-detail-page">
+      {articleSeo}
       <div className="container">
         <nav className="article-breadcrumb">
           <Link to="/blog">Blog</Link>

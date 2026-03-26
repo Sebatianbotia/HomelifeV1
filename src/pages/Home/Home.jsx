@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+import useSEO from '../../utils/useSEO';
 import HeroSlider from '../../components/HeroSlider/HeroSlider';
 import Carousel3D from '../../components/Carousel3D/Carousel3D';
 import Stats from '../../components/Stats/Stats';
@@ -13,6 +14,12 @@ import './Home.css';
 const Home = () => {
   const { productos, loading } = useProducts();
 
+  const seo = useSEO({
+    title: 'Equipos Médicos Domiciliarios Certificados INVIMA',
+    description: 'Tensiómetros, oxímetros, nebulizadores, glucómetros y más. Equipos médicos certificados INVIMA con garantía oficial. Más de 15 años cuidando la salud de las familias colombianas.',
+    canonical: 'https://www.homelife.com.co/',
+  });
+
   // Filtrar productos destacados (primeros 6)
   const featuredProducts = useMemo(() => {
     return productos.slice(0, 6);
@@ -20,6 +27,7 @@ const Home = () => {
 
   return (
     <>
+      {seo}
       <HeroSlider />
       <div className="home-page">
         <section className="featured-products">

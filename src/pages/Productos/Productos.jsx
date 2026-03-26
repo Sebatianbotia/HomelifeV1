@@ -1,10 +1,16 @@
 import React, { useState, useMemo } from 'react';
 import { useProducts } from '../../context/ProductsContext';
 import ProductCard from '../../components/ProductCard/ProductCard';
+import useSEO from '../../utils/useSEO';
 import './Productos.css';
 
 const Productos = () => {
   const { productos, categorias, loading, error } = useProducts();
+  const seo = useSEO({
+    title: 'Catálogo de Equipos Médicos | Tensómetros, Oxímetros, Nebulizadores',
+    description: 'Explora nuestro catálogo completo de equipos médicos domiciliarios certificados INVIMA: tensómetros, oxímetros, nebulizadores, glucómetros y más. Envío a todo Colombia.',
+    canonical: 'https://www.homelife.com.co/productos',
+  });
   const [selectedCategory, setSelectedCategory] = useState('todas');
   const [priceRange, setPriceRange] = useState({ min: '', max: '' });
   const [sortBy, setSortBy] = useState('featured');

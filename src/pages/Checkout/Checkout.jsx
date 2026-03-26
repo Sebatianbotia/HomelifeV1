@@ -4,12 +4,15 @@ import { useCart } from '../../context/CartContext';
 import { useAuth } from '../../context/AuthContext';
 import { crearPedido } from '../../services/homelifeService';
 import { DEPARTAMENTOS, CITIES_BY_DEPT } from '../../utils/colombiaData';
+import useSEO from '../../utils/useSEO';
 import './Checkout.css';
 
 const Checkout = () => {
   const navigate = useNavigate();
   const { cartInfo, clearCart, isCartLoading } = useCart();
   const { user, isAuthenticated } = useAuth();
+
+  const seo = useSEO({ title: 'Finalizar Compra', description: '', noIndex: true });
 
   const [cc, setCc] = useState(user?.cc || '');
   const [billing, setBilling] = useState({
@@ -143,10 +146,8 @@ const Checkout = () => {
         customer_note: customerNote.trim(),
       };
 
-      console.log('📦 Enviando pedido:', payload);
 
       const data = await crearPedido(payload);
-      console.log('📩 Respuesta del servidor:', data);
 
       if (data.success || data.order_id || data.id) {
         const orderId = data.order_id || data.id;
@@ -201,7 +202,6 @@ const Checkout = () => {
         setLoading(false);
       }
     } catch (err) {
-      console.error('❌ Error procesando pedido:', err);
       setError('Error de conexión. Verifica tu internet e inténtalo de nuevo.');
       setLoading(false);
     }
@@ -221,6 +221,7 @@ const Checkout = () => {
 
   return (
     <div className="checkout-page">
+      {seo}
       <h1 className="checkout-title">Finalizar Compra</h1>
 
       <form className="checkout-layout" onSubmit={procesarPedido}>
@@ -392,7 +393,7 @@ const Checkout = () => {
                   <div className="payment-option-info">
                     <span className="payment-option-name">Pago Contraentrega</span>
                     <span className="payment-option-desc">
-                      {!isBogota ? <span style={{color: 'var(--red)'}}>Solo disponible en Bogotá</span> : 'Paga al recibir tu producto en casa'}
+                      {!isBogota ? <span style={{ color: 'var(--red)' }}>Solo disponible en Bogotá</span> : 'Paga al recibir tu producto en casa'}
                     </span>
                   </div>
                 </div>

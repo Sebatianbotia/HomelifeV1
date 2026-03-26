@@ -3,6 +3,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useProducts } from '../../context/ProductsContext';
 import { useCart } from '../../context/CartContext';
 import ProductCard from '../../components/ProductCard/ProductCard';
+import useSEO from '../../utils/useSEO';
 import './ProductoDetalle.css';
 
 const ProductoDetalle = () => {
@@ -51,7 +52,6 @@ const ProductoDetalle = () => {
           setRelatedProducts(relacionados);
         }
       } catch (err) {
-        console.error('Error cargando producto:', err);
         setError(`Error: ${err.message}`);
       } finally {
         setLoading(false);
@@ -110,9 +110,16 @@ const ProductoDetalle = () => {
   };
 
   const savings = product.originalPrice ? product.originalPrice - product.price : 0;
+  const productSeo = useSEO({
+    title: product.name,
+    description: product.shortDescription || `Compra ${product.name} certificado INVIMA en Colombia. Garantía oficial. Envío a todo el país.`,
+    canonical: `https://www.homelife.com.co/producto/${product.id}`,
+    image: product.images && product.images.length > 0 ? product.images[0] : undefined,
+  });
 
   return (
     <div className="producto-detalle-page">
+      {productSeo}
       <button 
         className="mobile-back-btn" 
         onClick={() => navigate('/productos')}

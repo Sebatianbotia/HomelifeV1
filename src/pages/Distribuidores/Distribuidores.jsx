@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { contactoDistribuidor } from '../../services/homelifeService';
+import useSEO from '../../utils/useSEO';
 import './Distribuidores.css';
 
 const Distribuidores = () => {
@@ -44,8 +45,15 @@ const Distribuidores = () => {
     }
   };
 
+  const seo = useSEO({
+    title: 'Distribuidores | Únete a la Red Comercial de HomeLife',
+    description: 'Convírtete en distribuidor autorizado de HomeLife. Vende equipos médicos certificados INVIMA con soporte, material de ventas y descuentos por volumen en toda Colombia.',
+    canonical: 'https://www.homelife.com.co/distribuidores',
+  });
+
   return (
     <div className="distribuidores-page">
+      {seo}
       {/* Hero */}
       <section className="distribuidores-hero">
         <h1>¿Deseas ser distribuidor de nuestros productos?</h1>

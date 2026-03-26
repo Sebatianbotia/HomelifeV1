@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import Stats from '../../components/Stats/Stats';
 import { getNosotros } from '../../services/contentService';
+import useSEO from '../../utils/useSEO';
 import './Nosotros.css';
 
 const Nosotros = () => {
@@ -16,7 +17,6 @@ const Nosotros = () => {
         setData(acf);
         setError(null);
       } catch (err) {
-        console.error('Error fetching Nosotros data:', err);
         setError(err.message);
       } finally {
         setLoading(false);
@@ -90,8 +90,15 @@ const Nosotros = () => {
     );
   }
 
+  const seo = useSEO({
+    title: 'Sobre Nosotros | Historia y Valores de HomeLife',
+    description: 'Conoce la historia de HomeLife, líderes en equipos médicos certificados INVIMA en Colombia. Más de 15 años de experiencia y compromiso con la salud de los colombianos.',
+    canonical: 'https://www.homelife.com.co/nosotros',
+  });
+
   return (
     <div className="nosotros-page">
+      {seo}
       {/* Hero */}
       <section className="nosotros-hero">
         <div className="container">

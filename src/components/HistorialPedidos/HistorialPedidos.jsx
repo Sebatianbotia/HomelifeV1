@@ -19,7 +19,6 @@ const HistorialPedidos = () => {
       const data = await getMisPedidos();
       setPedidos(data);
     } catch (err) {
-      console.error('Error fetching orders:', err);
       setError(err.message || 'Ocurrió un error inesperado al listar tus pedidos.');
     } finally {
       setLoading(false);

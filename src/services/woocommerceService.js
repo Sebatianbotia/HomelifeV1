@@ -38,7 +38,6 @@ export const fetchProductos = async (page = 1, perPage = 100) => {
 
     return await response.json();
   } catch (error) {
-    console.error('Error fetching productos:', error);
     throw error;
   }
 };
@@ -58,7 +57,6 @@ export const fetchCategorias = async () => {
 
     return await response.json();
   } catch (error) {
-    console.error('Error fetching categorias:', error);
     throw error;
   }
 };
@@ -83,7 +81,6 @@ export const fetchProductoDetalle = async (productId) => {
 
     return await response.json();
   } catch (error) {
-    console.error(`Error fetching producto detalle ${productId}:`, error);
     throw error;
   }
 };
@@ -106,7 +103,6 @@ export const fetchProductosPorIds = async (productIds) => {
 
     return await response.json();
   } catch (error) {
-    console.error('Error fetching productos por IDs:', error);
     throw error;
   }
 };
@@ -132,7 +128,6 @@ export const fetchProductosPorCategoria = async (categoryId, page = 1, perPage =
 
     return await response.json();
   } catch (error) {
-    console.error(`Error fetching productos por categoria ${categoryId}:`, error);
     throw error;
   }
 };
@@ -167,7 +162,6 @@ export const fetchProductosPorCategoriaYPrecio = async (
 
     return await response.json();
   } catch (error) {
-    console.error('Error fetching productos por categoria y precio:', error);
     throw error;
   }
 }

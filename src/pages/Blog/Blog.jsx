@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import useSEO from '../../utils/useSEO';
 import './Blog.css';
 import { adaptarPostParaReact } from '../../utils/wpBlogAdapter';
 
@@ -33,7 +34,6 @@ const Blog = () => {
         setCategories(categoriesData);
         setError(null);
       } catch (err) {
-        console.error('Error fetching blog data:', err);
         setError(err.message);
       } finally {
         setLoading(false);
@@ -85,8 +85,15 @@ const Blog = () => {
   const featuredPost = posts[0];
   const recentPosts = posts.slice(1);
 
+  const seo = useSEO({
+    title: 'Blog de Salud | Revista HomeLife',
+    description: 'Artículos, guías y consejos sobre salud, equipos médicos y tecnología para el bienestar de toda la familia. Escrito por expertos en salud.',
+    canonical: 'https://www.homelife.com.co/blog',
+  });
+
   return (
     <div className="blog-page">
+      {seo}
       <section className="blog-hero">
         <div className="container">
           <h1 className="blog-hero-title">Revista HomeLife</h1>

@@ -131,9 +131,9 @@ export const authDelete = async (endpoint, token) => {
  *   const obtenerPerfil = async () => {
  *     try {
  *       const perfil = await authGet('/wp/v2/users/me', token);
- *       console.log('Perfil:', perfil);
+ *       
  *     } catch (error) {
- *       console.error('Error:', error);
+ *       
  *     }
  *   };
  *   
@@ -141,9 +141,9 @@ export const authDelete = async (endpoint, token) => {
  *   const crearPedido = async (pedidoData) => {
  *     try {
  *       const resultado = await authPost('/wp-json/wc/v3/orders', pedidoData, token);
- *       console.log('Pedido creado:', resultado);
+ *       
  *     } catch (error) {
- *       console.error('Error:', error);
+ *       
  *     }
  *   };
  *   
@@ -151,9 +151,9 @@ export const authDelete = async (endpoint, token) => {
  *   const actualizarPerfil = async (datosActuales) => {
  *     try {
  *       const resultado = await authPut('/wp/v2/users/' + user?.id, datosActuales, token);
- *       console.log('Perfil actualizado:', resultado);
+ *       
  *     } catch (error) {
- *       console.error('Error:', error);
+ *       
  *     }
  *   };
  *   
@@ -161,9 +161,9 @@ export const authDelete = async (endpoint, token) => {
  *   const eliminar = async (id) => {
  *     try {
  *       const resultado = await authDelete('/wp-json/wc/v3/orders/' + id, token);
- *       console.log('Eliminado:', resultado);
+ *       
  *     } catch (error) {
- *       console.error('Error:', error);
+ *       
  *     }
  *   };
  *   

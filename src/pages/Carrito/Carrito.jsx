@@ -2,12 +2,14 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
 import { useAuth } from '../../context/AuthContext';
+import useSEO from '../../utils/useSEO';
 import './Carrito.css';
 
 const Carrito = () => {
   const { cartInfo, isCartLoading, cartError, updateQuantity, removeFromCart } = useCart();
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
+  const seo = useSEO({ title: 'Mi Carrito', description: '', noIndex: true });
 
   const formatPrice = (price) => {
     return new Intl.NumberFormat('es-CO', {

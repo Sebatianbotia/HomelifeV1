@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import HistorialPedidos from '../../components/HistorialPedidos/HistorialPedidos';
 import { getMisPedidos, actualizarUsuario } from '../../services/homelifeService';
+import useSEO from '../../utils/useSEO';
 import './Cuenta.css';
 
 import { DEPARTAMENTOS, CITIES_BY_DEPT } from '../../utils/colombiaData';
@@ -21,6 +22,7 @@ const EMPTY_ADDRESS = {
 const Cuenta = () => {
   const { user, logout, isAuthenticated, loading } = useAuth();
   const navigate = useNavigate();
+  const seo = useSEO({ title: 'Mi Cuenta', description: '', noIndex: true });
   const [activeSection, setActiveSection] = useState('dashboard');
   const [recentOrders, setRecentOrders] = useState([]);
   const [ordersLoading, setOrdersLoading] = useState(false);
@@ -48,7 +50,6 @@ const Cuenta = () => {
         const pedidos = await getMisPedidos();
         setRecentOrders(pedidos);
       } catch (err) {
-        console.error('Error fetching dashboard orders:', err);
       } finally {
         setOrdersLoading(false);
       }
@@ -187,7 +188,6 @@ const Cuenta = () => {
         setSaveMessage({ type: 'error', text: data.message || 'Error al actualizar datos.' });
       }
     } catch (err) {
-      console.error('Error guardando perfil:', err);
       setSaveMessage({ type: 'error', text: 'Error de conexión. Inténtalo de nuevo.' });
     } finally {
       setSaving(false);
@@ -278,6 +278,7 @@ const Cuenta = () => {
 
   return (
     <div className="cuenta-page">
+      {seo}
       <div className="profile-container">
         <div className="profile-card">
           <div className="profile-header">

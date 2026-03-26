@@ -55,7 +55,6 @@ const RegistroEquipo = () => {
       }, 5000);
 
     } catch (err) {
-      console.error('Error registrando equipo:', err);
       setServerError(err.message || 'Error de conexión. Inténtalo de nuevo.');
     } finally {
       setLoading(false);

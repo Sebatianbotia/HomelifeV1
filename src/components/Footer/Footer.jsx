@@ -12,7 +12,6 @@ const Footer = () => {
         const data = await getAjustesGlobales();
         if (data) setAjustes(data);
       } catch (error) {
-        console.error("Error al cargar ajustes globales en Footer:", error);
       }
     };
     fetchAjustes();

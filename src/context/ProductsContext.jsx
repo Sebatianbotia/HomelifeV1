@@ -27,7 +27,6 @@ export const useProducts = () => {
   // Si no hay contexto, retornar valores por defecto
   if (!context) {
     if (process.env.NODE_ENV === 'development') {
-      console.warn('useProducts debe ser usado dentro de ProductsProvider');
     }
     
     return {
@@ -66,7 +65,6 @@ export const ProductsProvider = ({ children }) => {
       setCategorias(categoriasAdaptadas);
       setCategoriasCargadas(true);
     } catch (err) {
-      console.error('Error al cargar categorías:', err);
       setError(`Error cargando categorías: ${err.message}`);
     }
   }, [categoriasCargadas]);
@@ -83,7 +81,6 @@ export const ProductsProvider = ({ children }) => {
       setProductos(productosAdaptados);
       setProductosCargados(true);
     } catch (err) {
-      console.error('Error al cargar productos:', err);
       setError(`Error cargando productos: ${err.message}`);
     } finally {
       setLoading(false);
@@ -97,7 +94,6 @@ export const ProductsProvider = ({ children }) => {
       const datosWc = await fetchProductoDetalle(productId);
       return adaptProductDetalle(datosWc);
     } catch (err) {
-      console.error(`Error al cargar producto ${productId}:`, err);
       setError(`Error cargando producto: ${err.message}`);
       return null;
     }
@@ -111,7 +107,6 @@ export const ProductsProvider = ({ children }) => {
       const datosWc = await fetchProductosPorIds(productIds);
       return adaptProducts(datosWc, categorias);
     } catch (err) {
-      console.error('Error al cargar productos por IDs:', err);
       setError(`Error cargando productos relacionados: ${err.message}`);
       return [];
     }
@@ -124,7 +119,6 @@ export const ProductsProvider = ({ children }) => {
       const datosWc = await fetchProductosPorCategoria(categoryId, page, perPage);
       return adaptProducts(datosWc, categorias);
     } catch (err) {
-      console.error(`Error al cargar productos de categoría ${categoryId}:`, err);
       setError(`Error cargando productos de categoría: ${err.message}`);
       return [];
     }
@@ -147,7 +141,6 @@ export const ProductsProvider = ({ children }) => {
 
         setError(null);
       } catch (err) {
-        console.error('Error al cargar datos iniciales:', err);
         setError(`Error cargando datos: ${err.message}`);
       } finally {
         setLoading(false);

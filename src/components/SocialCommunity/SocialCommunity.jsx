@@ -14,7 +14,6 @@ const SocialCommunity = () => {
         setData(acf);
         setError(null);
       } catch (err) {
-        console.error('Error fetching social community data:', err);
         setError(err.message);
       } finally {
         setLoading(false);

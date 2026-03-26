@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getPoliticas } from '../../services/contentService';
+import useSEO from '../../utils/useSEO';
 import '../Legal/LegalPage.css';
 
 const Politicas = () => {
@@ -14,7 +15,6 @@ const Politicas = () => {
         const data = await getPoliticas();
         setPageData(data);
       } catch (err) {
-        console.error('Error fetching Politicas:', err);
         setError(err.message || 'Error desconocido al cargar las políticas');
       } finally {
         setLoading(false);
@@ -46,8 +46,15 @@ const Politicas = () => {
     );
   }
 
+  const seo = useSEO({
+    title: 'Políticas de Privacidad y Términos de Uso',
+    description: 'Consulta las políticas de privacidad, términos y condiciones y garantías de HomeLife, lder en equipos médicos certificados en Colombia.',
+    canonical: 'https://www.homelife.com.co/politicas',
+  });
+
   return (
     <div className="legal-page">
+      {seo}
       <div className="container">
         <div className="legal-card">
           <h1>{pageData?.title?.rendered}</h1>

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { DEPARTAMENTOS, CITIES_BY_DEPT } from '../../utils/colombiaData';
+import useSEO from '../../utils/useSEO';
 import './Auth.css';
 
 const EMPTY_ADDRESS = {
@@ -41,6 +42,8 @@ const Auth = () => {
 
   const { login, register: registerUser, error: authError } = useAuth();
   const navigate = useNavigate();
+
+  const seo = useSEO({ title: 'Iniciar Sesión / Registro', description: '', noIndex: true });
 
   // Generic handler for account fields
   const handleAccountChange = (e) => {
@@ -165,7 +168,6 @@ const Auth = () => {
           },
         };
 
-        console.log('📦 Payload de registro:', payload);
 
         const regSuccess = await registerUser(payload);
 
@@ -265,6 +267,7 @@ const Auth = () => {
 
   return (
     <div className="auth-page">
+      {seo}
       <div className={`auth-container ${!isLogin ? 'register-mode' : ''}`}>
         <div className="auth-card">
           <div className="auth-header">

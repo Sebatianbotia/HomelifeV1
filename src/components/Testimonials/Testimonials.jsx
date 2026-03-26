@@ -14,7 +14,6 @@ const Testimonials = () => {
         setTestimonials(data);
         setError(null);
       } catch (err) {
-        console.error('Error fetching testimonials:', err);
         setError(err.message);
       } finally {
         setLoading(false);

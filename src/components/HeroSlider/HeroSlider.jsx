@@ -15,7 +15,6 @@ const HeroSlider = () => {
         setSlides(mappedSlides);
         setError(null);
       } catch (err) {
-        console.error('Error fetching slides:', err);
         setError(err.message);
       } finally {
         setLoading(false);
