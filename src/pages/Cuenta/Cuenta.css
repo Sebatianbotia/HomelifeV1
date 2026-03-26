@@ -207,6 +207,52 @@
   border-color: var(--cyan-400);
 }
 
+/* Recent Orders Dashboard Preview */
+.dash-recent-order {
+  margin-top: 1rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 16px;
+  border-radius: var(--radius-md);
+  transition: all 0.3s;
+}
+
+.dash-recent-order:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(0, 217, 217, 0.2);
+}
+
+.ro-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.ro-id {
+  font-weight: 700;
+  color: var(--text-primary);
+  font-size: 1rem;
+}
+
+.ro-status {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 100px;
+  background: rgba(0, 217, 217, 0.15);
+  color: var(--cyan-400);
+  border: 1px solid rgba(0, 217, 217, 0.25);
+  letter-spacing: 0.5px;
+}
+
+.ro-date {
+  margin: 0 0 16px;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
 /* ═══════════════════════════════════════════════
    MIS DATOS SECTION
    ═══════════════════════════════════════════════ */

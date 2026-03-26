@@ -58,6 +58,8 @@ const Cuenta = () => {
   const { user, logout, isAuthenticated, loading } = useAuth();
   const navigate = useNavigate();
   const [activeSection, setActiveSection] = useState('dashboard');
+  const [recentOrders, setRecentOrders] = useState([]);
+  const [ordersLoading, setOrdersLoading] = useState(false);
 
   const [account, setAccount] = useState({ first_name: '', last_name: '', email: '', cc: '' });
   const [billing, setBilling] = useState({ ...EMPTY_ADDRESS, email: '' });
@@ -73,6 +75,38 @@ const Cuenta = () => {
       navigate('/auth');
     }
   }, [isAuthenticated, loading, navigate]);
+
+  useEffect(() => {
+    const fetchRecentOrders = async () => {
+      const token = localStorage.getItem('homelife_jwt');
+      if (!isAuthenticated || !token) return;
+      
+      setOrdersLoading(true);
+      try {
+        const response = await fetch(`${BASE_URL}/wp-json/homelife/v1/mis-pedidos`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+        const data = await response.json();
+        if (response.ok && data) {
+          let pedidosData = data.pedidos || data.data || data;
+          if (!Array.isArray(pedidosData) && data.success && Array.isArray(data.pedidos)) {
+            pedidosData = data.pedidos;
+          }
+          setRecentOrders(Array.isArray(pedidosData) ? pedidosData : []);
+        }
+      } catch (err) {
+        console.error('Error fetching dashboard orders:', err);
+      } finally {
+        setOrdersLoading(false);
+      }
+    };
+
+    fetchRecentOrders();
+  }, [isAuthenticated, BASE_URL]);
 
   const resetFormFields = () => {
     if (user) {
@@ -303,12 +337,8 @@ const Cuenta = () => {
 
           <div className="profile-stats">
             <div className="p-stat">
-              <span className="p-val">0</span>
+              <span className="p-val">{recentOrders.length}</span>
               <span className="p-lab">Pedidos</span>
-            </div>
-            <div className="p-stat">
-              <span className="p-val">0</span>
-              <span className="p-lab">Garantías</span>
             </div>
           </div>
 
@@ -326,13 +356,6 @@ const Cuenta = () => {
             >
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
               Mis Pedidos
-            </button>
-            <button 
-              className={`p-menu-item ${activeSection === 'equipos' ? 'active' : ''}`}
-              onClick={() => setActiveSection('equipos')}
-            >
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-              Equipos Registrados
             </button>
             <button className="p-menu-item logout" onClick={logout}>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
@@ -353,13 +376,33 @@ const Cuenta = () => {
               <div className="dashboard-grid">
                 <div className="dash-card">
                   <h3>Últimos Pedidos</h3>
-                  <p className="empty-msg">Aún no tienes pedidos realizados.</p>
-                  <button className="dash-btn" onClick={() => navigate('/productos')}>Ir a la tienda</button>
-                </div>
-                <div className="dash-card">
-                  <h3>Equipos Homelife</h3>
-                  <p className="empty-msg">No has registrado ningún producto.</p>
-                  <button className="dash-btn" onClick={() => navigate('/contacto')}>Registrar equipo</button>
+                  {ordersLoading ? (
+                    <p className="empty-msg" style={{ marginTop: '1rem' }}>Cargando último pedido...</p>
+                  ) : recentOrders.length > 0 ? (
+                    <div className="dash-recent-order">
+                      <div className="ro-header">
+                        <span className="ro-id">Pedido #{recentOrders[0].order_id}</span>
+                        <span className="ro-status">
+                          {recentOrders[0].status_label || recentOrders[0].status}
+                        </span>
+                      </div>
+                      <p className="ro-date">
+                        Fecha: {new Date(recentOrders[0].date_created).toLocaleDateString('es-CO')}
+                      </p>
+                      <button 
+                        className="dash-btn" 
+                        style={{ width: '100%', marginTop: '5px' }} 
+                        onClick={() => setActiveSection('pedidos')}
+                      >
+                        Ver historial completo
+                      </button>
+                    </div>
+                  ) : (
+                    <>
+                      <p className="empty-msg">Aún no tienes pedidos realizados.</p>
+                      <button className="dash-btn" onClick={() => navigate('/productos')}>Ir a la tienda</button>
+                    </>
+                  )}
                 </div>
               </div>
             </>
@@ -494,17 +537,6 @@ const Cuenta = () => {
                 <h2>Mis Pedidos</h2>
               </div>
               <HistorialPedidos />
-            </div>
-          )}
-
-          {/* Equipos Registrados */}
-          {activeSection === 'equipos' && (
-            <div className="section-placeholder">
-              <h2>Equipos Registrados</h2>
-              <div className="dash-card">
-                <p className="empty-msg">No has registrado ningún producto.</p>
-                <button className="dash-btn" onClick={() => navigate('/contacto')}>Registrar equipo</button>
-              </div>
             </div>
           )}
         </div>

@@ -144,21 +144,53 @@ const Checkout = () => {
       console.log('📩 Respuesta del servidor:', data);
 
       if (data.success || data.order_id || data.id) {
-        await clearCart();
+        const orderId = data.order_id || data.id;
+        const isWompi = data.metodo === 'wompi' || data.abrir_wompi === true || metodoPago === 'wompi';
 
-        const isWompi = data.metodo === 'wompi' || data.abrir_wompi === true;
-        const paymentUrl = data.redirect_url || data.url_pago || data.payment_url;
+        if (isWompi) {
+          // ── Wompi Native Widget (Zero Trust) ──
+          if (!window.WidgetCheckout) {
+            alert('Error: El sistema de pago no se ha cargado. Recarga la página e inténtalo de nuevo.');
+            setLoading(false);
+            return;
+          }
 
-        if (isWompi && paymentUrl) {
-          window.location.href = paymentUrl;
-        } else if (isWompi && !paymentUrl) {
-          setError('No se recibió la URL de pago. Contacta soporte.');
-          setLoading(false);
+          if (!data.wompi) {
+            setError('El servidor no devolvió la configuración de pago. Contacta soporte.');
+            setLoading(false);
+            return;
+          }
+
+          // Destructurar datos firmados del backend (fuente de verdad)
+          const { public_key, currency, amount_in_cents, reference, signature } = data.wompi;
+
+          const checkout = new window.WidgetCheckout({
+            currency: currency,
+            amountInCents: amount_in_cents,
+            reference: reference,
+            publicKey: public_key,
+            signature: { integrity: signature },
+          });
+
+          checkout.open(function (result) {
+            const transaction = result.transaction;
+            if (transaction && transaction.status === 'APPROVED') {
+              clearCart();
+              // Redirigir directamente al panel de "Mis Pedidos"
+              navigate('/cuenta');
+            } else {
+              const status = transaction ? transaction.status : 'CANCELLED';
+              alert('Pago no aprobado o cancelado. Estado: ' + status + '. Puedes intentarlo nuevamente.');
+              setLoading(false);
+            }
+          });
         } else {
+          // ── Pago Contraentrega ──
+          await clearCart();
           navigate('/gracias', {
             state: {
-              orderId: data.order_id || data.id,
-              orderNumber: data.order_number || data.order_id || data.id,
+              orderId: orderId,
+              orderNumber: data.order_number || orderId,
               metodoPago: 'cod',
             },
           });
@@ -176,6 +208,7 @@ const Checkout = () => {
 
   // Empty cart guard
   if (cartInfo.isEmpty && !isCartLoading && !loading) {
+
     return (
       <div className="checkout-empty">
         <h2>No hay productos en tu carrito</h2>
