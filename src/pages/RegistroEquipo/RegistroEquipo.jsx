@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { useProducts } from '../../context/ProductsContext';
 import { useAuth } from '../../context/AuthContext';
@@ -6,7 +6,7 @@ import { registrarEquipo } from '../../services/homelifeService';
 import './RegistroEquipo.css';
 
 const RegistroEquipo = () => {
-  const { register, handleSubmit, formState: { errors }, reset } = useForm();
+  const { register, handleSubmit, formState: { errors }, reset, setValue, watch } = useForm();
   const { productos } = useProducts();
   const { user } = useAuth();
   const [enviado, setEnviado] = useState(false);
@@ -14,14 +14,40 @@ const RegistroEquipo = () => {
   const [loading, setLoading] = useState(false);
   const [serverError, setServerError] = useState(null);
 
-  // Obtener lista única de productos para el selector
-  const productList = useMemo(() => {
-    return productos.map(p => ({
-      id: p.id,
-      name: p.name,
-      category: p.category
-    }));
-  }, [productos]);
+  // Custom Dropdown State
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const dropdownRef = useRef(null);
+
+  const selectedProductId = watch('producto');
+  const selectedProduct = useMemo(() =>
+    productos.find(p => String(p.id) === String(selectedProductId)),
+    [productos, selectedProductId]);
+
+  // Cerrar dropdown al hacer click fuera
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  // Filtrar productos según el término de búsqueda
+  const filteredProducts = useMemo(() => {
+    if (!searchTerm) return productos;
+    return productos.filter(p =>
+      p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (p.categories?.[0]?.name || '').toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }, [productos, searchTerm]);
+
+  // Registrar el campo oculto para react-hook-form
+  useEffect(() => {
+    register('producto', { required: 'Debes seleccionar un producto' });
+  }, [register]);
 
   const onSubmit = async (data) => {
     setLoading(true);
@@ -192,21 +218,67 @@ const RegistroEquipo = () => {
                   {errors.fechaCompra && <span className="error-message">{errors.fechaCompra.message}</span>}
                 </div>
 
-                {/* Producto */}
-                <div className="form-field full-width">
-                  <label htmlFor="producto">Producto <span className="required">*</span></label>
-                  <select
-                    id="producto"
-                    {...register('producto', { required: 'Debes seleccionar un producto' })}
-                    disabled={loading}
+                {/* Producto Custom Dropdown */}
+                <div className="form-field full-width custom-dropdown-wrapper" ref={dropdownRef}>
+                  <label>Producto <span className="required">*</span></label>
+
+                  <div
+                    className={`custom-select-trigger ${isDropdownOpen ? 'open' : ''}`}
+                    onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                   >
-                    <option value="">Selecciona un producto</option>
-                    {productList.map(product => (
-                      <option key={product.id} value={product.id}>
-                        {product.name} ({product.category})
-                      </option>
-                    ))}
-                  </select>
+                    {selectedProduct ? (
+                      <div className="selected-product-item">
+                        <span>{selectedProduct.name}</span>
+                      </div>
+                    ) : (
+                      <span className="placeholder">Busca y selecciona tu equipo...</span>
+                    )}
+                    <svg className="arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                      <polyline points="6 9 12 15 18 9" />
+                    </svg>
+                  </div>
+
+                  {isDropdownOpen && (
+                    <div className="custom-dropdown-panel">
+                      <div className="search-bar-dropdown">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                          <circle cx="11" cy="11" r="8" />
+                          <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                        </svg>
+                        <input
+                          type="text"
+                          placeholder="Escribe para buscar..."
+                          value={searchTerm}
+                          onChange={(e) => setSearchTerm(e.target.value)}
+                          autoFocus
+                          onClick={(e) => e.stopPropagation()}
+                        />
+                      </div>
+
+                      <div className="dropdown-options-list">
+                        {filteredProducts.length > 0 ? (
+                          filteredProducts.map(product => (
+                            <div
+                              key={product.id}
+                              className={`dropdown-option ${String(product.id) === String(selectedProductId) ? 'active' : ''}`}
+                              onClick={() => {
+                                setValue('producto', product.id, { shouldValidate: true });
+                                setIsDropdownOpen(false);
+                                setSearchTerm('');
+                              }}
+                            >
+                              <div className="option-info">
+                                <span className="option-name">{product.name}</span>
+                                <span className="option-category">{product.categories?.[0]?.name || 'HomeLife'}</span>
+                              </div>
+                            </div>
+                          ))
+                        ) : (
+                          <div className="no-results">No se encontraron productos</div>
+                        )}
+                      </div>
+                    </div>
+                  )}
                   {errors.producto && <span className="error-message">{errors.producto.message}</span>}
                 </div>
 
@@ -291,8 +363,7 @@ const RegistroEquipo = () => {
           <div className="info-card">
             <h3>¿Necesitas ayuda?</h3>
             <p>Contáctanos directamente:</p>
-            <p><strong>📞 +57 300 123 4567</strong></p>
-            <p><strong>✉️ soporte@homelife.com.co</strong></p>
+            <p><strong>✉️ atencionalcliente@homelife.com</strong></p>
           </div>
         </div>
       </div>

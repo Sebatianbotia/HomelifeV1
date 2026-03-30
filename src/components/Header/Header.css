@@ -370,6 +370,15 @@
   
   .mobile-menu-btn {
     display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .mobile-menu-btn svg {
+    display: block;
+    stroke: currentColor;
+    width: 24px;
+    height: 24px;
   }
 
   .desktop-only-icon {

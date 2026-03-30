@@ -64,10 +64,10 @@ const Distribuidores = () => {
         {/* Formulario */}
         <div className="distribuidores-form-card">
           <h2>Formulario de contacto</h2>
-          
+
           {error && <div className="alert alert-danger" style={{ color: 'red', marginBottom: '1rem', padding: '0.5rem', border: '1px solid red', borderRadius: '4px', backgroundColor: '#ffe6e6' }}>{error}</div>}
           {success && <div className="alert alert-success" style={{ color: 'green', marginBottom: '1rem', padding: '0.5rem', border: '1px solid green', borderRadius: '4px', backgroundColor: '#e6ffe6' }}>¡Gracias! Hemos recibido tu solicitud y te contactaremos pronto.</div>}
-          
+
           <form className="distribuidores-form" onSubmit={handleSubmit}>
             <div className="form-row">
               <div className="form-group">
@@ -114,17 +114,15 @@ const Distribuidores = () => {
           <p>Nuestros distribuidores son parte clave de nuestro crecimiento. Te acompañamos en cada paso para que comercialices nuestros productos con éxito.</p>
           <div className="contacto-distribuidor">
             <h4>Contacto directo</h4>
-            <p><strong>Alejandra Valderrama</strong></p>
-            <p><span>📧</span> ventas3@homemedicalgroup.com</p>
-            <p><span>📱</span> 300 355 5826</p>
+            <p><span>📧</span> gerencia@homemedicalgroup.com</p>
           </div>
           <div className="distribuidores-beneficios">
             <h4>Beneficios</h4>
             <ul>
-              <li>✔️ Catálogo completo de productos certificados</li>
-              <li>✔️ Soporte y asesoría continua</li>
-              <li>✔️ Material promocional incluido</li>
-              <li>✔️ Descuentos por volumen</li>
+              <li>Catálogo completo de productos certificados</li>
+              <li>Soporte y asesoría continua</li>
+              <li>Material promocional incluido</li>
+              <li>Descuentos por volumen</li>
             </ul>
           </div>
         </div>

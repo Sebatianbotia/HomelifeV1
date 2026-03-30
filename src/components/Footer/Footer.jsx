@@ -145,7 +145,7 @@ const Footer = () => {
       </div>
 
       <div className="footer-bottom">
-        <p>&copy; {new Date().getFullYear()} desing by <a href="https://carlosandresovallemarin.github.io/zowlwebsite/?utm_source=ig&utm_medium=social&utm_content=link_in_bio" className='link-zowl' target="_blank" rel="noopener noreferrer">Zowl Web Desing</a></p>
+        <p>&copy; {new Date().getFullYear()} design by <a href="https://carlosandresovallemarin.github.io/zowlwebsite/?utm_source=ig&utm_medium=social&utm_content=link_in_bio" className='link-zowl' target="_blank" rel="noopener noreferrer">Zowl Web Design</a></p>
         <div className="footer-legal">
           <Link to="/politicas">Políticas</Link>
           <Link to="/faq">Preguntas Frecuentes</Link>
