@@ -38,6 +38,7 @@ export const router = createBrowserRouter([
       { path: 'checkout', element: <Checkout /> },
       { path: 'gracias', element: <Gracias /> },
       { path: 'contacto', element: <RegistroEquipo /> },
+      { path: 'registra-tu-equipo', element: <RegistroEquipo /> },
       { path: 'faq', element: <FAQ /> },
       { path: 'politicas', element: <Politicas /> },
       { path: 'privacidad', element: <Politicas /> },
