@@ -4,7 +4,7 @@ import './Stats.css';
 const statsData = [
   { id: 1, value: 15, suffix: '+', label: 'Años de Experiencia', description: 'Líderes en el sector salud' },
   { id: 2, value: 50, suffix: 'K+', label: 'Clientes Satisfechos', description: 'Familias colombianas' },
-  { id: 3, value: 200, suffix: '+', label: 'Productos Certificados', description: 'Con registro INVIMA' },
+  { id: 3, value: 40, suffix: '+', label: 'Productos Certificados', description: 'Con registro INVIMA' },
   { id: 4, value: 100, suffix: '%', label: 'Certificación INVIMA', description: 'Todos nuestros productos' },
 ];
 

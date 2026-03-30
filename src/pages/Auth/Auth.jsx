@@ -101,6 +101,42 @@ const Auth = () => {
     return null;
   };
 
+  /**
+   * Traduce errores técnicos de la API a mensajes amigables para el usuario
+   */
+  const mapAuthError = (errMessage) => {
+    if (!errMessage) return 'Ha ocurrido un error inesperado. Inténtalo de nuevo.';
+    
+    // Convertir a minúsculas para facilitar la búsqueda
+    const msg = errMessage.toLowerCase();
+
+    if (msg.includes('username_exists') || msg.includes('ya existe un nombre de usuario')) {
+      return 'Este nombre de usuario ya está en uso. Por favor, elige otro.';
+    }
+    if (msg.includes('email_exists') || msg.includes('ya existe una cuenta con tu dirección de correo')) {
+      return 'Este correo electrónico ya está registrado. Si es tuyo, intenta iniciar sesión.';
+    }
+    if (msg.includes('invalid_username') || msg.includes('nombre de usuario no válido')) {
+      return 'El nombre de usuario contiene caracteres no permitidos.';
+    }
+    if (msg.includes('password') || msg.includes('contraseña')) {
+      if (msg.includes('incorrect') || msg.includes('incorrecta')) return 'La contraseña es incorrecta.';
+      if (msg.includes('empty')) return 'La contraseña no puede estar vacía.';
+    }
+    if (msg.includes('invalid_email')) {
+      return 'La dirección de correo electrónico no es válida.';
+    }
+    if (msg.includes('user_not_found') || msg.includes('usuario no encontrado') || msg.includes('invalid_username')) {
+      return 'El usuario no existe o los datos son incorrectos.';
+    }
+    if (msg.includes('fetch') || msg.includes('network') || msg.includes('conexión')) {
+      return 'Error de conexión. Verifica tu internet e inténtalo de nuevo.';
+    }
+
+    // Mensaje por defecto si no hay coincidencia clara
+    return errMessage;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -117,7 +153,7 @@ const Auth = () => {
         if (loginSuccess) {
           navigate('/cuenta');
         } else {
-          throw new Error(authError || 'Error al iniciar sesión');
+          throw new Error(mapAuthError(authError) || 'Error al iniciar sesión');
         }
       } else {
         // Validate registration
@@ -180,11 +216,11 @@ const Auth = () => {
           setShipping({ ...EMPTY_ADDRESS });
           setSameAsBilling(true);
         } else {
-          throw new Error(authError || 'Error al registrar usuario');
+          throw new Error(mapAuthError(authError) || 'Error al registrar usuario');
         }
       }
     } catch (err) {
-      setError(err.message);
+      setError(mapAuthError(err.message));
     } finally {
       setLoading(false);
     }

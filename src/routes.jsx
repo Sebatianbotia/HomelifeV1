@@ -18,6 +18,7 @@ import Gracias from './pages/Gracias/Gracias';
 import RegistroEquipo from './pages/RegistroEquipo/RegistroEquipo';
 import FAQ from './pages/FAQ/FAQ';
 import Politicas from './pages/Legal/Politicas';
+import NotFound from './pages/NotFound/NotFound';
 
 export const router = createBrowserRouter([
   {
@@ -41,6 +42,7 @@ export const router = createBrowserRouter([
       { path: 'politicas', element: <Politicas /> },
       { path: 'privacidad', element: <Politicas /> },
       { path: 'garantia', element: <Politicas /> },
+      { path: '*', element: <NotFound /> },
     ],
   },
 ]);

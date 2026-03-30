@@ -125,6 +125,21 @@ const Checkout = () => {
         };
       }
 
+      // Formatear los atributos seleccionados para incluirlos en las notas del pedido
+      const variationsNote = cartInfo.items
+        .filter(item => item.selectedAttributes && Object.keys(item.selectedAttributes).length > 0)
+        .map(item => {
+          const attrs = Object.entries(item.selectedAttributes)
+            .map(([key, value]) => `${key}: ${value}`)
+            .join(', ');
+          return `- ${item.name} (${attrs})`;
+        })
+        .join('\n');
+
+      const fullCustomerNote = variationsNote 
+        ? `DETALLES DE PRODUCTOS:\n${variationsNote}\n\nNOTAS ADICIONALES:\n${customerNote.trim()}`
+        : customerNote.trim();
+
       const payload = {
         metodo_pago: metodoPago,
         cc: cc.trim(),
@@ -143,7 +158,7 @@ const Checkout = () => {
           email: billing.email.trim(),
         },
         shipping: shippingData,
-        customer_note: customerNote.trim(),
+        customer_note: fullCustomerNote,
       };
 
 
@@ -457,6 +472,13 @@ const Checkout = () => {
                   />
                   <div className="order-item-info">
                     <span className="order-item-name">{item.name}</span>
+                    {item.selectedAttributes && Object.entries(item.selectedAttributes).length > 0 && (
+                      <div className="order-item-variations">
+                        {Object.entries(item.selectedAttributes).map(([key, value]) => (
+                          <span key={key} className="variation-tag">{key}: {value}</span>
+                        ))}
+                      </div>
+                    )}
                     <span className="order-item-qty">Cantidad: {item.quantity}</span>
                   </div>
                   <span className="order-item-price">

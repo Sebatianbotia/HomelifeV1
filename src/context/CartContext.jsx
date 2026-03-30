@@ -58,10 +58,18 @@ export const CartProvider = ({ children }) => {
       setIsCartLoading(true);
       setCartError(null);
 
-      const id = String(productId);
+      // Generar un ID único para el item combinando el ID del producto y sus atributos
+      // Esto permite tener el mismo producto con diferentes variantes (ej. Color) en el carrito
+      const selectedAttrs = productData?.selectedAttributes || {};
+      const attrString = Object.entries(selectedAttrs)
+        .sort(([a], [b]) => a.localeCompare(b))
+        .map(([k, v]) => `${k}:${v}`)
+        .join('|');
+      
+      const cartItemId = attrString ? `${productId}-${attrString}` : String(productId);
 
       setCartItems(prev => {
-        const existingIndex = prev.findIndex(item => String(item.id) === id);
+        const existingIndex = prev.findIndex(item => String(item.cartItemId) === cartItemId);
         
         if (existingIndex >= 0) {
           // Ya existe: sumar cantidad
@@ -75,12 +83,14 @@ export const CartProvider = ({ children }) => {
         
         // Nuevo item
         const newItem = {
-          id: id,
-          name: productData?.name || `Producto ${id}`,
+          cartItemId: cartItemId, // ID único para el carrito
+          id: String(productId),  // ID real del producto en WooCommerce
+          name: productData?.name || `Producto ${productId}`,
           price: productData?.price || 0,
           originalPrice: productData?.originalPrice || productData?.price || 0,
           image: productData?.images?.[0] || '',
           quantity: quantity,
+          selectedAttributes: selectedAttrs, // Guardar los atributos para el ERP
         };
         
         return [...prev, newItem];

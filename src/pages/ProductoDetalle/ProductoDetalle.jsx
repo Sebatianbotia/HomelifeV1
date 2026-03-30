@@ -20,6 +20,8 @@ const ProductoDetalle = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [addedToCart, setAddedToCart] = useState(false);
+  const [selectedAttributes, setSelectedAttributes] = useState({});
+  const [selectionError, setSelectionError] = useState(false);
 
   useEffect(() => {
     const cargarProducto = async () => {
@@ -46,6 +48,8 @@ const ProductoDetalle = () => {
         setCurrentImageIndex(0);
         setQuantity(1);
         setActiveTab('specs');
+        setSelectedAttributes({});
+        setSelectionError(false);
 
         if (productoDetalle.relatedIds && productoDetalle.relatedIds.length > 0) {
           const relacionados = await obtenerProductosPorIds(productoDetalle.relatedIds.slice(0, 4));
@@ -100,13 +104,42 @@ const ProductoDetalle = () => {
 
 
   const handleAddToCart = async () => {
+    // Verificar si se han seleccionado todos los atributos requeridos
+    const requiredAttrs = product.selectableAttributes || [];
+    const allSelected = requiredAttrs.every(attr => selectedAttributes[attr.name]);
+
+    if (!allSelected) {
+      setSelectionError(true);
+      // Hacer scroll suave hacia los selectores
+      const selectorElement = document.querySelector('.variation-selectors');
+      if (selectorElement) {
+        selectorElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+      return;
+    }
+
     if (product.inStock) {
-      const success = await addToCart(product.id, quantity, product);
+      setSelectionError(false);
+      // Clonar el producto para añadir los atributos seleccionados al item del carrito
+      const productWithSelection = {
+        ...product,
+        selectedAttributes: selectedAttributes
+      };
+      
+      const success = await addToCart(product.id, quantity, productWithSelection);
       if (success) {
         setAddedToCart(true);
         setTimeout(() => setAddedToCart(false), 2000);
       }
     }
+  };
+
+  const handleAttributeSelect = (attrName, optionName) => {
+    setSelectedAttributes(prev => ({
+      ...prev,
+      [attrName]: optionName
+    }));
+    setSelectionError(false);
   };
 
   const savings = product.originalPrice ? product.originalPrice - product.price : 0;
@@ -201,6 +234,34 @@ const ProductoDetalle = () => {
                 </div>
               )}
             </div>
+            
+            {/* Variation Selectors */}
+            {product.selectableAttributes && product.selectableAttributes.length > 0 && (
+              <div className={`variation-selectors ${selectionError ? 'has-error' : ''}`}>
+                {product.selectableAttributes.map(attr => (
+                  <div key={attr.name} className="attribute-group">
+                    <label className="attribute-label">
+                      {attr.name}: <span className="selected-value">{selectedAttributes[attr.name] || 'Selecciona'}</span>
+                    </label>
+                    <div className="attribute-options">
+                      {attr.options.map(option => (
+                        <button
+                          key={option.id}
+                          className={`attribute-chip ${selectedAttributes[attr.name] === option.name ? 'active' : ''}`}
+                          onClick={() => handleAttributeSelect(attr.name, option.name)}
+                        >
+                          {option.name}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+                {selectionError && (
+                  <div className="selection-error-msg">Por favor selecciona todas las opciones antes de continuar</div>
+                )}
+              </div>
+            )}
+
 
             <div className="add-to-cart-section">
               <div className="quantity-selector">
@@ -234,7 +295,7 @@ const ProductoDetalle = () => {
             {product.techSheetPdf && (
               <div className="product-techsheet">
                 <h3 className="features-title" style={{ marginTop: '20px' }}>Ficha técnica</h3>
-                <a className="techsheet-btn" href={`/${product.techSheetPdf}`} target="_blank" rel="noopener noreferrer">
+                <a className="techsheet-btn" href={product.techSheetPdf} target="_blank" rel="noopener noreferrer">
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                     <polyline points="7 10 12 15 17 10"></polyline>

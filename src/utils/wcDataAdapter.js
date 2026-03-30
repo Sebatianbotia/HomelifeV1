@@ -99,9 +99,26 @@ export const adaptProductDetalle = (wcProduct) => {
   // Procesar atributos
   // Store API: Los atributos vienen con terms (array de objetos) en lugar de options (array de strings)
   const specifications = {};
+  const selectableAttributes = [];
+
   if (wcProduct.attributes && Array.isArray(wcProduct.attributes)) {
     wcProduct.attributes.forEach(attr => {
-      if (attr.terms && attr.terms.length > 0) {
+      // Solo mostrar como seleccionable si tiene 2 o más opciones (ej: Motivo, Color)
+      if (attr.terms && attr.terms.length >= 2) {
+        selectableAttributes.push({
+          id: attr.id,
+          name: attr.name,
+          slug: attr.slug,
+          options: attr.terms.map(t => ({
+            id: t.id,
+            name: t.name,
+            slug: t.slug
+          }))
+        });
+
+        specifications[attr.name] = attr.terms.map(t => t.name).join(', ');
+      } else if (attr.terms && attr.terms.length > 0) {
+        // Si solo tiene una opción, lo dejamos en especificaciones pero no como selector
         specifications[attr.name] = attr.terms.map(t => t.name).join(', ');
       } else if (attr.options && attr.options.length > 0) {
         specifications[attr.name] = attr.options.join(', ');
@@ -131,11 +148,31 @@ export const adaptProductDetalle = (wcProduct) => {
     fullDescription: wcProduct.description ? sanitizeHtmlWithFormatting(wcProduct.description) : '',
     features: [],
     specifications: specifications,
+    selectableAttributes: selectableAttributes,
     tags: wcProduct.tags || [],
     sku: wcProduct.sku || '',
     relatedIds: wcProduct.related_ids || [],
-    techSheetPdf: '',
+    techSheetPdf: extractTechSheet(wcProduct.description || wcProduct.short_description) || '',
   };
+};
+
+/**
+ * Busca un enlace a PDF en el HTML (Ficha técnica)
+ * @param {string} html - El HTML del producto
+ * @returns {string|null} La URL del PDF si se encuentra
+ */
+const extractTechSheet = (html) => {
+  if (!html) return null;
+
+  // Buscar enlaces que terminen en .pdf
+  const pdfRegex = /href=["']([^"']+\.pdf)["']/i;
+  const match = html.match(pdfRegex);
+
+  if (match && match[1]) {
+    return match[1];
+  }
+
+  return null;
 };
 
 /**
