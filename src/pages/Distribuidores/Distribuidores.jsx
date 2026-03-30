@@ -108,7 +108,6 @@ const Distribuidores = () => {
           </form>
         </div>
 
-        {/* Información de contacto */}
         <div className="distribuidores-info-card">
           <h3>Información para distribuidores</h3>
           <p>Nuestros distribuidores son parte clave de nuestro crecimiento. Te acompañamos en cada paso para que comercialices nuestros productos con éxito.</p>
