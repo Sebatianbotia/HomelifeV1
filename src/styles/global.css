@@ -59,27 +59,14 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--cyan-600);
 }
-/* src/styles/global.css (añade al final) */
-
 /* Contenedor principal que envuelve todas las páginas */
 .main-content {
-  max-width: 1400px;
-  margin: 0 auto;
   width: 100%;
-  padding: 0 20px;
+  position: relative;
+  /* Eliminado max-width y margin: 0 auto para permitir diseño full-bleed */
 }
 
 /* Ajuste para el header fijo: el contenido no debe quedar oculto */
-body {
-  padding-top: 120px; /* Altura aproximada del header (ajusta si es necesario) */
-}
-
-@media (max-width: 768px) {
-  body {
-    padding-top: 100px;
-  }
-}
-/* src/styles/global.css */
 body {
   padding-top: 120px; /* Altura aproximada del header */
 }
@@ -88,11 +75,4 @@ body {
   body {
     padding-top: 100px;
   }
-}
-
-.main-content {
-  max-width: 1400px;
-  margin: 0 auto;
-  width: 100%;
-  padding: 0 20px;
-}
+}

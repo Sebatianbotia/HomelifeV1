@@ -322,7 +322,8 @@
   padding: 0 32px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
+  position: relative;
 }
 
 .nav-links {
@@ -373,6 +374,8 @@
 }
 
 .nav-meta {
+  position: absolute;
+  right: 32px;
   display: flex;
   align-items: center;
   gap: 20px;
@@ -423,21 +426,24 @@
 }
 
 @media (max-width: 992px) {
-  /* Search is no longer hidden on iPad */
+  .nav-meta {
+    display: none;
+  }
 }
 
 @media (max-width: 768px) {
   .main-nav {
     display: none;
   }
+
   .header-container {
     padding: 0 20px;
   }
-  
+
   .header-actions {
     position: static;
   }
-  
+
   .header-search-form.open {
     position: absolute;
     top: 50%;
@@ -448,7 +454,7 @@
     height: 44px;
     z-index: 1500;
   }
-  
+
   .header-search-form.open .search-input-wrapper {
     width: 100%;
   }
@@ -469,7 +475,7 @@
   .desktop-only-icon {
     display: none;
   }
-  
+
   .mobile-actions-divider {
     height: 1px;
     background: rgba(255, 255, 255, 0.1);
@@ -489,11 +495,12 @@
     border-radius: 10px;
     margin-left: auto;
   }
-  
+
   .mobile-menu {
     display: block;
     position: fixed;
-    top: 65px; /* Adjust according to header height */
+    top: 65px;
+    /* Adjust according to header height */
     left: 0;
     right: 0;
     bottom: 0;
@@ -535,7 +542,7 @@
     background: rgba(0, 217, 217, 0.1);
     color: var(--text-primary);
   }
-  
+
   .mobile-nav-link svg {
     width: 20px;
     height: 20px;

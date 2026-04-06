@@ -5,9 +5,19 @@ import './Carousel3D.css';
 
 const Carousel3D = ({ items }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [addedId, setAddedId] = useState(null);
   const navigate = useNavigate();
-  const { addItem } = useCart();
+  const { addToCart, isCartLoading } = useCart();
   const totalItems = items.length;
+
+  const handleAddToCart = async (e, item) => {
+    e.stopPropagation();
+    const success = await addToCart(item.id, 1, item);
+    if (success) {
+      setAddedId(item.id);
+      setTimeout(() => setAddedId(null), 2000);
+    }
+  };
 
   const goToNext = () => {
     setCurrentIndex((prev) => (prev + 1) % totalItems);
@@ -106,10 +116,11 @@ const Carousel3D = ({ items }) => {
                     </span>
                   </div>
                   <button
-                    className="add-to-cart"
-                    onClick={(e) => { e.stopPropagation(); addItem(item); }}
+                    className={`add-to-cart ${addedId === item.id ? 'added' : ''}`}
+                    onClick={(e) => handleAddToCart(e, item)}
+                    disabled={isCartLoading}
                   >
-                    Agregar al Carrito
+                    {addedId === item.id ? '¡Agregado! ✓' : 'Agregar al Carrito'}
                   </button>
                 </div>
               </div>

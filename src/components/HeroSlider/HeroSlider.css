@@ -35,14 +35,15 @@
 .slide-content {
   position: relative;
   z-index: 3;
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 0 40px;
+  width: 100%;
+  padding: 0 80px;
   height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: flex-start;
   color: white;
+  text-align: left;
 }
 
 .slide-badge {
@@ -62,23 +63,26 @@
 }
 
 .slide-title {
-  font-size: 2.5rem;
-  font-weight: 800;
-  line-height: 1.1;
-  letter-spacing: -0.02em;
+  font-size: 4.5rem;
+  font-weight: 900;
+  line-height: 1.05;
+  letter-spacing: -0.04em;
   background: linear-gradient(135deg, #fff 0%, var(--cyan-400) 100%);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
-  margin-bottom: 16px;
-  max-width: 600px;
+  margin-bottom: 24px;
+  max-width: 800px;
+  filter: drop-shadow(0 10px 20px rgba(0,0,0,0.3));
 }
 
 .slide-description {
-  font-size: 1rem;
+  font-size: 1.25rem;
   color: var(--text-secondary);
   line-height: 1.6;
-  margin-bottom: 24px;
-  max-width: 500px;
+  margin-bottom: 40px;
+  max-width: 600px;
+  font-weight: 400;
 }
 
 .slide-button {
@@ -171,15 +175,16 @@
   }
 
   .slide-content {
-    padding: 0 20px;
+    padding: 0 30px;
   }
 
   .slide-title {
-    font-size: 1.8rem;
+    font-size: 2.2rem;
   }
 
   .slide-description {
-    font-size: 0.9rem;
+    font-size: 1rem;
+    margin-bottom: 24px;
   }
 
   .slider-arrow.prev {

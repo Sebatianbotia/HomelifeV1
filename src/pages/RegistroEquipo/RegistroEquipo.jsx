@@ -14,7 +14,6 @@ const RegistroEquipo = () => {
   const [loading, setLoading] = useState(false);
   const [serverError, setServerError] = useState(null);
 
-  // Custom Dropdown State
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const dropdownRef = useRef(null);
@@ -24,7 +23,6 @@ const RegistroEquipo = () => {
     productos.find(p => String(p.id) === String(selectedProductId)),
     [productos, selectedProductId]);
 
-  // Cerrar dropdown al hacer click fuera
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -35,7 +33,6 @@ const RegistroEquipo = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // Filtrar productos según el término de búsqueda
   const filteredProducts = useMemo(() => {
     if (!searchTerm) return productos;
     return productos.filter(p =>
