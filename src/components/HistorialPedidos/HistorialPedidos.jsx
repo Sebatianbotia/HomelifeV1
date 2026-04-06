@@ -161,7 +161,9 @@ const HistorialPedidos = () => {
               </div>
               <div className="footer-total">
                 <span className="total-label">Total del Pedido:</span>
-                <span className="total-amount">{formatPrice(pedido.total)}</span>
+                <span className="total-amount" style={{ marginBottom: '10px' }}>{formatPrice(pedido.total)}</span>
+                
+
               </div>
             </div>
 

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
 import { useAuth } from '../../context/AuthContext';
 import './Header.css';
@@ -8,6 +8,10 @@ const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const searchInputRef = useRef(null);
+  const navigate = useNavigate();
   const { user, isAuthenticated } = useAuth();
 
   const getInitialLang = () => {
@@ -42,6 +46,23 @@ const Header = () => {
   const { cartInfo } = useCart();
   const cartCount = cartInfo.itemsCount;
 
+  const handleSearchToggle = () => {
+    setIsSearchOpen(!isSearchOpen);
+    if (!isSearchOpen) {
+      setTimeout(() => searchInputRef.current?.focus(), 100);
+    }
+  };
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/productos?q=${encodeURIComponent(searchQuery.trim())}`);
+      setIsSearchOpen(false);
+      setSearchQuery('');
+      setIsMobileMenuOpen(false);
+    }
+  };
+
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
@@ -59,6 +80,40 @@ const Header = () => {
           </Link>
 
           <div className="header-actions">
+            {/* Search Bar */}
+            <form 
+              className={`header-search-form ${isSearchOpen ? 'open' : ''}`} 
+              onSubmit={handleSearchSubmit}
+              onBlur={(e) => {
+                // Si el foco se sale completamente del formulario, lo cerramos
+                if (!e.currentTarget.contains(e.relatedTarget)) {
+                  setIsSearchOpen(false);
+                }
+              }}
+            >
+              <button 
+                type="button" 
+                className="icon-btn search-toggle-btn" 
+                onClick={handleSearchToggle}
+                title="Buscar productos"
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="18" height="18">
+                  <circle cx="11" cy="11" r="8" />
+                  <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                </svg>
+              </button>
+              <div className="search-input-wrapper">
+                <input
+                  ref={searchInputRef}
+                  type="text"
+                  className="header-search-input"
+                  placeholder="Buscar equipos médicos..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </div>
+            </form>
+
             {/* Language selector */}
             <div className="lang-selector">
               <button className="lang-btn" onClick={() => setLangOpen(!langOpen)}>

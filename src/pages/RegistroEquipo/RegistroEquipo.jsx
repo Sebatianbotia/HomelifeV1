@@ -64,7 +64,7 @@ const RegistroEquipo = () => {
     formData.append('producto_id', data.producto);
     formData.append('serial', data.serial);
     formData.append('mensaje', data.mensaje || '');
-    formData.append('acepta', data.acepta ? '1' : '0');
+    formData.append('acepta', data.acepta ? 'true' : 'false');
 
     if (archivo) {
       formData.append('factura', archivo);

@@ -56,3 +56,5 @@ export const registrarEquipo = async (formData) => {
 export const contactoDistribuidor = async (payload) => {
   return post('/wp-json/homelife/v1/contacto-distribuidor', payload);
 };
+
+

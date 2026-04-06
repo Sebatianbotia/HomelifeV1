@@ -1,4 +1,5 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { useProducts } from '../../context/ProductsContext';
 import ProductCard from '../../components/ProductCard/ProductCard';
 import useSEO from '../../utils/useSEO';
@@ -11,6 +12,9 @@ const Productos = () => {
     description: 'Explora nuestro catálogo completo de equipos médicos domiciliarios certificados INVIMA: tensómetros, oxímetros, nebulizadores, glucómetros y más. Envío a todo Colombia.',
     canonical: 'https://www.homelife.com.co/productos',
   });
+  const [searchParams, setSearchParams] = useSearchParams();
+  const searchQuery = searchParams.get('q') || '';
+
   const [selectedCategory, setSelectedCategory] = useState('todas');
   const [priceRange, setPriceRange] = useState({ min: '', max: '' });
   const [sortBy, setSortBy] = useState('featured');
@@ -20,6 +24,24 @@ const Productos = () => {
 
   const filteredProducts = useMemo(() => {
     let filtered = [...productos];
+
+    if (searchQuery) {
+      const normalizeStr = (str) => {
+        if (!str) return '';
+        return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+      };
+      
+      const q = normalizeStr(searchQuery);
+      
+      filtered = filtered.filter(p => {
+        const nameMatch = normalizeStr(p.name).includes(q);
+        const shortMatch = normalizeStr(p.shortDescription).includes(q);
+        const fullMatch = normalizeStr(p.fullDescription).includes(q);
+        const catMatch = normalizeStr(p.category).includes(q);
+        
+        return nameMatch || shortMatch || fullMatch || catMatch;
+      });
+    }
 
     if (selectedCategory !== 'todas') {
       filtered = filtered.filter(p => p.categoryId === Number(selectedCategory));
@@ -54,7 +76,7 @@ const Productos = () => {
 
     setCurrentPage(1); 
     return filtered;
-  }, [selectedCategory, priceRange, sortBy, productos]);
+  }, [selectedCategory, priceRange, sortBy, productos, searchQuery]);
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -82,6 +104,11 @@ const Productos = () => {
     setSortBy('featured');
     setCurrentPage(1);
     setShowMobileFilters(false);
+    if (searchQuery) {
+      const newParams = new URLSearchParams(searchParams);
+      newParams.delete('q');
+      setSearchParams(newParams);
+    }
   };
 
   const paginate = (pageNumber) => {
@@ -176,6 +203,23 @@ const Productos = () => {
         </aside>
 
         <main className="products-main">
+          {searchQuery && (
+            <div className="search-results-header" style={{ marginBottom: '20px', padding: '15px 20px', background: 'rgba(0, 217, 217, 0.05)', borderRadius: 'var(--radius-md)', border: '1px solid rgba(0, 217, 217, 0.1)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <h2 style={{ fontSize: '1.2rem', margin: 0, color: 'var(--text-primary)' }}>
+                Resultados para: <span style={{ color: 'var(--cyan-400)' }}>"{searchQuery}"</span>
+              </h2>
+              <button 
+                onClick={() => {
+                  const newParams = new URLSearchParams(searchParams);
+                  newParams.delete('q');
+                  setSearchParams(newParams);
+                }}
+                style={{ background: 'transparent', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', fontSize: '0.9rem', textDecoration: 'underline' }}
+              >
+                Limpiar búsqueda
+              </button>
+            </div>
+          )}
           <div className="products-toolbar">
             <p className="results-count">
               Mostrando <strong>{currentProducts.length}</strong> de <strong>{filteredProducts.length}</strong> productos
